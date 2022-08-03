@@ -2,10 +2,12 @@ package com.tool.smarthrbackend.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.tool.smarthrbackend.model.employee.Employee;
+import com.tool.smarthrbackend.model.employee.EmployeeCheckInCheckOut;
 import com.tool.smarthrbackend.model.leave.LeaveApplication;
 import com.tool.smarthrbackend.model.leave.LeaveType;
 import com.tool.smarthrbackend.pojo.employee.AddEmployeeRequest;
 import com.tool.smarthrbackend.pojo.employee.AddEmployeeResponse;
+import com.tool.smarthrbackend.pojo.employee.checkincheckout.EmployeeCheckInCheckOutRequest;
 import com.tool.smarthrbackend.pojo.login.EmployeeLoginRequest;
 import com.tool.smarthrbackend.pojo.login.EmployeeLoginResponse;
 import com.tool.smarthrbackend.service.EmployeeService;
@@ -16,6 +18,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.ParseException;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -126,6 +129,28 @@ public class EmployeeController {
 
 
 
+	//employee checkin checkout  post mapping
+	@PostMapping(path = "/employeeCheckInCheckOut")
+	public void  employeeCheckIn(@RequestBody EmployeeCheckInCheckOutRequest employeeCheckInCheckOutRequest)
+			throws JsonProcessingException {
+		String errormessage="";
+		try {
+			employeeService.addCheckin(employeeCheckInCheckOutRequest);
+		}
+		catch (Exception e){
+			errormessage=e.toString();
+			System.out.println(errormessage);
+		}
+
+	}
+
+	@GetMapping(path = "/getEmployeeCheckInCheckOutId/{empid}")
+	public List<EmployeeCheckInCheckOut> getEmployeesCheckInCheckOutId(@PathVariable("empid") Integer employeeId)
+			throws JsonProcessingException, ParseException {
+		List<EmployeeCheckInCheckOut> employeeCheckInCheckOuts;
+		return employeeCheckInCheckOuts=employeeService.getEmployeeCheckInCheckOutId(employeeId);
+
+	}
 
 
 }

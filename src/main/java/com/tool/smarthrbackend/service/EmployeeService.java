@@ -2,12 +2,15 @@ package com.tool.smarthrbackend.service;
 
 import com.tool.smarthrbackend.model.domain.Domain;
 import com.tool.smarthrbackend.model.employee.Employee;
+import com.tool.smarthrbackend.model.employee.EmployeeCheckInCheckOut;
 import com.tool.smarthrbackend.model.metadata.Department;
 import com.tool.smarthrbackend.pojo.employee.AddEmployeeRequest;
 import com.tool.smarthrbackend.pojo.employee.AddEmployeeResponse;
+import com.tool.smarthrbackend.pojo.employee.checkincheckout.EmployeeCheckInCheckOutRequest;
 import com.tool.smarthrbackend.pojo.login.EmployeeLoginRequest;
 import com.tool.smarthrbackend.pojo.login.EmployeeLoginResponse;
 import com.tool.smarthrbackend.repository.jpa.domain.DomainRepository;
+import com.tool.smarthrbackend.repository.jpa.employee.EmployeeCheckInCheckOutRepository;
 import com.tool.smarthrbackend.repository.jpa.employee.EmployeeRepository;
 import com.tool.smarthrbackend.repository.jpa.metadata.DepartmentRepository;
 import com.tool.smarthrbackend.repository.jpa.metadata.RoleRepository;
@@ -15,6 +18,8 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.Random;
@@ -33,7 +38,8 @@ public class EmployeeService {
     @Autowired
     DepartmentRepository departmentRepository;
 
-
+    @Autowired
+    EmployeeCheckInCheckOutRepository employeeCheckInCheckOutRepository;
      @Autowired
     RoleRepository roleRepository;
 
@@ -141,7 +147,20 @@ public class EmployeeService {
        return  Long.parseLong(stb.toString());
    }
 
+    public EmployeeCheckInCheckOutRequest addCheckin(EmployeeCheckInCheckOutRequest employeeCheckInCheckOutRequest) {
+        EmployeeCheckInCheckOut employeeCheckInCheckOut=new EmployeeCheckInCheckOut();
+        employeeCheckInCheckOut.setEmployeeId(employeeCheckInCheckOutRequest.getEmployeeId());
+        employeeCheckInCheckOut.setStatus(employeeCheckInCheckOutRequest.getStatus());
+        employeeCheckInCheckOut.setCheckInCheckOutTime(LocalDateTime.now());
+        employeeCheckInCheckOutRepository.save(employeeCheckInCheckOut);
+        return employeeCheckInCheckOutRequest;
+    }
 
+    public List<EmployeeCheckInCheckOut> getEmployeeCheckInCheckOutId(Integer employeeId) {
+        LocalDate currentdate= LocalDate.now();
+        return employeeCheckInCheckOutRepository.findAllByEmployeeId(employeeId  );
+
+    }
 
 
 
