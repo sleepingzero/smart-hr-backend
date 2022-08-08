@@ -2,7 +2,10 @@ package com.tool.smarthrbackend.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.tool.smarthrbackend.model.domain.Domain;
+import com.tool.smarthrbackend.model.domain.EmployeeProject;
+import com.tool.smarthrbackend.model.domain.EmployeeTask;
 import com.tool.smarthrbackend.model.holiday.PublicHoliday;
+import com.tool.smarthrbackend.repository.jpa.domain.EmployeeProjectRepository;
 import com.tool.smarthrbackend.service.DomainService;
 import com.tool.smarthrbackend.service.HolidayService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +23,8 @@ public class DomainController {
 
 	@Autowired
 	DomainService domainService;
-
+   @Autowired
+	EmployeeProjectRepository employeeProjectRepository;
 
 
 	@GetMapping(path = "/getDomainByDomainName")
@@ -91,5 +95,54 @@ public class DomainController {
 			return ResponseEntity.ok().headers(responseHeaders).body("success");
 		}
 	}
+//endpoint	for get list of all project with project_id
+    @GetMapping(path = "/getAllProjects")
+	public ResponseEntity<?> getAllProject()
+			throws  JsonProcessingException{
 
+		HttpHeaders responseHeaders= new HttpHeaders();
+		List<EmployeeProject> employeeProject=null;
+		responseHeaders.add("content-type","application/json");
+        String errorMessage="";
+
+		try {
+			employeeProject= domainService.getAllProject();
+		}
+		catch (Exception e){
+			errorMessage=e.toString();
+		}
+		if (errorMessage !=""){
+			return  ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMessage);
+
+		}
+		else {
+			return  ResponseEntity.ok().headers(responseHeaders).body(employeeProject);
+		}
+	}
+
+// end point for get list of task by project_id
+
+	@GetMapping(path = "/getTasksByProjectId")
+	public ResponseEntity<?> getTaskByProjectId(@RequestParam(value = "projectId") Long projectId)
+			throws  JsonProcessingException{
+
+		HttpHeaders responseHeaders= new HttpHeaders();
+		List<EmployeeTask> employeeTasks=null;
+		responseHeaders.add("content-type","application/json");
+		String errorMessage="";
+
+		try {
+			employeeTasks= domainService.getTaskByProjectId(projectId);
+		}
+		catch (Exception e){
+			errorMessage=e.toString();
+		}
+		if (errorMessage !=""){
+			return  ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMessage);
+
+		}
+		else {
+			return  ResponseEntity.ok().headers(responseHeaders).body(employeeTasks);
+		}
+	}
 }

@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.Random;
@@ -156,13 +157,26 @@ public class EmployeeService {
         return employeeCheckInCheckOutRequest;
     }
 
-    public List<EmployeeCheckInCheckOut> getEmployeeCheckInCheckOutId(Integer employeeId) {
-        LocalDate currentdate= LocalDate.now();
+    public List<EmployeeCheckInCheckOut> getEmployeeCheckInCheckOutAllById(Integer employeeId) {
+
         return employeeCheckInCheckOutRepository.findAllByEmployeeId(employeeId  );
 
     }
 
 
+    public List<EmployeeCheckInCheckOut> getEmployeeCheckInCheckOutByDate(LocalDate date, Integer employeeId) {
+        System.out.println(date);
+        if (date==null){
+             LocalDate currentdate =LocalDate.now();
+            date = currentdate;
+        }
+        System.out.println(date+" service");
+        return employeeCheckInCheckOutRepository.findAllByEmployeeIdAndDate(date,employeeId);
 
+    }
 
+    public EmployeeCheckInCheckOut getEmployeeCheckInCheckOutStatus(Integer employeeId) {
+
+        return  employeeCheckInCheckOutRepository.findTop1ByEmployeeIdOrderByCheckInCheckOutTimeDesc(employeeId);
+    }
 }

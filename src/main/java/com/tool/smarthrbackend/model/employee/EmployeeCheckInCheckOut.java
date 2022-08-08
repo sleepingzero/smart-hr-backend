@@ -19,14 +19,20 @@ public class EmployeeCheckInCheckOut {
         Long id;
 
 
+
         @Column(name = "emp_id")
         Integer employeeId;
 
        @Column(name="check_in_check_out_time")
+
        LocalDateTime checkInCheckOutTime;
 
         @Column(name="status")
         Boolean status;
+
+
+
+
 
     public EmployeeCheckInCheckOut() {
     }
