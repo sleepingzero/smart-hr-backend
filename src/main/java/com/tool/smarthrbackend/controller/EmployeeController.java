@@ -1,42 +1,35 @@
 package com.tool.smarthrbackend.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.tool.smarthrbackend.model.employee.Employee;
-import com.tool.smarthrbackend.model.employee.EmployeeCheckInCheckOut;
-import com.tool.smarthrbackend.model.leave.LeaveApplication;
-import com.tool.smarthrbackend.model.leave.LeaveType;
+import com.tool.smarthrbackend.model.employee.*;
 import com.tool.smarthrbackend.pojo.employee.AddEmployeeRequest;
 import com.tool.smarthrbackend.pojo.employee.AddEmployeeResponse;
 import com.tool.smarthrbackend.pojo.employee.checkincheckout.EmployeeCheckInCheckOutRequest;
 import com.tool.smarthrbackend.pojo.login.EmployeeLoginRequest;
 import com.tool.smarthrbackend.pojo.login.EmployeeLoginResponse;
 import com.tool.smarthrbackend.service.EmployeeService;
-import com.tool.smarthrbackend.service.LeaveService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+
 import org.springframework.web.bind.annotation.*;
 
 
-import java.text.DateFormat;
+
 import java.text.ParseException;
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/smarthr/employee")
-public class EmployeeController {
+public class  EmployeeController {
 
     @Autowired
     EmployeeService employeeService;
 
     //AddEmployeeRequest
-
 
     @GetMapping(path = "/getEmployeesById")
     public ResponseEntity<?> getEmployeesById(@RequestParam("employee_id") Long employeeId)
@@ -146,7 +139,7 @@ public class EmployeeController {
         }
 
     }
-
+// this end point to get all the  list of  employee check_in and check_out details
     @GetMapping(path = "/getEmployeeCheckInCheckOutAllById/{empid}")
     public List<EmployeeCheckInCheckOut> getEmployeesCheckInCheckOutId(@PathVariable("empid") Integer employeeId)
             throws JsonProcessingException, ParseException {
@@ -203,7 +196,76 @@ public class EmployeeController {
             return  ResponseEntity.ok().body(employeeCheckInCheckOut);
         }
 
+    }
+//APi for update EMployee  Addresses if not present than add
+    @PutMapping(value = "/updateEmployeeAddress")
 
+    public  ResponseEntity<?>  updateAddress(@RequestBody List<EmployeeAddress> employeeAddresses)
+    throws JsonProcessingException{
+
+        HttpHeaders responseHeaders = new HttpHeaders();
+        List<EmployeeAddress> employeeAddressList= null;
+        responseHeaders.add("content-type", "application/json");
+        String errorMessage = "";
+        try {
+            employeeService.updateAddress(employeeAddresses);
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            errorMessage = e.toString();
+        }
+        if (errorMessage != "") {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMessage);
+        } else {
+
+            return ResponseEntity.ok().headers(responseHeaders).body("updated");
+        }
+    }
+
+//    Api for update education details of student if not present than Add
+
+    @PutMapping(value = "/updateEmployeeEducation")
+    public ResponseEntity<? >updateEducation(@RequestBody List<EmployeeEducation> employeeEducations)
+    throws JsonProcessingException{
+        HttpHeaders responseHeaders = new HttpHeaders();
+        List<EmployeeEducation> employeeEducationList=null;
+        responseHeaders.add("content-type", "application/json");
+        String errorMessage="";
+        try{
+                    employeeService.updateEducation(employeeEducations);
+        }
+        catch(Exception e){
+            errorMessage=e.toString();
+        }
+        if (errorMessage != "") {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMessage);
+        } else {
+            return ResponseEntity.ok().headers(responseHeaders).body("updated education detail");
+        }
 
     }
+
+
+    //  get ALL upcoming Birthday or limited if paramater is 3 given list is give top 3 or else all list
+    @GetMapping(value ="/upcominBirthday")
+    public  ResponseEntity<?>  getPersonalDetail(@RequestParam(value = "limit",required = false)Integer limit){
+        List<EmployeePersonalDetail> employeePersonalDetails=null;
+
+        HttpHeaders responseHeaders = new HttpHeaders();
+       responseHeaders.add("content-type", "application/json");
+        String errorMessage="";
+        try{
+            employeePersonalDetails=employeeService.getUpcomingBirthday(limit);
+        }catch ( Exception e){
+            errorMessage=e.toString();
+        }
+        if (errorMessage != "") {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMessage);
+        } else {
+            return ResponseEntity.ok().headers(responseHeaders).body(employeePersonalDetails);
+        }
+
+        }
+
+
+
 }

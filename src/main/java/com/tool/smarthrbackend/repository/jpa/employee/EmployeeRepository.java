@@ -23,7 +23,6 @@ public interface EmployeeRepository extends CrudRepository<Employee, Long> {
 
     List<Employee> findByNameContainingIgnoreCaseOrLastNameContainingIgnoreCase(String searchString,String searchString2);
 
-
     @Override
     List<Employee> findAll();
 }

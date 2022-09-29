@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.tool.smarthrbackend.model.leave.LeaveApplication;
 import com.tool.smarthrbackend.model.leave.LeaveBalance;
 import com.tool.smarthrbackend.model.leave.LeaveType;
+import com.tool.smarthrbackend.pojo.leave.LeaveStatusUpdate;
 import com.tool.smarthrbackend.service.LeaveService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -117,4 +118,49 @@ public class LeaveController {
 		}
 	}
 
-}
+
+//	leave list  by status and all leave list
+
+	@GetMapping(path = "/allEmployeeLeaveList")
+	@CrossOrigin("http://localhost:3000")
+	public ResponseEntity<?> getAppliedEmployeeLeaveList(@RequestParam(value = "status" ,required = false) String status)
+			throws JsonProcessingException {
+		System.out.println("Inside  getDiscountedAmount");
+		List<LeaveApplication> allEmployeeLeavesList = null;
+		HttpHeaders responseHeaders = new HttpHeaders();
+		responseHeaders.add("content-type", "application/json");
+		String errorMessage = "";
+		try {
+			allEmployeeLeavesList = leaveService.getAllLeaveApplications(status);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			errorMessage = e.toString();
+		}
+		if (!errorMessage.equalsIgnoreCase("")) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMessage);
+		} else {
+			return ResponseEntity.ok().headers(responseHeaders).body(allEmployeeLeavesList);
+		}
+	}
+	@PutMapping(value = "/leaveStatusUpdate")
+	public ResponseEntity<?> updateLeaveStatus(@RequestBody LeaveStatusUpdate leaveStatusUpdate){
+		HttpHeaders responseHeaders = new HttpHeaders();
+		responseHeaders.add("content-type", "application/json");
+		String errorMessage = "";
+		try {
+			leaveService.updateLeaveStatus(leaveStatusUpdate);
+		}
+		catch (Exception e){
+			errorMessage=e.toString();
+		}
+		if (errorMessage != ""){
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMessage);
+		}
+		else {
+			return ResponseEntity.ok().body("update");
+		}
+
+
+	}
+ }

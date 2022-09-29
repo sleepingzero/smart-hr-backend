@@ -10,7 +10,7 @@ import java.util.Date;
 
 @Data
 @Entity
-@Table(name ="EMPLOYEE_LEAVE_APPLICATION")
+@Table(name ="employee_leave_application")
 @ToString
 public class LeaveApplication {
     @Id
@@ -71,4 +71,153 @@ public class LeaveApplication {
     String leaveDescription;
 
 
+    public LeaveApplication() {
+    }
+
+    public LeaveApplication(Long id, Long employeeId, Employee emp, Long leaveTypeId, LeaveType leaveType, Date startDate, Date createdDate, Date updatedDate, Integer startDateHalf, Date endDate, Integer endDateHalf, Integer totalLeaveDays, Integer leaveReasonId, Integer leaveStatusId, String leaveStatus, String leaveDescription) {
+        this.id = id;
+        this.employeeId = employeeId;
+        this.emp = emp;
+        this.leaveTypeId = leaveTypeId;
+        this.leaveType = leaveType;
+        this.startDate = startDate;
+        this.createdDate = createdDate;
+        this.updatedDate = updatedDate;
+        this.startDateHalf = startDateHalf;
+        this.endDate = endDate;
+        this.endDateHalf = endDateHalf;
+        this.totalLeaveDays = totalLeaveDays;
+        this.leaveReasonId = leaveReasonId;
+        this.leaveStatusId = leaveStatusId;
+        this.leaveStatus = leaveStatus;
+        this.leaveDescription = leaveDescription;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getEmployeeId() {
+        return employeeId;
+    }
+
+    public void setEmployeeId(Long employeeId) {
+        this.employeeId = employeeId;
+    }
+
+    public Employee getEmp() {
+        return emp;
+    }
+
+    public void setEmp(Employee emp) {
+        this.emp = emp;
+    }
+
+    public Long getLeaveTypeId() {
+        return leaveTypeId;
+    }
+
+    public void setLeaveTypeId(Long leaveTypeId) {
+        this.leaveTypeId = leaveTypeId;
+    }
+
+    public LeaveType getLeaveType() {
+        return leaveType;
+    }
+
+    public void setLeaveType(LeaveType leaveType) {
+        this.leaveType = leaveType;
+    }
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public Date getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public Date getUpdatedDate() {
+        return updatedDate;
+    }
+
+    public void setUpdatedDate(Date updatedDate) {
+        this.updatedDate = updatedDate;
+    }
+
+    public Integer getStartDateHalf() {
+        return startDateHalf;
+    }
+
+    public void setStartDateHalf(Integer startDateHalf) {
+        this.startDateHalf = startDateHalf;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
+
+    public Integer getEndDateHalf() {
+        return endDateHalf;
+    }
+
+    public void setEndDateHalf(Integer endDateHalf) {
+        this.endDateHalf = endDateHalf;
+    }
+
+    public Integer getTotalLeaveDays() {
+        return totalLeaveDays;
+    }
+
+    public void setTotalLeaveDays(Integer totalLeaveDays) {
+        this.totalLeaveDays = totalLeaveDays;
+    }
+
+    public Integer getLeaveReasonId() {
+        return leaveReasonId;
+    }
+
+    public void setLeaveReasonId(Integer leaveReasonId) {
+        this.leaveReasonId = leaveReasonId;
+    }
+
+    public Integer getLeaveStatusId() {
+        return leaveStatusId;
+    }
+
+    public void setLeaveStatusId(Integer leaveStatusId) {
+        this.leaveStatusId = leaveStatusId;
+    }
+
+    public String getLeaveStatus() {
+        return leaveStatus;
+    }
+
+    public void setLeaveStatus(String leaveStatus) {
+        this.leaveStatus = leaveStatus;
+    }
+
+    public String getLeaveDescription() {
+        return leaveDescription;
+    }
+
+    public void setLeaveDescription(String leaveDescription) {
+        this.leaveDescription = leaveDescription;
+    }
 }

@@ -3,6 +3,8 @@ package com.tool.smarthrbackend;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.Ordered;
@@ -13,6 +15,8 @@ import org.springframework.web.filter.CorsFilter;
 import java.util.Collections;
 
 @SpringBootApplication
+@EnableConfigurationProperties
+@EntityScan(basePackages = {"com.tool.smarthrbackend.model"})
 public class SmartHrBackendApplication {
 
 	public static void main(String[] args) {

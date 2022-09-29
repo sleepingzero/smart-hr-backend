@@ -10,4 +10,9 @@ import java.util.Optional;
 public interface LeaveApplicationRepository extends CrudRepository<LeaveApplication, Long> {
     Optional<LeaveApplication> findById(Long id);
     List<LeaveApplication> findByEmpIdOrderByCreatedDateDesc(Long id);
+
+
+    List<LeaveApplication> findByLeaveStatus(String status);
+    List<LeaveApplication>findAll();
+
 }

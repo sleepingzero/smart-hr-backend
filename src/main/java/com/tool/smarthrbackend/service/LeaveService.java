@@ -4,6 +4,7 @@ import com.tool.smarthrbackend.model.employee.Employee;
 import com.tool.smarthrbackend.model.leave.LeaveApplication;
 import com.tool.smarthrbackend.model.leave.LeaveBalance;
 import com.tool.smarthrbackend.model.leave.LeaveType;
+import com.tool.smarthrbackend.pojo.leave.LeaveStatusUpdate;
 import com.tool.smarthrbackend.repository.jpa.employee.EmployeeRepository;
 import com.tool.smarthrbackend.repository.jpa.leave.LeaveApplicationRepository;
 import com.tool.smarthrbackend.repository.jpa.leave.LeaveBalanceRepository;
@@ -63,5 +64,27 @@ public class LeaveService {
 	}
 
 
+    public List<LeaveApplication> getAllLeaveApplications(String status) {
+		if (status==null){
+       return leaveApplicationRepository.findAll();
+		}
+		else {
+		return leaveApplicationRepository.findByLeaveStatus(status);
+    }
+	}
 
+	public void updateLeaveStatus(LeaveStatusUpdate leaveStatusUpdate) {
+           String  statusChange=leaveStatusUpdate.getStatus();
+			System.out.println(leaveStatusUpdate.getIdList() +"serviceee ");
+//			existingEmployeeEducation= employeeEducationRepository.findById(eduction.getId()).get(
+			leaveStatusUpdate.getIdList().forEach(Id->{
+				LeaveApplication leaveApplication= null;
+				leaveApplication= leaveApplicationRepository.findById(Id).get();
+				leaveApplication.setLeaveStatus(statusChange);
+				System.out.println(leaveApplication);
+				leaveApplicationRepository.save(leaveApplication);
+
+			});
+
+	}
 }

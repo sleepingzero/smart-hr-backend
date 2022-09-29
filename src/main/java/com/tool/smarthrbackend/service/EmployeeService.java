@@ -1,8 +1,7 @@
 package com.tool.smarthrbackend.service;
 
 import com.tool.smarthrbackend.model.domain.Domain;
-import com.tool.smarthrbackend.model.employee.Employee;
-import com.tool.smarthrbackend.model.employee.EmployeeCheckInCheckOut;
+import com.tool.smarthrbackend.model.employee.*;
 import com.tool.smarthrbackend.model.metadata.Department;
 import com.tool.smarthrbackend.pojo.employee.AddEmployeeRequest;
 import com.tool.smarthrbackend.pojo.employee.AddEmployeeResponse;
@@ -10,20 +9,17 @@ import com.tool.smarthrbackend.pojo.employee.checkincheckout.EmployeeCheckInChec
 import com.tool.smarthrbackend.pojo.login.EmployeeLoginRequest;
 import com.tool.smarthrbackend.pojo.login.EmployeeLoginResponse;
 import com.tool.smarthrbackend.repository.jpa.domain.DomainRepository;
-import com.tool.smarthrbackend.repository.jpa.employee.EmployeeCheckInCheckOutRepository;
-import com.tool.smarthrbackend.repository.jpa.employee.EmployeeRepository;
+import com.tool.smarthrbackend.repository.jpa.employee.*;
 import com.tool.smarthrbackend.repository.jpa.metadata.DepartmentRepository;
 import com.tool.smarthrbackend.repository.jpa.metadata.RoleRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
-import java.util.Random;
+import java.util.*;
 import java.util.regex.Pattern;
 
 
@@ -41,9 +37,18 @@ public class EmployeeService {
 
     @Autowired
     EmployeeCheckInCheckOutRepository employeeCheckInCheckOutRepository;
-     @Autowired
+
+    @Autowired
+    EmployeeAddressRepository employeeAddressRepository;
+
+    @Autowired
+    EmployeeEducationRepository employeeEducationRepository;
+
+    @Autowired
     RoleRepository roleRepository;
 
+    @Autowired
+    EmployeePersonalDetailRepository employeePersonalDetailRepository;
     private Pattern pattern = Pattern.compile("-?\\d+(\\.\\d+)?");
 
     private boolean isNumeric(String strNum) {
@@ -54,102 +59,106 @@ public class EmployeeService {
     }
 
 
+    public Employee getEmployeeById(Long employeeId) {
 
-    public Employee getEmployeeById(Long employeeId){
-        return  employeeRepository.findById(employeeId).get();
+        return employeeRepository.findById(employeeId).get();
     }
 
-     public  List<Employee> getEmployeesBySearchTerm(String strName){
-        return  employeeRepository.findByNameContainingIgnoreCaseOrLastNameContainingIgnoreCase( strName,strName);
-     }
+    public List<Employee> getEmployeesBySearchTerm(String strName) {
+        return employeeRepository.findByNameContainingIgnoreCaseOrLastNameContainingIgnoreCase(strName, strName);
+    }
 
 
-     public EmployeeLoginResponse login (EmployeeLoginRequest employeeLoginRequest) throws Exception {
-            String userName = employeeLoginRequest.getUsername();
-            EmployeeLoginResponse employeeLoginResponse = new EmployeeLoginResponse();
-            Employee employee = null;
-            System.out.println(employeeLoginRequest);
-            if(isNumeric(userName)){
-              employee =  employeeRepository.findById(Long.parseLong(userName)).get();
-               }
-            else{
-                employee =  employeeRepository.findByPersonalEmailId(userName.trim()).get();
+    public EmployeeLoginResponse login(EmployeeLoginRequest employeeLoginRequest) throws Exception {
+        String userName = employeeLoginRequest.getUsername();
+        EmployeeLoginResponse employeeLoginResponse = new EmployeeLoginResponse();
+        Employee employee = null;
+        System.out.println(employeeLoginRequest);
+        if (isNumeric(userName)) {
+            employee = employeeRepository.findById(Long.parseLong(userName)).get();
+        } else {
+            employee = employeeRepository.findByPersonalEmailId(userName.trim()).get();
+        }
+        System.out.println(employee);
+        if (employee.getId() == null)
+            throw new Exception("Employee is not found");
+
+        if (employeeLoginRequest.getIsOTP() == true) {
+            if (employee.getTmpPasswordOtp() != null
+                    && employeeLoginRequest.getOtp().equals(employee.getTmpPasswordOtp())) {
+                employee.setEmpPassword(employeeLoginRequest.getPassword());
+                employeeRepository.save(employee);
+                employeeLoginResponse.setIsError(false);
+                employeeLoginResponse.setEmployee(employee);
+            } else {
+                employeeLoginResponse.setIsError(true);
+                employeeLoginResponse.setErrorMsg(" OTP did not match to given data");
             }
-            System.out.println(employee);
-            if(employee.getId()==null)
-                throw new Exception("Employee is not found");
-
-            if(employeeLoginRequest.getIsOTP()==true) {
-                if(employee.getTmpPasswordOtp()!=null
-                        && employeeLoginRequest.getOtp().equals(employee.getTmpPasswordOtp())) {
-                    employee.setEmpPassword(employeeLoginRequest.getPassword());
-                    employeeRepository.save(employee);
+        } else {
+            if (employee.getName() != null) {
+                if (employee.getEmpPassword().equals(employeeLoginRequest.getPassword())) {
                     employeeLoginResponse.setIsError(false);
                     employeeLoginResponse.setEmployee(employee);
-                }else{
+                } else {
                     employeeLoginResponse.setIsError(true);
-                    employeeLoginResponse.setErrorMsg(" OTP did not match to given data");
+                    employeeLoginResponse.setEmployee(null);
+                    employeeLoginResponse.setErrorMsg("Password does not match");
                 }
-            }else{
-                if(employee.getName() != null) {
-                    if(employee.getEmpPassword().equals(employeeLoginRequest.getPassword())) {
-                        employeeLoginResponse.setIsError(false);
-                        employeeLoginResponse.setEmployee(employee);
-                    }else{
-                        employeeLoginResponse.setIsError(true);
-                        employeeLoginResponse.setEmployee(null);
-                        employeeLoginResponse.setErrorMsg("Password does not match");
-                    }
 
-                }else {
-                    employeeLoginResponse.setIsError(true);
-                    employeeLoginResponse.setErrorMsg("Username /password did not match");
-                }
-                }
-            return  employeeLoginResponse;
-     }
+            } else {
+                employeeLoginResponse.setIsError(true);
+                employeeLoginResponse.setErrorMsg("Username /password did not match");
+            }
+        }
+        return employeeLoginResponse;
+    }
 
 
-   public AddEmployeeResponse addEmployee (AddEmployeeRequest addEmployeeRequest) {
-       Employee emp = new Employee();
-       AddEmployeeResponse addEmployeeResponse = new AddEmployeeResponse();
-       BeanUtils.copyProperties(addEmployeeRequest,emp);
-       if(!Objects.isNull(addEmployeeRequest.getDepartmentId())) {
-           Department department = departmentRepository.findById(addEmployeeRequest.getDepartmentId()).get();
-           emp.setDepartment(department);
-       }
-       if(!Objects.isNull(addEmployeeRequest.getDesignationId())) {
-           Domain domain = domainRepository.findById(addEmployeeRequest.getDesignationId()).get();
-           emp.setDesignation(domain);
-       }
+    public AddEmployeeResponse addEmployee(AddEmployeeRequest addEmployeeRequest) {
+        Employee emp = new Employee();
+        EmployeePersonalDetail personalDetail=new EmployeePersonalDetail();
+        AddEmployeeResponse addEmployeeResponse = new AddEmployeeResponse();
+        BeanUtils.copyProperties(addEmployeeRequest, emp);
+        if (!Objects.isNull(addEmployeeRequest.getDepartmentId())) {
+            Department department = departmentRepository.findById(addEmployeeRequest.getDepartmentId()).get();
+            emp.setDepartment(department);
+        }
+        if (!Objects.isNull(addEmployeeRequest.getDesignationId())) {
+            Domain domain = domainRepository.findById(addEmployeeRequest.getDesignationId()).get();
+            emp.setDesignation(domain);
+        }
+        emp.setEmployeeAddresses(addEmployeeRequest.getEmployeeAddresses());
+        emp.setEmployeeEducations(addEmployeeRequest.getEmployeeEducations());
+      emp.setEmployeePersonalDetail(addEmployeeRequest.getEmployeePersonalDetail());
 
-       if(addEmployeeRequest!= null && addEmployeeRequest.getRoles()!=null && addEmployeeRequest.getRoles().size() >0){
-          emp.setRole( roleRepository.findById(addEmployeeRequest.getRoles().get(0)).get());
-       }
 
-       if(addEmployeeRequest.getIsFirstTimeCreation()) {
-          Long firstTimeOtp =   getFirstTimeOTPNumber();
-          emp.setTmpPasswordOtp(firstTimeOtp);
-          addEmployeeResponse.setGeneratedTmpOtp(firstTimeOtp);
-       }
-      Employee empid =  employeeRepository.save(emp);
-      addEmployeeResponse.setGeneratedEmpId(empid.getId());
-    return addEmployeeResponse;
-   }
+//       if(addEmployeeRequest!= null && addEmployeeRequest.getRoles()!=null && addEmployeeRequest.getRoles().size() >0){
+//          emp.setRole( roleRepository.findById(addEmployeeRequest.getRoles().get(0)).get());
+//       }
 
-   private Long getFirstTimeOTPNumber(){
-       Random random = new Random();
-       StringBuffer stb = new StringBuffer();
+        if (addEmployeeRequest.getIsFirstTimeCreation()) {
+            Long firstTimeOtp = getFirstTimeOTPNumber();
+            emp.setTmpPasswordOtp(firstTimeOtp);
+            addEmployeeResponse.setGeneratedTmpOtp(firstTimeOtp);
+        }
+        Employee empid = employeeRepository.save(emp);
+        addEmployeeResponse.setGeneratedEmpId(empid.getId());
+        return addEmployeeResponse;
+    }
 
-       for(int i=0; i < 6 ;i++){
-           stb.append(random.nextInt(10));
-       }
+    private Long getFirstTimeOTPNumber() {
+        Random random = new Random();
+        StringBuffer stb = new StringBuffer();
 
-       return  Long.parseLong(stb.toString());
-   }
+        for (int i = 0; i < 6; i++) {
+            stb.append(random.nextInt(10));
+        }
+
+        return Long.parseLong(stb.toString());
+    }
 
     public EmployeeCheckInCheckOutRequest addCheckin(EmployeeCheckInCheckOutRequest employeeCheckInCheckOutRequest) {
-        EmployeeCheckInCheckOut employeeCheckInCheckOut=new EmployeeCheckInCheckOut();
+        EmployeeCheckInCheckOut employeeCheckInCheckOut = new EmployeeCheckInCheckOut();
         employeeCheckInCheckOut.setEmployeeId(employeeCheckInCheckOutRequest.getEmployeeId());
         employeeCheckInCheckOut.setStatus(employeeCheckInCheckOutRequest.getStatus());
         employeeCheckInCheckOut.setCheckInCheckOutTime(LocalDateTime.now());
@@ -159,24 +168,100 @@ public class EmployeeService {
 
     public List<EmployeeCheckInCheckOut> getEmployeeCheckInCheckOutAllById(Integer employeeId) {
 
-        return employeeCheckInCheckOutRepository.findAllByEmployeeId(employeeId  );
+        return employeeCheckInCheckOutRepository.findAllByEmployeeId(employeeId);
 
     }
 
 
     public List<EmployeeCheckInCheckOut> getEmployeeCheckInCheckOutByDate(LocalDate date, Integer employeeId) {
         System.out.println(date);
-        if (date==null){
-             LocalDate currentdate =LocalDate.now();
+        if (date == null) {
+            LocalDate currentdate = LocalDate.now();
             date = currentdate;
         }
-        System.out.println(date+" service");
-        return employeeCheckInCheckOutRepository.findAllByEmployeeIdAndDate(date,employeeId);
+        System.out.println(date + " service");
+        return employeeCheckInCheckOutRepository.findAllByEmployeeIdAndDate(date, employeeId);
 
     }
 
     public EmployeeCheckInCheckOut getEmployeeCheckInCheckOutStatus(Integer employeeId) {
 
-        return  employeeCheckInCheckOutRepository.findTop1ByEmployeeIdOrderByCheckInCheckOutTimeDesc(employeeId);
+        return employeeCheckInCheckOutRepository.findTop1ByEmployeeIdOrderByCheckInCheckOutTimeDesc(employeeId);
     }
+
+
+// to update the address of employee
+
+    public void updateAddress(List<EmployeeAddress> employeeAddresses) {
+        employeeAddresses.forEach(address -> {
+            EmployeeAddress ExistingEmployeeAddress = null;
+            if (address.getId() != null) {
+                ExistingEmployeeAddress = employeeAddressRepository.findById(address.getId()).get();
+                ExistingEmployeeAddress.setAddressType(address.getAddressType());
+                ExistingEmployeeAddress.setAddressLine1(address.getAddressLine1());
+                ExistingEmployeeAddress.setAddressLine2(address.getAddressLine2());
+                ExistingEmployeeAddress.setAddressLine3(address.getAddressLine3());
+                ExistingEmployeeAddress.setCity(address.getCity());
+                ExistingEmployeeAddress.setState(address.getState());
+                ExistingEmployeeAddress.setCountry(address.getCountry());
+                ExistingEmployeeAddress.setPincode(address.getPincode());
+
+                employeeAddressRepository.save(ExistingEmployeeAddress);
+            } else {
+                employeeAddressRepository.save(address);
+            }
+
+        });
+
+
+    }
+
+    //    to update employee education
+    public void updateEducation(List<EmployeeEducation> employeeEducations) {
+        employeeEducations.forEach(eduction -> {
+            EmployeeEducation existingEmployeeEducation = null;
+            if (eduction.getId() != null) {
+                existingEmployeeEducation = employeeEducationRepository.findById(eduction.getId()).get();
+                existingEmployeeEducation.setDegree(eduction.getDegree());
+                existingEmployeeEducation.setField(eduction.getField());
+                existingEmployeeEducation.setGrade(eduction.getGrade());
+                existingEmployeeEducation.setInstitute(eduction.getInstitute());
+                existingEmployeeEducation.setStartDate(eduction.getStartDate());
+                existingEmployeeEducation.setEndDate(eduction.getEndDate());
+                existingEmployeeEducation.setCity(eduction.getCity());
+                existingEmployeeEducation.setState(eduction.getState());
+                existingEmployeeEducation.setCountry(eduction.getCountry());
+                existingEmployeeEducation.setPincode(eduction.getPincode());
+
+                employeeEducationRepository.save(existingEmployeeEducation);
+            } else {
+                employeeEducationRepository.save(eduction);
+            }
+        });
+
+
+    }
+
+    public List<EmployeePersonalDetail> getUpcomingBirthday(Integer limit) {
+//        to get calendar date of today and date after month
+        Calendar calendar = Calendar.getInstance(Locale.ENGLISH);
+        calendar.setTime(new Date());
+        calendar.add(Calendar.MONTH, 1); // n is the number of days upto which to be calculated
+        Date futureDateCal = calendar.getTime();
+//        formate date
+        SimpleDateFormat format1 = new SimpleDateFormat("MM-dd");
+        Date dateToday = new Date();
+
+        String currrentDate = format1.format(dateToday);
+        String futureDate = format1.format(futureDateCal);
+
+        if (limit == null) {
+            return employeePersonalDetailRepository.findAllUpcomingBirthday(currrentDate, futureDate);
+        } else {
+            return employeePersonalDetailRepository.findTop3(currrentDate, futureDate,limit);
+        }
+
+    }
+
+
 }

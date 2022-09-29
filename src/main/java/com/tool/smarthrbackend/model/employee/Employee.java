@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.util.List;
 
 
 @Data
@@ -60,4 +61,161 @@ public class Employee {
     @Column(name = "tmp_password_otp")
     private Long tmpPasswordOtp;
 
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "emp_id", referencedColumnName = "id")
+    private List<EmployeeAddress> employeeAddresses;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "emp_id", referencedColumnName = "id")
+    private List<EmployeeEducation> employeeEducations;
+
+    @OneToOne(cascade = CascadeType.ALL)
+      public EmployeePersonalDetail employeePersonalDetail;
+    public Employee() {
+    }
+
+
+    public void setEmployeePersonalDetail(EmployeePersonalDetail employeePersonalDetail) {
+        this.employeePersonalDetail = employeePersonalDetail;
+    }
+
+    public Employee(Long id, String name, String middleName, String personalEmailId, String professionalEmailId, String lastName, Long phoneNumber, String empPassword, EmployeePersonalDetail employeePersonalDetail, Department department, Role role, Long projectId, Domain designation, Long tmpPasswordOtp, List<EmployeeAddress> employeeAddresses, List<EmployeeEducation> employeeEducations) {
+        this.id = id;
+        this.name = name;
+        this.middleName = middleName;
+        this.personalEmailId = personalEmailId;
+        this.professionalEmailId = professionalEmailId;
+        this.lastName = lastName;
+        this.phoneNumber = phoneNumber;
+        this.empPassword = empPassword;
+        this.employeePersonalDetail = employeePersonalDetail;
+        this.department = department;
+        this.role = role;
+        this.projectId = projectId;
+        this.designation = designation;
+        this.tmpPasswordOtp = tmpPasswordOtp;
+        this.employeeAddresses = employeeAddresses;
+        this.employeeEducations = employeeEducations;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getMiddleName() {
+        return middleName;
+    }
+
+    public void setMiddleName(String middleName) {
+        this.middleName = middleName;
+    }
+
+    public String getPersonalEmailId() {
+        return personalEmailId;
+    }
+
+    public void setPersonalEmailId(String personalEmailId) {
+        this.personalEmailId = personalEmailId;
+    }
+
+    public String getProfessionalEmailId() {
+        return professionalEmailId;
+    }
+
+    public void setProfessionalEmailId(String professionalEmailId) {
+        this.professionalEmailId = professionalEmailId;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public Long getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(Long phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getEmpPassword() {
+        return empPassword;
+    }
+
+    public void setEmpPassword(String empPassword) {
+        this.empPassword = empPassword;
+    }
+
+
+    public Department getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(Department department) {
+        this.department = department;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    public Long getProjectId() {
+        return projectId;
+    }
+
+    public void setProjectId(Long projectId) {
+        this.projectId = projectId;
+    }
+
+    public Domain getDesignation() {
+        return designation;
+    }
+
+    public void setDesignation(Domain designation) {
+        this.designation = designation;
+    }
+
+    public Long getTmpPasswordOtp() {
+        return tmpPasswordOtp;
+    }
+
+    public void setTmpPasswordOtp(Long tmpPasswordOtp) {
+        this.tmpPasswordOtp = tmpPasswordOtp;
+    }
+
+    public List<EmployeeAddress> getEmployeeAddresses() {
+        return employeeAddresses;
+    }
+
+    public void setEmployeeAddresses(List<EmployeeAddress> employeeAddresses) {
+        this.employeeAddresses = employeeAddresses;
+    }
+
+    public List<EmployeeEducation> getEmployeeEducations() {
+        return employeeEducations;
+    }
+
+    public void setEmployeeEducations(List<EmployeeEducation> employeeEducations) {
+        this.employeeEducations = employeeEducations;
+    }
 }
