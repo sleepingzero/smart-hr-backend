@@ -1,9 +1,6 @@
 package com.tool.smarthrbackend.pojo.employee;
 
-import com.tool.smarthrbackend.model.employee.Employee;
-import com.tool.smarthrbackend.model.employee.EmployeeAddress;
-import com.tool.smarthrbackend.model.employee.EmployeeEducation;
-import com.tool.smarthrbackend.model.employee.EmployeePersonalDetail;
+import com.tool.smarthrbackend.model.employee.*;
 import com.tool.smarthrbackend.model.metadata.Department;
 import lombok.Data;
 import lombok.ToString;
@@ -29,6 +26,8 @@ public class AddEmployeeRequest {
 //    List<Long> roles;
     List<EmployeeAddress> employeeAddresses;
     List<EmployeeEducation> employeeEducations;
+
+    List<EmployeeProfessionalDetail> employeeProfessionalDetails;
     EmployeePersonalDetail employeePersonalDetail;
 
     public List<EmployeeEducation> getEmployeeEducations() {

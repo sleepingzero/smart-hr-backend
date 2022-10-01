@@ -49,6 +49,9 @@ public class EmployeeService {
 
     @Autowired
     EmployeePersonalDetailRepository employeePersonalDetailRepository;
+
+    @Autowired
+    EmployeeProfessionalDetailRepository employeeProfessionalDetailRepository;
     private Pattern pattern = Pattern.compile("-?\\d+(\\.\\d+)?");
 
     private boolean isNumeric(String strNum) {
@@ -129,7 +132,8 @@ public class EmployeeService {
         }
         emp.setEmployeeAddresses(addEmployeeRequest.getEmployeeAddresses());
         emp.setEmployeeEducations(addEmployeeRequest.getEmployeeEducations());
-      emp.setEmployeePersonalDetail(addEmployeeRequest.getEmployeePersonalDetail());
+        emp.setEmployeeProfessionalDetails(addEmployeeRequest.getEmployeeProfessionalDetails());
+        emp.setEmployeePersonalDetail(addEmployeeRequest.getEmployeePersonalDetail());
 
 
 //       if(addEmployeeRequest!= null && addEmployeeRequest.getRoles()!=null && addEmployeeRequest.getRoles().size() >0){
@@ -241,6 +245,33 @@ public class EmployeeService {
 
 
     }
+    public void updateProfessionalDetail(List<EmployeeProfessionalDetail> employeeProfessionalDetail) {
+    employeeProfessionalDetail.forEach(professional->{
+        EmployeeProfessionalDetail existingEmployeeProfessionalDetail=null;
+        if (professional.getId() != null) {
+          existingEmployeeProfessionalDetail=employeeProfessionalDetailRepository.findById(professional.getId()).get();
+            existingEmployeeProfessionalDetail.setCompany(professional.getCompany());
+            existingEmployeeProfessionalDetail.setDesignation(professional.getDesignation());
+            existingEmployeeProfessionalDetail.setSkill(professional.getSkill());
+            existingEmployeeProfessionalDetail.setRole1(professional.getRole1());
+            existingEmployeeProfessionalDetail.setRole2(professional.getRole2());
+            existingEmployeeProfessionalDetail.setRole3(professional.getRole3());
+            existingEmployeeProfessionalDetail.setStartDate(professional.getStartDate());
+            existingEmployeeProfessionalDetail.setEndDate(professional.getEndDate());
+            existingEmployeeProfessionalDetail.setCity(professional.getCity());
+            existingEmployeeProfessionalDetail.setState(professional.getState());
+            existingEmployeeProfessionalDetail.setCountry(professional.getCountry());
+            existingEmployeeProfessionalDetail.setPincode(professional.getPincode());
+
+         employeeProfessionalDetailRepository.save(existingEmployeeProfessionalDetail);
+        }
+        else {
+            employeeProfessionalDetailRepository.save(professional);
+
+        }
+    });
+
+    }
 
     public List<EmployeePersonalDetail> getUpcomingBirthday(Integer limit) {
 //        to get calendar date of today and date after month
@@ -262,6 +293,7 @@ public class EmployeeService {
         }
 
     }
+
 
 
 }

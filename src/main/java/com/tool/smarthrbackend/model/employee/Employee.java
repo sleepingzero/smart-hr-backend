@@ -69,17 +69,18 @@ public class Employee {
     @JoinColumn(name = "emp_id", referencedColumnName = "id")
     private List<EmployeeEducation> employeeEducations;
 
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "emp_id", referencedColumnName = "id")
+    private List<EmployeeProfessionalDetail> employeeProfessionalDetails;
+
     @OneToOne(cascade = CascadeType.ALL)
       public EmployeePersonalDetail employeePersonalDetail;
+
+
     public Employee() {
     }
 
-
-    public void setEmployeePersonalDetail(EmployeePersonalDetail employeePersonalDetail) {
-        this.employeePersonalDetail = employeePersonalDetail;
-    }
-
-    public Employee(Long id, String name, String middleName, String personalEmailId, String professionalEmailId, String lastName, Long phoneNumber, String empPassword, EmployeePersonalDetail employeePersonalDetail, Department department, Role role, Long projectId, Domain designation, Long tmpPasswordOtp, List<EmployeeAddress> employeeAddresses, List<EmployeeEducation> employeeEducations) {
+    public Employee(Long id, String name, String middleName, String personalEmailId, String professionalEmailId, String lastName, Long phoneNumber, String empPassword, Department department, Role role, Long projectId, Domain designation, Long tmpPasswordOtp, List<EmployeeAddress> employeeAddresses, List<EmployeeEducation> employeeEducations, List<EmployeeProfessionalDetail> employeeProfessionalDetails, EmployeePersonalDetail employeePersonalDetail) {
         this.id = id;
         this.name = name;
         this.middleName = middleName;
@@ -88,7 +89,6 @@ public class Employee {
         this.lastName = lastName;
         this.phoneNumber = phoneNumber;
         this.empPassword = empPassword;
-        this.employeePersonalDetail = employeePersonalDetail;
         this.department = department;
         this.role = role;
         this.projectId = projectId;
@@ -96,6 +96,8 @@ public class Employee {
         this.tmpPasswordOtp = tmpPasswordOtp;
         this.employeeAddresses = employeeAddresses;
         this.employeeEducations = employeeEducations;
+        this.employeeProfessionalDetails = employeeProfessionalDetails;
+        this.employeePersonalDetail = employeePersonalDetail;
     }
 
     public Long getId() {
@@ -162,7 +164,6 @@ public class Employee {
         this.empPassword = empPassword;
     }
 
-
     public Department getDepartment() {
         return department;
     }
@@ -217,5 +218,21 @@ public class Employee {
 
     public void setEmployeeEducations(List<EmployeeEducation> employeeEducations) {
         this.employeeEducations = employeeEducations;
+    }
+
+    public List<EmployeeProfessionalDetail> getEmployeeProfessionalDetails() {
+        return employeeProfessionalDetails;
+    }
+
+    public void setEmployeeProfessionalDetails(List<EmployeeProfessionalDetail> employeeProfessionalDetails) {
+        this.employeeProfessionalDetails = employeeProfessionalDetails;
+    }
+
+    public EmployeePersonalDetail getEmployeePersonalDetail() {
+        return employeePersonalDetail;
+    }
+
+    public void setEmployeePersonalDetail(EmployeePersonalDetail employeePersonalDetail) {
+        this.employeePersonalDetail = employeePersonalDetail;
     }
 }

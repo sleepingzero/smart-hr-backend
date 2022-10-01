@@ -7,6 +7,7 @@ import com.tool.smarthrbackend.pojo.employee.AddEmployeeResponse;
 import com.tool.smarthrbackend.pojo.employee.checkincheckout.EmployeeCheckInCheckOutRequest;
 import com.tool.smarthrbackend.pojo.login.EmployeeLoginRequest;
 import com.tool.smarthrbackend.pojo.login.EmployeeLoginResponse;
+import com.tool.smarthrbackend.repository.jpa.employee.EmployeeProfessionalDetailRepository;
 import com.tool.smarthrbackend.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -244,6 +245,28 @@ public class  EmployeeController {
 
     }
 
+//end point for update employee professional detail
+    @PutMapping(value = "/updateEmployeeProfessionalDetail")
+    public ResponseEntity<? >updateProfessionalDetail(@RequestBody List<EmployeeProfessionalDetail> employeeProfessionalDetails )
+            throws JsonProcessingException{
+        HttpHeaders responseHeaders = new HttpHeaders();
+
+        responseHeaders.add("content-type", "application/json");
+        String errorMessage="";
+        try{
+            employeeService.updateProfessionalDetail(employeeProfessionalDetails);
+        }
+        catch(Exception e){
+            errorMessage=e.toString();
+        }
+        if (errorMessage != "") {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMessage);
+        } else {
+            return ResponseEntity.ok().headers(responseHeaders).body("updated professional detail");
+        }
+
+    }
+
 
     //  get ALL upcoming Birthday or limited if paramater is 3 given list is give top 3 or else all list
     @GetMapping(value ="/upcominBirthday")
@@ -265,7 +288,6 @@ public class  EmployeeController {
         }
 
         }
-
 
 
 }
