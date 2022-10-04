@@ -1,4 +1,6 @@
 package com.tool.smarthrbackend.model.employee;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import lombok.ToString;
 
@@ -21,8 +23,14 @@ public class EmployeePersonalDetail {
     @JoinColumn(name = "emp_id")
     public Employee employee;
 
+//    @JsonBackReference // this for child to avoid infinite recursion
+//    @JoinColumn(name = "emp_id") // A table foreign key in B table
+////    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+//    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+//    Employee employee;
+
     @Column(name = "date_of_birth")
-    LocalDate date;
+    LocalDate dateOfBirth;
 
     @Column(name = "gender")
     String gender;
@@ -39,10 +47,10 @@ public class EmployeePersonalDetail {
     public EmployeePersonalDetail() {
     }
 
-    public EmployeePersonalDetail(Long id, Employee employee, LocalDate date, String gender, String maritalStatus, String bloodGroup, String nationality) {
+    public EmployeePersonalDetail(Long id, Employee employee, LocalDate dateOfBirth, String gender, String maritalStatus, String bloodGroup, String nationality) {
         this.id = id;
         this.employee = employee;
-        this.date = date;
+        this.dateOfBirth = dateOfBirth;
         this.gender = gender;
         this.maritalStatus = maritalStatus;
         this.bloodGroup = bloodGroup;
@@ -65,12 +73,12 @@ public class EmployeePersonalDetail {
         this.employee = employee;
     }
 
-    public LocalDate getDate() {
-        return date;
+    public LocalDate getDateOfBirth() {
+        return dateOfBirth;
     }
 
-    public void setDate(LocalDate date) {
-        this.date = date;
+    public void setDateOfBirth(LocalDate dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
     }
 
     public String getGender() {

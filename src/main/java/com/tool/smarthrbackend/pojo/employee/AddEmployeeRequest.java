@@ -30,6 +30,8 @@ public class AddEmployeeRequest {
     List<EmployeeProfessionalDetail> employeeProfessionalDetails;
     EmployeePersonalDetail employeePersonalDetail;
 
+    EmployeeFamilyDetail employeeFamilyDetail;
+
     public List<EmployeeEducation> getEmployeeEducations() {
         return employeeEducations;
     }
@@ -38,12 +40,28 @@ public class AddEmployeeRequest {
         this.employeeEducations = employeeEducations;
     }
 
+    public EmployeeFamilyDetail getEmployeeFamilyDetail() {
+        return employeeFamilyDetail;
+    }
+
+    public void setEmployeeFamilyDetail(EmployeeFamilyDetail employeeFamilyDetail) {
+        this.employeeFamilyDetail = employeeFamilyDetail;
+    }
+
     public EmployeePersonalDetail getEmployeePersonalDetail() {
         return employeePersonalDetail;
     }
 
     public void setEmployeePersonalDetail(EmployeePersonalDetail employeePersonalDetail) {
         this.employeePersonalDetail = employeePersonalDetail;
+    }
+
+    public List<EmployeeProfessionalDetail> getEmployeeProfessionalDetails() {
+        return employeeProfessionalDetails;
+    }
+
+    public void setEmployeeProfessionalDetails(List<EmployeeProfessionalDetail> employeeProfessionalDetails) {
+        this.employeeProfessionalDetails = employeeProfessionalDetails;
     }
 
     public Employee getEmployee() {

@@ -52,6 +52,10 @@ public class EmployeeService {
 
     @Autowired
     EmployeeProfessionalDetailRepository employeeProfessionalDetailRepository;
+
+    @Autowired
+    EmployeeFamilyDetailRepository employeeFamilyDetailRepository;
+
     private Pattern pattern = Pattern.compile("-?\\d+(\\.\\d+)?");
 
     private boolean isNumeric(String strNum) {
@@ -134,6 +138,8 @@ public class EmployeeService {
         emp.setEmployeeEducations(addEmployeeRequest.getEmployeeEducations());
         emp.setEmployeeProfessionalDetails(addEmployeeRequest.getEmployeeProfessionalDetails());
         emp.setEmployeePersonalDetail(addEmployeeRequest.getEmployeePersonalDetail());
+        emp.setEmployeeFamilyDetail(addEmployeeRequest.getEmployeeFamilyDetail());
+
 
 
 //       if(addEmployeeRequest!= null && addEmployeeRequest.getRoles()!=null && addEmployeeRequest.getRoles().size() >0){

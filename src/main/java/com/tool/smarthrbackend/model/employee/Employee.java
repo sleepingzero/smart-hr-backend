@@ -1,5 +1,6 @@
 package com.tool.smarthrbackend.model.employee;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.tool.smarthrbackend.model.metadata.Department;
 import com.tool.smarthrbackend.model.metadata.Role;
 import com.tool.smarthrbackend.model.domain.Domain;
@@ -74,13 +75,22 @@ public class Employee {
     private List<EmployeeProfessionalDetail> employeeProfessionalDetails;
 
     @OneToOne(cascade = CascadeType.ALL)
-      public EmployeePersonalDetail employeePersonalDetail;
+    public EmployeePersonalDetail employeePersonalDetail;
 
+//    @JsonManagedReference // this for parent to avoid infinite recursion
+//    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+//    @JoinColumn(name = "employee_personal_detail_id") // B table foreign key in A table
+//    public EmployeePersonalDetail employeePersonalDetail;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "family_detail_id")
+    public EmployeeFamilyDetail employeeFamilyDetail;
 
     public Employee() {
     }
 
-    public Employee(Long id, String name, String middleName, String personalEmailId, String professionalEmailId, String lastName, Long phoneNumber, String empPassword, Department department, Role role, Long projectId, Domain designation, Long tmpPasswordOtp, List<EmployeeAddress> employeeAddresses, List<EmployeeEducation> employeeEducations, List<EmployeeProfessionalDetail> employeeProfessionalDetails, EmployeePersonalDetail employeePersonalDetail) {
+
+    public Employee(Long id, String name, String middleName, String personalEmailId, String professionalEmailId, String lastName, Long phoneNumber, String empPassword, Department department, Role role, Long projectId, Domain designation, Long tmpPasswordOtp, List<EmployeeAddress> employeeAddresses, List<EmployeeEducation> employeeEducations, List<EmployeeProfessionalDetail> employeeProfessionalDetails, EmployeePersonalDetail employeePersonalDetail, EmployeeFamilyDetail employeeFamilyDetail) {
         this.id = id;
         this.name = name;
         this.middleName = middleName;
@@ -98,6 +108,7 @@ public class Employee {
         this.employeeEducations = employeeEducations;
         this.employeeProfessionalDetails = employeeProfessionalDetails;
         this.employeePersonalDetail = employeePersonalDetail;
+        this.employeeFamilyDetail = employeeFamilyDetail;
     }
 
     public Long getId() {
@@ -106,6 +117,14 @@ public class Employee {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public EmployeeFamilyDetail getEmployeeFamilyDetail() {
+        return employeeFamilyDetail;
+    }
+
+    public void setEmployeeFamilyDetail(EmployeeFamilyDetail employeeFamilyDetail) {
+        this.employeeFamilyDetail = employeeFamilyDetail;
     }
 
     public String getName() {
