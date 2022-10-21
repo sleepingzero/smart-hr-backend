@@ -24,7 +24,8 @@ public interface EmployeeCheckInCheckOutRepository extends JpaRepository<Employe
      List<EmployeeCheckInCheckOut> findAllByEmployeeIdAndDate(LocalDate date, Integer employeeId );
 
 
-//
+
+    //
 //@Query(value = "SELECT e.* FROM Entity e WHERE DATE(creation_date) =:date", nativeQuery = true)
 //List<Entity> findByCreationDate(LocalDate date);
 //     select * from main.employee_checkin_checkout

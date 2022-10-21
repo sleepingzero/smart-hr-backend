@@ -21,7 +21,9 @@ public class AddEmployeeRequest {
     Long designationId;
     Boolean isFirstTimeCreation;
     Long phoneNumber;
-    Employee employee;
+
+
+    Long managerId;
 //    List<Long> managerIds;
 //    List<Long> roles;
     List<EmployeeAddress> employeeAddresses;
@@ -64,12 +66,12 @@ public class AddEmployeeRequest {
         this.employeeProfessionalDetails = employeeProfessionalDetails;
     }
 
-    public Employee getEmployee() {
-        return employee;
+    public Long getManagerId() {
+        return managerId;
     }
 
-    public void setEmployee(Employee employee) {
-        this.employee = employee;
+    public void setManagerId(Long managerId) {
+        this.managerId = managerId;
     }
 
     public String getName() {

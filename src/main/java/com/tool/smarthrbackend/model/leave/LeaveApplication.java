@@ -35,8 +35,20 @@ public class LeaveApplication {
     @JoinColumn(name = "leave_type_id")
     LeaveType leaveType;
 
-    @Column(name = "start_date")
-    Date startDate;
+    @Column(name = "from_date")
+    Date fromDate;
+
+    @Column(name = "to_date")
+    Date toDate;
+
+    @Column(name = "from_date_half")
+    Integer fromDateHalf;
+
+
+
+    @Column(name = "to_date_half")
+    Integer toDateHalf;
+
 
     @Column(name = "created_date" ,updatable = false)
     Date createdDate;
@@ -45,21 +57,8 @@ public class LeaveApplication {
     @Column(name = "updated_date")
     Date updatedDate;
 
-    @Column(name = "start_date_half")
-    Integer startDateHalf;
-
-    @Column(name = "end_date")
-    Date endDate;
-
-    @Column(name = "end_date_half")
-    Integer endDateHalf;
-
-
     @Column(name = "total_leave_days")
     Integer totalLeaveDays;
-
-    @Column(name= "leave_reason_id")
-    Integer leaveReasonId;
 
     @Column(name= "leave_status_id")
     Integer leaveStatusId;
@@ -67,30 +66,32 @@ public class LeaveApplication {
     @Column(name = "leave_status")
     String leaveStatus;
 
-    @Column(name= "leave_description")
-    String leaveDescription;
+    @Column(name= "leave_reason")
+    String leaveReason;
 
+    @Column(name = "approved_by_id")
+    Integer approvedById;
 
     public LeaveApplication() {
     }
 
-    public LeaveApplication(Long id, Long employeeId, Employee emp, Long leaveTypeId, LeaveType leaveType, Date startDate, Date createdDate, Date updatedDate, Integer startDateHalf, Date endDate, Integer endDateHalf, Integer totalLeaveDays, Integer leaveReasonId, Integer leaveStatusId, String leaveStatus, String leaveDescription) {
+    public LeaveApplication(Long id, Long employeeId, Employee emp, Long leaveTypeId, LeaveType leaveType, Date fromDate, Date toDate, Integer fromDateHalf, Integer toDateHalf, Date createdDate, Date updatedDate, Integer totalLeaveDays, Integer leaveStatusId, String leaveStatus, String leaveReason, Integer approvedById) {
         this.id = id;
         this.employeeId = employeeId;
         this.emp = emp;
         this.leaveTypeId = leaveTypeId;
         this.leaveType = leaveType;
-        this.startDate = startDate;
+        this.fromDate = fromDate;
+        this.toDate = toDate;
+        this.fromDateHalf = fromDateHalf;
+        this.toDateHalf = toDateHalf;
         this.createdDate = createdDate;
         this.updatedDate = updatedDate;
-        this.startDateHalf = startDateHalf;
-        this.endDate = endDate;
-        this.endDateHalf = endDateHalf;
         this.totalLeaveDays = totalLeaveDays;
-        this.leaveReasonId = leaveReasonId;
         this.leaveStatusId = leaveStatusId;
         this.leaveStatus = leaveStatus;
-        this.leaveDescription = leaveDescription;
+        this.leaveReason = leaveReason;
+        this.approvedById = approvedById;
     }
 
     public Long getId() {
@@ -133,12 +134,36 @@ public class LeaveApplication {
         this.leaveType = leaveType;
     }
 
-    public Date getStartDate() {
-        return startDate;
+    public Date getFromDate() {
+        return fromDate;
     }
 
-    public void setStartDate(Date startDate) {
-        this.startDate = startDate;
+    public void setFromDate(Date fromDate) {
+        this.fromDate = fromDate;
+    }
+
+    public Date getToDate() {
+        return toDate;
+    }
+
+    public void setToDate(Date toDate) {
+        this.toDate = toDate;
+    }
+
+    public Integer getFromDateHalf() {
+        return fromDateHalf;
+    }
+
+    public void setFromDateHalf(Integer fromDateHalf) {
+        this.fromDateHalf = fromDateHalf;
+    }
+
+    public Integer getToDateHalf() {
+        return toDateHalf;
+    }
+
+    public void setToDateHalf(Integer toDateHalf) {
+        this.toDateHalf = toDateHalf;
     }
 
     public Date getCreatedDate() {
@@ -157,44 +182,12 @@ public class LeaveApplication {
         this.updatedDate = updatedDate;
     }
 
-    public Integer getStartDateHalf() {
-        return startDateHalf;
-    }
-
-    public void setStartDateHalf(Integer startDateHalf) {
-        this.startDateHalf = startDateHalf;
-    }
-
-    public Date getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(Date endDate) {
-        this.endDate = endDate;
-    }
-
-    public Integer getEndDateHalf() {
-        return endDateHalf;
-    }
-
-    public void setEndDateHalf(Integer endDateHalf) {
-        this.endDateHalf = endDateHalf;
-    }
-
     public Integer getTotalLeaveDays() {
         return totalLeaveDays;
     }
 
     public void setTotalLeaveDays(Integer totalLeaveDays) {
         this.totalLeaveDays = totalLeaveDays;
-    }
-
-    public Integer getLeaveReasonId() {
-        return leaveReasonId;
-    }
-
-    public void setLeaveReasonId(Integer leaveReasonId) {
-        this.leaveReasonId = leaveReasonId;
     }
 
     public Integer getLeaveStatusId() {
@@ -213,11 +206,19 @@ public class LeaveApplication {
         this.leaveStatus = leaveStatus;
     }
 
-    public String getLeaveDescription() {
-        return leaveDescription;
+    public String getLeaveReason() {
+        return leaveReason;
     }
 
-    public void setLeaveDescription(String leaveDescription) {
-        this.leaveDescription = leaveDescription;
+    public void setLeaveReason(String leaveReason) {
+        this.leaveReason = leaveReason;
+    }
+
+    public Integer getApprovedById() {
+        return approvedById;
+    }
+
+    public void setApprovedById(Integer approvedById) {
+        this.approvedById = approvedById;
     }
 }

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.tool.smarthrbackend.model.employee.*;
 import com.tool.smarthrbackend.pojo.employee.AddEmployeeRequest;
 import com.tool.smarthrbackend.pojo.employee.AddEmployeeResponse;
+import com.tool.smarthrbackend.pojo.employee.EmployeeManager;
 import com.tool.smarthrbackend.pojo.employee.checkincheckout.EmployeeCheckInCheckOutRequest;
 import com.tool.smarthrbackend.pojo.login.EmployeeLoginRequest;
 import com.tool.smarthrbackend.pojo.login.EmployeeLoginResponse;
@@ -38,11 +39,11 @@ public class  EmployeeController {
         System.out.println("Inside  addEmplyeeRequest");
 
         HttpHeaders responseHeaders = new HttpHeaders();
-        Employee employee = null;
+        EmployeeManager employeeManager= null;
         responseHeaders.add("content-type", "application/json");
         String errorMessage = "";
         try {
-            employee = employeeService.getEmployeeById(employeeId);
+            employeeManager= employeeService.getEmployeeById(employeeId);
         } catch (Exception e) {
             // TODO Auto-generated catch block
             errorMessage = e.toString();
@@ -50,7 +51,7 @@ public class  EmployeeController {
         if (errorMessage != "") {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMessage);
         } else {
-            return ResponseEntity.ok().headers(responseHeaders).body(employee);
+            return ResponseEntity.ok().headers(responseHeaders).body(employeeManager);
         }
     }
 
@@ -288,6 +289,5 @@ public class  EmployeeController {
         }
 
         }
-
 
 }

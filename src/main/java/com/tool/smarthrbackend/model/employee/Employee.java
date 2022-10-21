@@ -1,5 +1,7 @@
 package com.tool.smarthrbackend.model.employee;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.tool.smarthrbackend.model.metadata.Department;
 import com.tool.smarthrbackend.model.metadata.Role;
@@ -8,7 +10,10 @@ import lombok.Data;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 
 @Data
@@ -20,6 +25,9 @@ public class Employee {
     @GeneratedValue(strategy= GenerationType.AUTO)
     @Column(name = "id")
     Long id;
+
+    @Column(name = "manager_id")
+     Long managerId;
 
     @Column(name = "name")
     String name;
@@ -55,6 +63,16 @@ public class Employee {
     @Column(name = "project_id")
     private Long projectId;
 
+
+//    @ManyToOne(cascade=CascadeType.ALL)
+//    @JsonManagedReference
+//    @JoinColumn(name="manager_id")
+//    private Employee manager;
+//
+//    @OneToMany(mappedBy="manager")
+//    @JsonBackReference
+//    private Set<Employee> subordinates = new HashSet<Employee>();
+
     @ManyToOne
     @JoinColumn(name = "designation_id")
     private Domain designation;
@@ -77,11 +95,6 @@ public class Employee {
     @OneToOne(cascade = CascadeType.ALL)
     public EmployeePersonalDetail employeePersonalDetail;
 
-//    @JsonManagedReference // this for parent to avoid infinite recursion
-//    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-//    @JoinColumn(name = "employee_personal_detail_id") // B table foreign key in A table
-//    public EmployeePersonalDetail employeePersonalDetail;
-
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "family_detail_id")
     public EmployeeFamilyDetail employeeFamilyDetail;
@@ -89,9 +102,9 @@ public class Employee {
     public Employee() {
     }
 
-
-    public Employee(Long id, String name, String middleName, String personalEmailId, String professionalEmailId, String lastName, Long phoneNumber, String empPassword, Department department, Role role, Long projectId, Domain designation, Long tmpPasswordOtp, List<EmployeeAddress> employeeAddresses, List<EmployeeEducation> employeeEducations, List<EmployeeProfessionalDetail> employeeProfessionalDetails, EmployeePersonalDetail employeePersonalDetail, EmployeeFamilyDetail employeeFamilyDetail) {
+    public Employee(Long id, Long managerId, String name, String middleName, String personalEmailId, String professionalEmailId, String lastName, Long phoneNumber, String empPassword, Department department, Role role, Long projectId, Domain designation, Long tmpPasswordOtp, List<EmployeeAddress> employeeAddresses, List<EmployeeEducation> employeeEducations, List<EmployeeProfessionalDetail> employeeProfessionalDetails, EmployeePersonalDetail employeePersonalDetail, EmployeeFamilyDetail employeeFamilyDetail) {
         this.id = id;
+        this.managerId = managerId;
         this.name = name;
         this.middleName = middleName;
         this.personalEmailId = personalEmailId;
@@ -109,6 +122,14 @@ public class Employee {
         this.employeeProfessionalDetails = employeeProfessionalDetails;
         this.employeePersonalDetail = employeePersonalDetail;
         this.employeeFamilyDetail = employeeFamilyDetail;
+    }
+
+    public Long getManagerId() {
+        return managerId;
+    }
+
+    public void setManagerId(Long managerId) {
+        this.managerId = managerId;
     }
 
     public Long getId() {

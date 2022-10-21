@@ -5,6 +5,7 @@ import com.tool.smarthrbackend.model.employee.*;
 import com.tool.smarthrbackend.model.metadata.Department;
 import com.tool.smarthrbackend.pojo.employee.AddEmployeeRequest;
 import com.tool.smarthrbackend.pojo.employee.AddEmployeeResponse;
+import com.tool.smarthrbackend.pojo.employee.EmployeeManager;
 import com.tool.smarthrbackend.pojo.employee.checkincheckout.EmployeeCheckInCheckOutRequest;
 import com.tool.smarthrbackend.pojo.login.EmployeeLoginRequest;
 import com.tool.smarthrbackend.pojo.login.EmployeeLoginResponse;
@@ -66,10 +67,10 @@ public class EmployeeService {
     }
 
 
-    public Employee getEmployeeById(Long employeeId) {
-
-        return employeeRepository.findById(employeeId).get();
-    }
+//    public Employee getEmployeeById(Long employeeId) {
+//
+//        return employeeRepository.findById(employeeId).get();
+//    }
 
     public List<Employee> getEmployeesBySearchTerm(String strName) {
         return employeeRepository.findByNameContainingIgnoreCaseOrLastNameContainingIgnoreCase(strName, strName);
@@ -123,7 +124,7 @@ public class EmployeeService {
 
     public AddEmployeeResponse addEmployee(AddEmployeeRequest addEmployeeRequest) {
         Employee emp = new Employee();
-        EmployeePersonalDetail personalDetail=new EmployeePersonalDetail();
+//        EmployeePersonalDetail personalDetail=new EmployeePersonalDetail();
         AddEmployeeResponse addEmployeeResponse = new AddEmployeeResponse();
         BeanUtils.copyProperties(addEmployeeRequest, emp);
         if (!Objects.isNull(addEmployeeRequest.getDepartmentId())) {
@@ -139,7 +140,6 @@ public class EmployeeService {
         emp.setEmployeeProfessionalDetails(addEmployeeRequest.getEmployeeProfessionalDetails());
         emp.setEmployeePersonalDetail(addEmployeeRequest.getEmployeePersonalDetail());
         emp.setEmployeeFamilyDetail(addEmployeeRequest.getEmployeeFamilyDetail());
-
 
 
 //       if(addEmployeeRequest!= null && addEmployeeRequest.getRoles()!=null && addEmployeeRequest.getRoles().size() >0){
@@ -301,5 +301,20 @@ public class EmployeeService {
     }
 
 
+    public EmployeeManager getEmployeeById(Long employeeId) {
+        Employee employee;
+        Employee manager;
 
+        employee=employeeRepository.findById(employeeId).get();
+//        System.out.println("hdjffffffffffdj" +employee.getManagerId());
+        manager= employeeRepository.findById(employee.getManagerId()).get();
+//        System.out.println("hdjffffffffffdj" +employee);
+        System.out.println("manager"+ manager);
+        EmployeeManager employeeManager = new EmployeeManager();
+        employeeManager.setEmployee(employee);
+        employeeManager.setManager(manager);
+        System.out.println("smkskdskmks"+employeeManager);
+
+        return employeeManager;
+    }
 }

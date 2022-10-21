@@ -22,145 +22,200 @@ import java.util.Map;
 public class LeaveController {
 
 
-	@Autowired
-	LeaveService leaveService;
+    @Autowired
+    LeaveService leaveService;
 
-	@PostMapping(path = "/submitLeaveApplication")
-	@CrossOrigin("http://localhost:3000")
-	public ResponseEntity<?> submitLeaveApplication(@RequestBody LeaveApplication leaveApplication)
-			throws JsonProcessingException {
-		System.out.println("Inside  submitLeaveApplication");
-		System.out.println(leaveApplication);
-		Double discountedAmount = null;
-		HttpHeaders responseHeaders = new HttpHeaders();
-		responseHeaders.add("content-type", "application/json");
-		String errorMessage = "";
-		try {
-			leaveService.submitLeaveApplication(leaveApplication);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			errorMessage = e.toString();
-		}
-		if (!errorMessage.equalsIgnoreCase("")) {
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMessage);
-		} else {
-			return ResponseEntity.ok().headers(responseHeaders).body("Success");
-		}
-	}
-	@GetMapping(path = "/getAllLeaveTypes")
-	@CrossOrigin("http://localhost:3000")
-	public ResponseEntity<?> getAllLeaveTypes()
-			throws JsonProcessingException {
-		System.out.println("Inside  getAllLeaveTypes");
-		List<LeaveType> leaveTypeList = null;
-		HttpHeaders responseHeaders = new HttpHeaders();
-		responseHeaders.add("content-type", "application/json");
-		String errorMessage = "";
-		try {
-		leaveTypeList = leaveService.getAllLeaveTypes();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			errorMessage = e.toString();
-		}
-		if (!errorMessage.equalsIgnoreCase("")) {
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMessage);
-		} else {
-			return ResponseEntity.ok().headers(responseHeaders).body(leaveTypeList);
-		}
-	}
+    //post request for leave application
+    @PostMapping(path = "/submitLeaveApplication")
+//	@CrossOrigin("http://localhost:3000")
+    public ResponseEntity<?> submitLeaveApplication(@RequestBody LeaveApplication leaveApplication)
+            throws JsonProcessingException {
+        System.out.println("Inside  submitLeaveApplication");
+        System.out.println(leaveApplication);
 
-	@GetMapping(path = "/appliedEmployeeLeaveList")
-	@CrossOrigin("http://localhost:3000")
-	public ResponseEntity<?> getAppliedEmployeeLeaveList(@RequestParam("employee_id") Long employeeId)
-			throws JsonProcessingException {
-		System.out.println("Inside  getDiscountedAmount");
-		List<LeaveApplication> availableEmployeeLeavesList = null;
-		HttpHeaders responseHeaders = new HttpHeaders();
-		responseHeaders.add("content-type", "application/json");
-		String errorMessage = "";
-		try {
-			availableEmployeeLeavesList = leaveService.getAppliedLeaveApplications(employeeId);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			errorMessage = e.toString();
-		}
-		if (!errorMessage.equalsIgnoreCase("")) {
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMessage);
-		} else {
-			return ResponseEntity.ok().headers(responseHeaders).body(availableEmployeeLeavesList);
-		}
-	}
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.add("content-type", "application/json");
+        String errorMessage = "";
+        try {
+            leaveService.submitLeaveApplication(leaveApplication);
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+//            e.printStackTrace();
+            errorMessage = e.toString();
+        }
+        if (!errorMessage.equalsIgnoreCase("")) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMessage);
+        } else {
+            return ResponseEntity.ok().headers(responseHeaders).body("Success");
+        }
+    }
 
+//  update   leave application
+    @PutMapping (path = "/updateLeaveApplication")
 
-	@GetMapping(path = "/getAvailableEmployeeLeavesByEmployeeId")
-	@CrossOrigin("http://localhost:3000")
-	public ResponseEntity<?> getAvailableEmployeeLeaves(@RequestParam("employee_id") Long employeeId)
-			throws JsonProcessingException {
-		System.out.println("Inside  getAvailableEmployeeLeaves");
-		List<LeaveBalance> availableEmployeeLeavesList = null;
-		HttpHeaders responseHeaders = new HttpHeaders();
-		responseHeaders.add("content-type", "application/json");
-		String errorMessage = "";
-		try {
-			availableEmployeeLeavesList = leaveService.getAllLeaveBalanceByEmployeeId(employeeId);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			errorMessage = e.toString();
-		}
-		if (!errorMessage.equalsIgnoreCase("")) {
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMessage);
-		} else {
-			return ResponseEntity.ok().headers(responseHeaders).body(availableEmployeeLeavesList);
-		}
-	}
+    public ResponseEntity<?> updateLeaveApplication(@RequestBody LeaveApplication leaveApplication)
+            throws JsonProcessingException {
+        System.out.println(leaveApplication);
+        String leaveUpdateStatu="";
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.add("content-type", "application/json");
+        String errorMessage = "";
+        try {
+          leaveUpdateStatu=  leaveService.updateLeaveApplication(leaveApplication);
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            errorMessage = e.toString();
+        }
+        if (!errorMessage.equalsIgnoreCase("")) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMessage);
+        } else {
+            return ResponseEntity.ok().headers(responseHeaders).body(leaveUpdateStatu);
+        }
+    }
+
+//    delete leave application
+    @DeleteMapping(path = "/deleteLeaveApplication")
+    public ResponseEntity<?> deleteLeaveApplication(@RequestParam("leave_id") Long leaveId)
+            throws JsonProcessingException {
+
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.add("content-type", "application/json");
+
+        String errorMessage = "";
+        String leaveDeleteStatus="";
+
+        try {
+           leaveDeleteStatus=  leaveService.deleteLeaveApplication(leaveId);
+        } catch (Exception e) {
+
+            errorMessage = e.toString();
+        }
+
+        if (!errorMessage.equalsIgnoreCase("")) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMessage);
+        } else {
+            return ResponseEntity.ok().headers(responseHeaders).body(leaveDeleteStatus);
+        }
+
+    }
 
 
-//	leave list  by status and all leave list
+    @GetMapping(path = "/getAllLeaveTypes")
+//    @CrossOrigin("http://localhost:3000")
+    public ResponseEntity<?> getAllLeaveTypes()
+            throws JsonProcessingException {
+        System.out.println("Inside  getAllLeaveTypes");
+        List<LeaveType> leaveTypeList = null;
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.add("content-type", "application/json");
+        String errorMessage = "";
+        try {
+            leaveTypeList = leaveService.getAllLeaveTypes();
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            errorMessage = e.toString();
+        }
+        if (!errorMessage.equalsIgnoreCase("")) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMessage);
+        } else {
+            return ResponseEntity.ok().headers(responseHeaders).body(leaveTypeList);
+        }
+    }
 
-	@GetMapping(path = "/allEmployeeLeaveList")
-	@CrossOrigin("http://localhost:3000")
-	public ResponseEntity<?> getAppliedEmployeeLeaveList(@RequestParam(value = "status" ,required = false) String status)
-			throws JsonProcessingException {
-		System.out.println("Inside  getDiscountedAmount");
-		List<LeaveApplication> allEmployeeLeavesList = null;
-		HttpHeaders responseHeaders = new HttpHeaders();
-		responseHeaders.add("content-type", "application/json");
-		String errorMessage = "";
-		try {
-			allEmployeeLeavesList = leaveService.getAllLeaveApplications(status);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			errorMessage = e.toString();
-		}
-		if (!errorMessage.equalsIgnoreCase("")) {
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMessage);
-		} else {
-			return ResponseEntity.ok().headers(responseHeaders).body(allEmployeeLeavesList);
-		}
-	}
-	@PutMapping(value = "/leaveStatusUpdate")
-	public ResponseEntity<?> updateLeaveStatus(@RequestBody LeaveStatusUpdate leaveStatusUpdate){
-		HttpHeaders responseHeaders = new HttpHeaders();
-		responseHeaders.add("content-type", "application/json");
-		String errorMessage = "";
-		try {
-			leaveService.updateLeaveStatus(leaveStatusUpdate);
-		}
-		catch (Exception e){
-			errorMessage=e.toString();
-		}
-		if (errorMessage != ""){
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMessage);
-		}
-		else {
-			return ResponseEntity.ok().body("update");
-		}
+//employee leave list by status  ,employee  leave summary
+    @GetMapping(path = "/appliedEmployeeLeaveList")
+//    @CrossOrigin("http://localhost:3000")
+    public ResponseEntity<?> getAppliedEmployeeLeaveList(@RequestParam("employee_id") Long employeeId,
+                                                         @RequestParam(value = "status") String status)
+            throws JsonProcessingException {
+        System.out.println("Inside  getDiscountedAmount");
+        List<LeaveApplication> availableEmployeeLeavesList = null;
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.add("content-type", "application/json");
+        String errorMessage = "";
+        try {
+            availableEmployeeLeavesList = leaveService.getAppliedLeaveApplications(employeeId,status);
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            errorMessage = e.toString();
+        }
+        if (!errorMessage.equalsIgnoreCase("")) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMessage);
+        } else {
+            return ResponseEntity.ok().headers(responseHeaders).body(availableEmployeeLeavesList);
+        }
+    }
 
 
-	}
- }
+    @GetMapping(path = "/getAvailableEmployeeLeavesByEmployeeId")
+//    @CrossOrigin("http://localhost:3000")
+    public ResponseEntity<?> getAvailableEmployeeLeaves(@RequestParam("employee_id") Long employeeId)
+            throws JsonProcessingException {
+        System.out.println("Inside  getAvailableEmployeeLeaves");
+        List<LeaveBalance> availableEmployeeLeavesList = null;
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.add("content-type", "application/json");
+        String errorMessage = "";
+        try {
+            availableEmployeeLeavesList = leaveService.getAllLeaveBalanceByEmployeeId(employeeId);
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            errorMessage = e.toString();
+        }
+        if (!errorMessage.equalsIgnoreCase("")) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMessage);
+        } else {
+            return ResponseEntity.ok().headers(responseHeaders).body(availableEmployeeLeavesList);
+        }
+    }
+
+
+//	leave list  by status and all leave list for manager
+
+    @GetMapping(path = "/allEmployeeLeaveRequestList")
+//    @CrossOrigin("http://localhost:3000")
+    public ResponseEntity<?> getAppliedEmployeeLeaveList(@RequestParam(value = "status", required = false) String status,
+                                                         @RequestParam(value = "manager_id") Long managerId)
+            throws JsonProcessingException {
+        System.out.println("Inside  getDiscountedAmount");
+        List<LeaveApplication> allEmployeeLeavesList = null;
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.add("content-type", "application/json");
+        String errorMessage = "";
+        try {
+            allEmployeeLeavesList = leaveService.getAllLeaveApplications(status,managerId);
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            errorMessage = e.toString();
+        }
+        if (!errorMessage.equalsIgnoreCase("")) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMessage);
+        } else {
+            return ResponseEntity.ok().headers(responseHeaders).body(allEmployeeLeavesList);
+        }
+    }
+
+    @PutMapping(value = "/leaveStatusUpdate")
+    public ResponseEntity<?> updateLeaveStatus(@RequestBody LeaveStatusUpdate leaveStatusUpdate) {
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.add("content-type", "application/json");
+        String errorMessage = "";
+        try {
+            leaveService.updateLeaveStatus(leaveStatusUpdate);
+        } catch (Exception e) {
+            errorMessage = e.toString();
+        }
+        if (errorMessage != "") {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMessage);
+        } else {
+            return ResponseEntity.ok().body("update");
+        }
+
+
+    }
+}
