@@ -46,7 +46,7 @@ public class LeaveController {
         if (!errorMessage.equalsIgnoreCase("")) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMessage);
         } else {
-            return ResponseEntity.ok().headers(responseHeaders).body("Success");
+            return ResponseEntity.ok().headers(responseHeaders).body("");
         }
     }
 

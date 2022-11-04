@@ -51,6 +51,7 @@ public class LeaveService {
 //		 Employee employee = employeeRepository.findById(leaveApplication.getEmployeeId()).get();
 		Employee employee;
 		employee= employeeRepository.findById(leaveApplication.getEmployeeId()).get();
+		leaveApplication.setApprovedById(employee.getManagerId());
 
 		 leaveApplication.setEmp(employee);
           LeaveType leaveType = leaveTypeRepository.findById(leaveApplication.getLeaveTypeId()).get();
@@ -117,7 +118,7 @@ public class LeaveService {
 
 	public void updateLeaveStatus(LeaveStatusUpdate leaveStatusUpdate) {
            String  statusChange=leaveStatusUpdate.getStatus();
-		   Integer approvedBy=leaveStatusUpdate.getApprovedById();
+		   Long approvedBy=leaveStatusUpdate.getApprovedById();
 
 			System.out.println(leaveStatusUpdate.getIdList() +"serviceee ");
 //			existingEmployeeEducation= employeeEducationRepository.findById(eduction.getId()).get(

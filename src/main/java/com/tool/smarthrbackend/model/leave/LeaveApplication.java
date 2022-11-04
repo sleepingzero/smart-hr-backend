@@ -70,12 +70,13 @@ public class LeaveApplication {
     String leaveReason;
 
     @Column(name = "approved_by_id")
-    Integer approvedById;
+    Long approvedById;
+
 
     public LeaveApplication() {
     }
 
-    public LeaveApplication(Long id, Long employeeId, Employee emp, Long leaveTypeId, LeaveType leaveType, Date fromDate, Date toDate, Integer fromDateHalf, Integer toDateHalf, Date createdDate, Date updatedDate, Integer totalLeaveDays, Integer leaveStatusId, String leaveStatus, String leaveReason, Integer approvedById) {
+    public LeaveApplication(Long id, Long employeeId, Employee emp, Long leaveTypeId, LeaveType leaveType, Date fromDate, Date toDate, Integer fromDateHalf, Integer toDateHalf, Date createdDate, Date updatedDate, Integer totalLeaveDays, Integer leaveStatusId, String leaveStatus, String leaveReason, Long approvedById) {
         this.id = id;
         this.employeeId = employeeId;
         this.emp = emp;
@@ -214,11 +215,11 @@ public class LeaveApplication {
         this.leaveReason = leaveReason;
     }
 
-    public Integer getApprovedById() {
+    public Long getApprovedById() {
         return approvedById;
     }
 
-    public void setApprovedById(Integer approvedById) {
+    public void setApprovedById(Long approvedById) {
         this.approvedById = approvedById;
     }
 }

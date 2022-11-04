@@ -6,12 +6,13 @@ public class LeaveStatusUpdate {
     List<Long> idList;
     String status;
 
-    Integer approvedById;
+    Long approvedById;
 
     public LeaveStatusUpdate() {
     }
 
-    public LeaveStatusUpdate(List<Long> idList, String status, Integer approvedById) {
+
+    public LeaveStatusUpdate(List<Long> idList, String status, Long approvedById) {
         this.idList = idList;
         this.status = status;
         this.approvedById = approvedById;
@@ -33,11 +34,11 @@ public class LeaveStatusUpdate {
         this.status = status;
     }
 
-    public Integer getApprovedById() {
+    public Long getApprovedById() {
         return approvedById;
     }
 
-    public void setApprovedById(Integer approvedById) {
+    public void setApprovedById(Long approvedById) {
         this.approvedById = approvedById;
     }
 }
