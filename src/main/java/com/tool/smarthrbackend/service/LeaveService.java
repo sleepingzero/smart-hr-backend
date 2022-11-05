@@ -33,15 +33,16 @@ public class LeaveService {
 	EmployeeRepository employeeRepository;
 
 
-	public List<LeaveType> getAllLeaveTypes() throws Exception {
-      return  leaveTypeRepository.findAll();
+	public List<LeaveBalance> getAllLeaveTypes(Long employeeId) throws Exception {
+
+      return  leaveBalanceRepository.findByEmployeeId(employeeId);
 	}
 
 	public  List<LeaveBalance> getAllLeaveBalanceByEmployeeId(Long employeeId) throws Exception{
 		return  leaveBalanceRepository.findByEmployeeId(employeeId);
 	}
 	public  List<LeaveApplication> getAppliedLeaveApplications(Long employeeId, String status) throws Exception{
-		return  leaveApplicationRepository.findByEmpIdAndLeaveStatusOrderByCreatedDateDesc(employeeId,status);
+		return  leaveApplicationRepository.findByEmpIdAndLeaveStatusOrderByCreatedDateDescIdDesc(employeeId,status);
 	}
 
 	public  void submitLeaveApplication(LeaveApplication leaveApplication){

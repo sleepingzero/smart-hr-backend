@@ -9,9 +9,9 @@ public class LeaveApplicationRequest {
     Long id;
     Long employeeId;
     Long leaveTypeId;
-    Date startDate;
-    Integer startDateHalf;
-    Date endDate;
-    Integer endDateHalf;
-    Integer totalDaysForLeave;
+    Date fromDate;
+    Integer fromDateHalf;
+    Date toDate;
+    Integer toDateHalf;
+    double totalLeaveDays ;
 }

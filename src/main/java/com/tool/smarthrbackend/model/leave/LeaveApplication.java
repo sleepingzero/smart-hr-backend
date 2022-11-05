@@ -21,7 +21,7 @@ public class LeaveApplication {
 
     @Transient
     @JsonProperty
-        Long  employeeId;
+    Long  employeeId;
 
     @ManyToOne
     @JoinColumn(name="employee_id")
@@ -58,7 +58,7 @@ public class LeaveApplication {
     Date updatedDate;
 
     @Column(name = "total_leave_days")
-    Integer totalLeaveDays;
+    double totalLeaveDays;
 
     @Column(name= "leave_status_id")
     Integer leaveStatusId;
@@ -76,7 +76,7 @@ public class LeaveApplication {
     public LeaveApplication() {
     }
 
-    public LeaveApplication(Long id, Long employeeId, Employee emp, Long leaveTypeId, LeaveType leaveType, Date fromDate, Date toDate, Integer fromDateHalf, Integer toDateHalf, Date createdDate, Date updatedDate, Integer totalLeaveDays, Integer leaveStatusId, String leaveStatus, String leaveReason, Long approvedById) {
+    public LeaveApplication(Long id, Long employeeId, Employee emp, Long leaveTypeId, LeaveType leaveType, Date fromDate, Date toDate, Integer fromDateHalf, Integer toDateHalf, Date createdDate, Date updatedDate, double totalLeaveDays, Integer leaveStatusId, String leaveStatus, String leaveReason, Long approvedById) {
         this.id = id;
         this.employeeId = employeeId;
         this.emp = emp;
@@ -183,11 +183,11 @@ public class LeaveApplication {
         this.updatedDate = updatedDate;
     }
 
-    public Integer getTotalLeaveDays() {
+    public double getTotalLeaveDays() {
         return totalLeaveDays;
     }
 
-    public void setTotalLeaveDays(Integer totalLeaveDays) {
+    public void setTotalLeaveDays(double totalLeaveDays) {
         this.totalLeaveDays = totalLeaveDays;
     }
 

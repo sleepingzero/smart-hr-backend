@@ -1,5 +1,6 @@
 package com.tool.smarthrbackend;
 
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -17,6 +18,9 @@ import java.util.Collections;
 @SpringBootApplication
 @EnableConfigurationProperties
 @EntityScan(basePackages = {"com.tool.smarthrbackend.model"})
+//@EnableWebMvc
+@OpenAPIDefinition
+
 public class SmartHrBackendApplication {
 
 	public static void main(String[] args) {

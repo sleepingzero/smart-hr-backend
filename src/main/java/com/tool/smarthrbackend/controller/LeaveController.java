@@ -103,15 +103,15 @@ public class LeaveController {
 
     @GetMapping(path = "/getAllLeaveTypes")
 //    @CrossOrigin("http://localhost:3000")
-    public ResponseEntity<?> getAllLeaveTypes()
+    public ResponseEntity<?> getAllLeaveTypes(@RequestParam("employee_id") Long employeeId)
             throws JsonProcessingException {
         System.out.println("Inside  getAllLeaveTypes");
-        List<LeaveType> leaveTypeList = null;
+        List<LeaveBalance> leaveTypeBalanceList = null;
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.add("content-type", "application/json");
         String errorMessage = "";
         try {
-            leaveTypeList = leaveService.getAllLeaveTypes();
+            leaveTypeBalanceList = leaveService.getAllLeaveTypes(employeeId);
         } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -120,7 +120,7 @@ public class LeaveController {
         if (!errorMessage.equalsIgnoreCase("")) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMessage);
         } else {
-            return ResponseEntity.ok().headers(responseHeaders).body(leaveTypeList);
+            return ResponseEntity.ok().headers(responseHeaders).body(leaveTypeBalanceList);
         }
     }
 
