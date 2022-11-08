@@ -16,4 +16,6 @@ public interface LeaveBalanceRepository extends CrudRepository<LeaveBalance, Lon
    List<LeaveBalance>  findByEmployeeId(Long id);
     @Override
     List<LeaveBalance> findAll();
+
+    LeaveBalance findByEmployeeIdAndLeaveTypeId(long empId, long leaveId);
 }

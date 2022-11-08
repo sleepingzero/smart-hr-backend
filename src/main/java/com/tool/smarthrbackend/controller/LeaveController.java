@@ -201,7 +201,8 @@ public class LeaveController {
     }
 
     @PutMapping(value = "/leaveStatusUpdate")
-    public ResponseEntity<?> updateLeaveStatus(@RequestBody LeaveStatusUpdate leaveStatusUpdate) {
+    public ResponseEntity<?> updateLeaveStatus(@RequestBody LeaveStatusUpdate leaveStatusUpdate) throws
+            JsonProcessingException{
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.add("content-type", "application/json");
         String errorMessage = "";
@@ -213,7 +214,7 @@ public class LeaveController {
         if (errorMessage != "") {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMessage);
         } else {
-            return ResponseEntity.ok().body("update");
+            return ResponseEntity.ok().headers(responseHeaders).body("");
         }
 
 
