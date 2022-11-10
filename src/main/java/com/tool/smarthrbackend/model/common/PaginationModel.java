@@ -4,8 +4,10 @@ public class PaginationModel {
 
     Integer pageNo;
     Integer pageSize;
+
     String sortBy= "id";
-    String sortDirection;
+    String sortDirection="asc";
+
 
     public Integer getPageNo() {
         return pageNo;

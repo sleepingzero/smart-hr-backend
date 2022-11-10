@@ -2,12 +2,14 @@ package com.tool.smarthrbackend.controller;
 
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.tool.smarthrbackend.model.common.PaginationModel;
 import com.tool.smarthrbackend.model.leave.LeaveApplication;
 import com.tool.smarthrbackend.model.leave.LeaveBalance;
 import com.tool.smarthrbackend.model.leave.LeaveType;
 import com.tool.smarthrbackend.pojo.leave.LeaveStatusUpdate;
 import com.tool.smarthrbackend.service.LeaveService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -128,15 +130,16 @@ public class LeaveController {
     @GetMapping(path = "/appliedEmployeeLeaveList")
 //    @CrossOrigin("http://localhost:3000")
     public ResponseEntity<?> getAppliedEmployeeLeaveList(@RequestParam("employee_id") Long employeeId,
-                                                         @RequestParam(value = "status") String status)
+                                                         @RequestParam(value = "status") String status,
+                                                         @RequestBody PaginationModel paginationModel)
             throws JsonProcessingException {
         System.out.println("Inside  getDiscountedAmount");
-        List<LeaveApplication> availableEmployeeLeavesList = null;
+        Page<LeaveApplication> availableEmployeeLeavesList = null;
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.add("content-type", "application/json");
         String errorMessage = "";
         try {
-            availableEmployeeLeavesList = leaveService.getAppliedLeaveApplications(employeeId,status);
+            availableEmployeeLeavesList = leaveService.getAppliedLeaveApplications(employeeId,status,paginationModel);
         } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -179,15 +182,16 @@ public class LeaveController {
     @GetMapping(path = "/allEmployeeLeaveRequestList")
 //    @CrossOrigin("http://localhost:3000")
     public ResponseEntity<?> getAppliedEmployeeLeaveList(@RequestParam(value = "status", required = false) String status,
-                                                         @RequestParam(value = "manager_id") Long managerId)
+                                                         @RequestParam(value = "manager_id") Long managerId,
+                                                         @RequestBody PaginationModel paginationModel)
             throws JsonProcessingException {
         System.out.println("Inside  getDiscountedAmount");
-        List<LeaveApplication> allEmployeeLeavesList = null;
+        Page<LeaveApplication> allEmployeeLeavesList = null;
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.add("content-type", "application/json");
         String errorMessage = "";
         try {
-            allEmployeeLeavesList = leaveService.getAllLeaveApplications(status,managerId);
+            allEmployeeLeavesList = leaveService.getAllLeaveRequestApplications(status,managerId,paginationModel);
         } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -219,4 +223,9 @@ public class LeaveController {
 
 
     }
+//     Pagination sorting
+//    @GetMapping(value = "/allLeave")
+//    public Page<LeaveApplication> getleaveList(@RequestBody PaginationModel paginationModel){
+//       return leaveService.getleaveList(paginationModel);
+//    }
 }

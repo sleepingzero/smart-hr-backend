@@ -1,5 +1,6 @@
 package com.tool.smarthrbackend.service;
 
+import com.tool.smarthrbackend.model.common.PaginationModel;
 import com.tool.smarthrbackend.model.employee.Employee;
 import com.tool.smarthrbackend.model.leave.LeaveApplication;
 import com.tool.smarthrbackend.model.leave.LeaveBalance;
@@ -10,6 +11,10 @@ import com.tool.smarthrbackend.repository.jpa.leave.LeaveApplicationRepository;
 import com.tool.smarthrbackend.repository.jpa.leave.LeaveBalanceRepository;
 import com.tool.smarthrbackend.repository.jpa.leave.LeaveTypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -43,14 +48,31 @@ public class LeaveService {
         return leaveBalanceRepository.findByEmployeeId(employeeId);
     }
 
-    public List<LeaveApplication> getAppliedLeaveApplications(Long employeeId, String status) throws Exception {
-        return leaveApplicationRepository.findByEmpIdAndLeaveStatusOrderByCreatedDateDescIdDesc(employeeId, status);
+//    public List<LeaveApplication> getAppliedLeaveApplications(Long employeeId, String status) throws Exception {
+//        return leaveApplicationRepository.
+//                findByEmpIdAndLeaveStatusOrderByCreatedDateDescIdDesc(employeeId, status);
+//    }
+
+
+    //    LEAVE LIST WITH PAGINATION
+    public Page<LeaveApplication> getAppliedLeaveApplications(Long employeeId,
+                                                              String status, PaginationModel paginationModel) throws Exception {
+        String sortBy = paginationModel.getSortBy();
+
+        Sort sort = paginationModel.getSortDirection().equalsIgnoreCase(Sort.Direction.ASC.name()) ?
+                Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
+
+        Pageable pageable = PageRequest.of(paginationModel.getPageNo() , paginationModel.getPageSize(), sort);
+
+        return leaveApplicationRepository.findByEmpIdAndLeaveStatusOrderByCreatedDateDescIdDesc
+                (employeeId, status, pageable);
     }
 
     public void submitLeaveApplication(LeaveApplication leaveApplication) {
         System.out.println(leaveApplication.toString());
         leaveApplication.setCreatedDate(new Date());
         leaveApplication.setUpdatedDate(new Date());
+
 //		 Employee employee = employeeRepository.findById(leaveApplication.getEmployeeId()).get();
         Employee employee;
         employee = employeeRepository.findById(leaveApplication.getEmployeeId()).get();
@@ -110,12 +132,24 @@ public class LeaveService {
     }
 
 
-    public List<LeaveApplication> getAllLeaveApplications(String status, Long managerId) {
-        if (status == null) {
-            return leaveApplicationRepository.findByEmpManagerId(managerId);
-        } else {
-            return leaveApplicationRepository.findByLeaveStatusAndEmpManagerId(status, managerId);
-        }
+//    public List<LeaveApplication> getAllLeaveApplications(String status, Long managerId) {
+//        if (status == null) {
+//            return leaveApplicationRepository.findByEmpManagerId(managerId);
+//        } else {
+//            return leaveApplicationRepository.findByLeaveStatusAndEmpManagerId(status, managerId, pageable);
+//        }
+//    }
+
+
+    public Page<LeaveApplication> getAllLeaveRequestApplications
+            (String status, Long managerId, PaginationModel paginationModel) {
+        String sortBy = paginationModel.getSortBy();
+
+        Sort sort = paginationModel.getSortDirection().equalsIgnoreCase(Sort.Direction.ASC.name()) ?
+                Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
+
+        Pageable pageable = PageRequest.of(paginationModel.getPageNo(), paginationModel.getPageSize(), sort);
+        return leaveApplicationRepository.findByLeaveStatusAndEmpManagerId(status, managerId, pageable);
     }
 
     public void updateLeaveStatus(LeaveStatusUpdate leaveStatusUpdate) {
@@ -136,7 +170,7 @@ public class LeaveService {
             LeaveBalance leaveBalance = null;
             System.out.println(statusChange);
 //	if status changes to approved than deduct total leave days from avalaibale balance
-         if(Objects.equals(statusChange, "approved")){
+            if (Objects.equals(statusChange, "approved")) {
 
 
                 leaveBalance = leaveBalanceRepository.findByEmployeeIdAndLeaveTypeId(leaveApplication.getEmp().getId(),
@@ -147,12 +181,22 @@ public class LeaveService {
                 leaveBalance.setLastLeaveAppId(leaveApplication.getId());
                 System.out.println("llllllllllllllllllllllll" + leaveBalance);
                 leaveBalanceRepository.save(leaveBalance);
-         }
+            }
             leaveApplicationRepository.save(leaveApplication);
 
         });
 
     }
 
+// Pagination sorting
+//    public Page<LeaveApplication> getleaveList(PaginationModel paginationModel) {
+//        String sortBy = paginationModel.getSortBy();
+//
+//        Sort sort = paginationModel.getSortDirection().equalsIgnoreCase(Sort.Direction.ASC.name()) ?
+//                Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
+//
+//        Pageable pageable = PageRequest.of(paginationModel.getPageNo() - 1, paginationModel.getPageSize(), sort);
+//        return leaveApplicationRepository.findAll(pageable);
+//    }
 
 }
