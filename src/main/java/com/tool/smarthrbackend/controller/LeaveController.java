@@ -127,7 +127,7 @@ public class LeaveController {
     }
 
 //employee leave list by status  ,employee  leave summary
-    @GetMapping(path = "/appliedEmployeeLeaveList")
+    @PostMapping(path = "/appliedEmployeeLeaveList")
 //    @CrossOrigin("http://localhost:3000")
     public ResponseEntity<?> getAppliedEmployeeLeaveList(@RequestParam("employee_id") Long employeeId,
                                                          @RequestParam(value = "status") String status,
@@ -179,7 +179,7 @@ public class LeaveController {
 
 //	leave list  by status and all leave list for manager
 
-    @GetMapping(path = "/allEmployeeLeaveRequestList")
+    @PostMapping(path = "/allEmployeeLeaveRequestList")
 //    @CrossOrigin("http://localhost:3000")
     public ResponseEntity<?> getAppliedEmployeeLeaveList(@RequestParam(value = "status", required = false) String status,
                                                          @RequestParam(value = "manager_id") Long managerId,

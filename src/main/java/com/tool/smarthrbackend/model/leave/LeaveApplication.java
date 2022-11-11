@@ -69,6 +69,9 @@ public class LeaveApplication {
     @Column(name= "leave_reason")
     String leaveReason;
 
+    @Column(name= "leave_description")
+    String leaveDescription;
+
     @Column(name = "approved_by_id")
     Long approvedById;
 
@@ -76,7 +79,7 @@ public class LeaveApplication {
     public LeaveApplication() {
     }
 
-    public LeaveApplication(Long id, Long employeeId, Employee emp, Long leaveTypeId, LeaveType leaveType, Date fromDate, Date toDate, Integer fromDateHalf, Integer toDateHalf, Date createdDate, Date updatedDate, double totalLeaveDays, Integer leaveStatusId, String leaveStatus, String leaveReason, Long approvedById) {
+    public LeaveApplication(Long id, Long employeeId, Employee emp, Long leaveTypeId, LeaveType leaveType, Date fromDate, Date toDate, Integer fromDateHalf, Integer toDateHalf, Date createdDate, Date updatedDate, double totalLeaveDays, Integer leaveStatusId, String leaveStatus, String leaveReason, String leaveDescription, Long approvedById) {
         this.id = id;
         this.employeeId = employeeId;
         this.emp = emp;
@@ -92,7 +95,17 @@ public class LeaveApplication {
         this.leaveStatusId = leaveStatusId;
         this.leaveStatus = leaveStatus;
         this.leaveReason = leaveReason;
+        this.leaveDescription = leaveDescription;
         this.approvedById = approvedById;
+    }
+
+
+    public String getLeaveDescription() {
+        return leaveDescription;
+    }
+
+    public void setLeaveDescription(String leaveDescription) {
+        this.leaveDescription = leaveDescription;
     }
 
     public Long getId() {
