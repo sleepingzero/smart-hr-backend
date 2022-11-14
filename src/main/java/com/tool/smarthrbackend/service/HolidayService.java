@@ -1,8 +1,13 @@
 package com.tool.smarthrbackend.service;
 
+import com.tool.smarthrbackend.model.common.PaginationModel;
 import com.tool.smarthrbackend.model.holiday.PublicHoliday;
 import com.tool.smarthrbackend.repository.jpa.holiday.PublicHolidayRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -31,12 +36,21 @@ public List<PublicHoliday> getPublicHolidaysByYear(){
 }
 
 //  findByYear = (year:number): PublicHolidy[]{ ret}
-    public List<PublicHoliday> findByYear(Long year){
-        return  publicHolidayRepository.findByHolidayYear(year);
+//    public List<PublicHoliday> findByYear(Long year){
+//
+//     return  publicHolidayRepository.findByHolidayYear(year);
+//    }
+
+
+    public Page<PublicHoliday> findByYear(Long year, PaginationModel paginationModel) {
+        String sortBy = paginationModel.getSortBy();
+
+        Sort sort = paginationModel.getSortDirection().equalsIgnoreCase(Sort.Direction.ASC.name()) ?
+                Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
+
+        Pageable pageable = PageRequest.of(paginationModel.getPageNo() , paginationModel.getPageSize(),sort);
+
+
+        return  publicHolidayRepository.findByHolidayYear(year,pageable);
     }
-
-
-
-
-
 }

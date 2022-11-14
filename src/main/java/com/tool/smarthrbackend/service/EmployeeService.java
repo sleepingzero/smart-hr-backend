@@ -1,5 +1,6 @@
 package com.tool.smarthrbackend.service;
 
+import com.tool.smarthrbackend.model.common.PaginationModel;
 import com.tool.smarthrbackend.model.domain.Domain;
 import com.tool.smarthrbackend.model.employee.*;
 import com.tool.smarthrbackend.model.metadata.Department;
@@ -15,6 +16,10 @@ import com.tool.smarthrbackend.repository.jpa.metadata.DepartmentRepository;
 import com.tool.smarthrbackend.repository.jpa.metadata.RoleRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
@@ -278,8 +283,9 @@ public class EmployeeService {
     });
 
     }
-
-    public List<EmployeePersonalDetail> getUpcomingBirthday(Integer limit) {
+    public Page<EmployeePersonalDetail> getUpcomingBirthday(Integer limit, PaginationModel paginationModel) {
+//    }
+//    public List<EmployeePersonalDetail> getUpcomingBirthday(Integer limit) {
 //        to get calendar date of today and date after month
         Calendar calendar = Calendar.getInstance(Locale.ENGLISH);
         calendar.setTime(new Date());
@@ -292,10 +298,19 @@ public class EmployeeService {
         String currrentDate = format1.format(dateToday);
         String futureDate = format1.format(futureDateCal);
 
+//        pagination
+        String sortBy = paginationModel.getSortBy();
+
+//        Sort sort = paginationModel.getSortDirection().equalsIgnoreCase(Sort.Direction.ASC.name()) ?
+//                Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
+
+        Pageable pageable = PageRequest.of(paginationModel.getPageNo() , paginationModel.getPageSize());
+
+
         if (limit == null) {
-            return employeePersonalDetailRepository.findAllUpcomingBirthday(currrentDate, futureDate);
+            return employeePersonalDetailRepository.findAllUpcomingBirthday(currrentDate, futureDate,pageable);
         } else {
-            return employeePersonalDetailRepository.findTop3(currrentDate, futureDate,limit);
+            return employeePersonalDetailRepository.findTop3(currrentDate, futureDate,limit, pageable);
         }
 
     }
@@ -317,4 +332,6 @@ public class EmployeeService {
 
         return employeeManager;
     }
+
+
 }

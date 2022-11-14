@@ -2,6 +2,8 @@ package com.tool.smarthrbackend.repository.jpa.holiday;
 
 
 import com.tool.smarthrbackend.model.holiday.PublicHoliday;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -16,4 +18,6 @@ public interface PublicHolidayRepository extends CrudRepository<PublicHoliday, L
 
     @Override
     List<PublicHoliday> findAll();
+
+    Page<PublicHoliday> findByHolidayYear(Long year, Pageable pageable);
 }

@@ -1,6 +1,7 @@
 package com.tool.smarthrbackend.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.tool.smarthrbackend.model.common.PaginationModel;
 import com.tool.smarthrbackend.model.employee.*;
 import com.tool.smarthrbackend.pojo.employee.AddEmployeeRequest;
 import com.tool.smarthrbackend.pojo.employee.AddEmployeeResponse;
@@ -11,6 +12,7 @@ import com.tool.smarthrbackend.pojo.login.EmployeeLoginResponse;
 import com.tool.smarthrbackend.repository.jpa.employee.EmployeeProfessionalDetailRepository;
 import com.tool.smarthrbackend.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -270,15 +272,16 @@ public class  EmployeeController {
 
 
     //  get ALL upcoming Birthday or limited if paramater is 3 given list is give top 3 or else all list
-    @GetMapping(value ="/upcominBirthday")
-    public  ResponseEntity<?>  getPersonalDetail(@RequestParam(value = "limit",required = false)Integer limit){
-        List<EmployeePersonalDetail> employeePersonalDetails=null;
+    @PostMapping (value ="/upcominBirthday")
+    public  ResponseEntity<?>  getPersonalDetail(@RequestParam(value = "limit",required = false)Integer limit,
+                                                    @RequestBody PaginationModel paginationModel){
+        Page<EmployeePersonalDetail> employeePersonalDetails=null;
 
         HttpHeaders responseHeaders = new HttpHeaders();
        responseHeaders.add("content-type", "application/json");
         String errorMessage="";
         try{
-            employeePersonalDetails=employeeService.getUpcomingBirthday(limit);
+            employeePersonalDetails=employeeService.getUpcomingBirthday(limit,paginationModel);
         }catch ( Exception e){
             errorMessage=e.toString();
         }
