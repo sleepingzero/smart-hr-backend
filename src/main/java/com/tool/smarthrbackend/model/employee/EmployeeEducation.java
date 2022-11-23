@@ -26,8 +26,8 @@ public class EmployeeEducation {
     @Column(name = "degree")
     String degree;
 
-    @Column(name = "field")
-    String field;
+    @Column(name = "specialization")
+    String specialization;
 
     @Column(name = "grade")
     String grade;
@@ -55,12 +55,12 @@ public class EmployeeEducation {
     public EmployeeEducation() {
     }
 
-    public EmployeeEducation(Long id, Integer empId, String institute, String degree, String field, String grade, Date startDate, Date endDate, Integer city, Integer state, Integer country, String pincode) {
+    public EmployeeEducation(Long id, Integer empId, String institute, String degree, String specialization, String grade, Date startDate, Date endDate, Integer city, Integer state, Integer country, String pincode) {
         this.id = id;
         this.empId = empId;
         this.institute = institute;
         this.degree = degree;
-        this.field = field;
+        this.specialization = specialization;
         this.grade = grade;
         this.startDate = startDate;
         this.endDate = endDate;
@@ -102,12 +102,12 @@ public class EmployeeEducation {
         this.degree = degree;
     }
 
-    public String getField() {
-        return field;
+    public String getSpecialization() {
+        return specialization;
     }
 
-    public void setField(String field) {
-        this.field = field;
+    public void setSpecialization(String specialization) {
+        this.specialization = specialization;
     }
 
     public String getGrade() {

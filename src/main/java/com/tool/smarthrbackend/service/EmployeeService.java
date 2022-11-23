@@ -19,7 +19,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
@@ -78,7 +77,7 @@ public class EmployeeService {
 //    }
 
     public List<Employee> getEmployeesBySearchTerm(String strName) {
-        return employeeRepository.findByNameContainingIgnoreCaseOrLastNameContainingIgnoreCase(strName, strName);
+        return employeeRepository.findByFirstNameContainingIgnoreCaseOrLastNameContainingIgnoreCase(strName, strName);
     }
 
 
@@ -108,7 +107,7 @@ public class EmployeeService {
                 employeeLoginResponse.setErrorMsg(" OTP did not match to given data");
             }
         } else {
-            if (employee.getName() != null) {
+            if (employee.getFirstName() != null) {
                 if (employee.getEmpPassword().equals(employeeLoginRequest.getPassword())) {
                     employeeLoginResponse.setIsError(false);
                     employeeLoginResponse.setEmployee(employee);
@@ -131,6 +130,8 @@ public class EmployeeService {
         Employee emp = new Employee();
 //        EmployeePersonalDetail personalDetail=new EmployeePersonalDetail();
         AddEmployeeResponse addEmployeeResponse = new AddEmployeeResponse();
+        EmployeePersonalDetail employeePersonalDetail = new EmployeePersonalDetail();
+
         BeanUtils.copyProperties(addEmployeeRequest, emp);
         if (!Objects.isNull(addEmployeeRequest.getDepartmentId())) {
             Department department = departmentRepository.findById(addEmployeeRequest.getDepartmentId()).get();
@@ -140,10 +141,13 @@ public class EmployeeService {
             Domain domain = domainRepository.findById(addEmployeeRequest.getDesignationId()).get();
             emp.setDesignation(domain);
         }
+        employeePersonalDetail = addEmployeeRequest.getEmployeePersonalDetail();
         emp.setEmployeeAddresses(addEmployeeRequest.getEmployeeAddresses());
         emp.setEmployeeEducations(addEmployeeRequest.getEmployeeEducations());
         emp.setEmployeeProfessionalDetails(addEmployeeRequest.getEmployeeProfessionalDetails());
-        emp.setEmployeePersonalDetail(addEmployeeRequest.getEmployeePersonalDetail());
+//        emp.setEmployeePersonalDetail(employeePersonalDetail);
+
+
         emp.setEmployeeFamilyDetail(addEmployeeRequest.getEmployeeFamilyDetail());
 
 
@@ -158,8 +162,16 @@ public class EmployeeService {
         }
         Employee empid = employeeRepository.save(emp);
         addEmployeeResponse.setGeneratedEmpId(empid.getId());
+
+        employeePersonalDetail.setEmpId(empid.getId());
+        employeePersonalDetailRepository.save(employeePersonalDetail);
+        empid.setPersonalDetailId(employeePersonalDetail.getId());
+
+        employeeRepository.save(empid);
+
         return addEmployeeResponse;
     }
+
 
     private Long getFirstTimeOTPNumber() {
         Random random = new Random();
@@ -171,6 +183,46 @@ public class EmployeeService {
 
         return Long.parseLong(stb.toString());
     }
+
+    public AddEmployeeResponse updateEmployee(Long employeeId, AddEmployeeRequest addEmployeeRequest) {
+        Employee emp = null;
+        AddEmployeeResponse addEmployeeResponse = new AddEmployeeResponse();
+        boolean isExist = employeeRepository.findById(employeeId).isPresent();
+        if (isExist == true) {
+            emp = employeeRepository.findById(employeeId).get();
+            if (!Objects.isNull(addEmployeeRequest.getDepartmentId())) {
+                Department department = departmentRepository.findById(addEmployeeRequest.getDepartmentId()).get();
+                emp.setDepartment(department);
+            }
+            if (!Objects.isNull(addEmployeeRequest.getDesignationId())) {
+                Domain domain = domainRepository.findById(addEmployeeRequest.getDesignationId()).get();
+                emp.setDesignation(domain);
+            }
+            emp.setFirstName(addEmployeeRequest.getFirstName());
+            emp.setMiddleName(addEmployeeRequest.getMiddleName());
+            emp.setLastName(addEmployeeRequest.getLastName());
+            emp.setPhoneNumber(addEmployeeRequest.getPhoneNumber());
+            emp.setPersonalEmailId(addEmployeeRequest.getPersonalEmailId());
+            emp.setProfessionalEmailId(addEmployeeRequest.getProfessionalEmailId());
+
+            updateAddress(addEmployeeRequest.getEmployeeAddresses());
+            updateEducation(addEmployeeRequest.getEmployeeEducations());
+            updateProfessionalDetail(addEmployeeRequest.getEmployeeProfessionalDetails());
+            updatePersonalDetail(addEmployeeRequest.getEmployeePersonalDetail());
+            updateFamilyDetail(addEmployeeRequest.getEmployeeFamilyDetail());
+
+
+            employeeRepository.save(emp);
+            addEmployeeResponse.setReturnMsg("successfully update");
+
+            return addEmployeeResponse;
+        } else {
+            addEmployeeResponse.setReturnMsg("employee not present");
+            return addEmployeeResponse;
+        }
+
+    }
+
 
     public EmployeeCheckInCheckOutRequest addCheckin(EmployeeCheckInCheckOutRequest employeeCheckInCheckOutRequest) {
         EmployeeCheckInCheckOut employeeCheckInCheckOut = new EmployeeCheckInCheckOut();
@@ -213,9 +265,7 @@ public class EmployeeService {
             if (address.getId() != null) {
                 ExistingEmployeeAddress = employeeAddressRepository.findById(address.getId()).get();
                 ExistingEmployeeAddress.setAddressType(address.getAddressType());
-                ExistingEmployeeAddress.setAddressLine1(address.getAddressLine1());
-                ExistingEmployeeAddress.setAddressLine2(address.getAddressLine2());
-                ExistingEmployeeAddress.setAddressLine3(address.getAddressLine3());
+                ExistingEmployeeAddress.setAddressLine(address.getAddressLine());
                 ExistingEmployeeAddress.setCity(address.getCity());
                 ExistingEmployeeAddress.setState(address.getState());
                 ExistingEmployeeAddress.setCountry(address.getCountry());
@@ -231,6 +281,30 @@ public class EmployeeService {
 
     }
 
+    public void updatePersonalDetail(EmployeePersonalDetail employeePersonalDetail) {
+        EmployeePersonalDetail existEmployeePersonalDetail1 = null;
+        if (employeePersonalDetail.getId() != null) {
+            existEmployeePersonalDetail1 = employeePersonalDetailRepository.findById(employeePersonalDetail.getId()).get();
+            existEmployeePersonalDetail1.setMaritalStatus(employeePersonalDetail.getMaritalStatus());
+            existEmployeePersonalDetail1.setGender(employeePersonalDetail.getGender());
+            existEmployeePersonalDetail1.setNationality(employeePersonalDetail.getNationality());
+            existEmployeePersonalDetail1.setBloodGroup(employeePersonalDetail.getBloodGroup());
+            existEmployeePersonalDetail1.setDateOfBirth(employeePersonalDetail.getDateOfBirth());
+
+            employeePersonalDetailRepository.save(existEmployeePersonalDetail1);
+        } else {
+            employeePersonalDetailRepository.save(employeePersonalDetail);
+        }
+
+    }
+
+    public void updateFamilyDetail(EmployeeFamilyDetail employeeFamilyDetail) {
+        EmployeeFamilyDetail existingEmployeeFamilyDetail = null;
+        if (employeeFamilyDetail != null) {
+
+        }
+    }
+
     //    to update employee education
     public void updateEducation(List<EmployeeEducation> employeeEducations) {
         employeeEducations.forEach(eduction -> {
@@ -238,7 +312,7 @@ public class EmployeeService {
             if (eduction.getId() != null) {
                 existingEmployeeEducation = employeeEducationRepository.findById(eduction.getId()).get();
                 existingEmployeeEducation.setDegree(eduction.getDegree());
-                existingEmployeeEducation.setField(eduction.getField());
+                existingEmployeeEducation.setSpecialization(eduction.getSpecialization());
                 existingEmployeeEducation.setGrade(eduction.getGrade());
                 existingEmployeeEducation.setInstitute(eduction.getInstitute());
                 existingEmployeeEducation.setStartDate(eduction.getStartDate());
@@ -256,36 +330,34 @@ public class EmployeeService {
 
 
     }
+
     public void updateProfessionalDetail(List<EmployeeProfessionalDetail> employeeProfessionalDetail) {
-    employeeProfessionalDetail.forEach(professional->{
-        EmployeeProfessionalDetail existingEmployeeProfessionalDetail=null;
-        if (professional.getId() != null) {
-          existingEmployeeProfessionalDetail=employeeProfessionalDetailRepository.findById(professional.getId()).get();
-            existingEmployeeProfessionalDetail.setCompany(professional.getCompany());
-            existingEmployeeProfessionalDetail.setDesignation(professional.getDesignation());
-            existingEmployeeProfessionalDetail.setSkill(professional.getSkill());
-            existingEmployeeProfessionalDetail.setRole1(professional.getRole1());
-            existingEmployeeProfessionalDetail.setRole2(professional.getRole2());
-            existingEmployeeProfessionalDetail.setRole3(professional.getRole3());
-            existingEmployeeProfessionalDetail.setStartDate(professional.getStartDate());
-            existingEmployeeProfessionalDetail.setEndDate(professional.getEndDate());
-            existingEmployeeProfessionalDetail.setCity(professional.getCity());
-            existingEmployeeProfessionalDetail.setState(professional.getState());
-            existingEmployeeProfessionalDetail.setCountry(professional.getCountry());
-            existingEmployeeProfessionalDetail.setPincode(professional.getPincode());
+        employeeProfessionalDetail.forEach(professional -> {
+            EmployeeProfessionalDetail existingEmployeeProfessionalDetail = null;
+            if (professional.getId() != null) {
+                existingEmployeeProfessionalDetail = employeeProfessionalDetailRepository.findById(professional.getId()).get();
+                existingEmployeeProfessionalDetail.setCompany(professional.getCompany());
+                existingEmployeeProfessionalDetail.setDesignation(professional.getDesignation());
+                existingEmployeeProfessionalDetail.setSkill(professional.getSkill());
+                existingEmployeeProfessionalDetail.setRoleAndResponsibility(professional.getRoleAndResponsibility());
+                existingEmployeeProfessionalDetail.setStartDate(professional.getStartDate());
+                existingEmployeeProfessionalDetail.setEndDate(professional.getEndDate());
+                existingEmployeeProfessionalDetail.setCity(professional.getCity());
+                existingEmployeeProfessionalDetail.setState(professional.getState());
+                existingEmployeeProfessionalDetail.setCountry(professional.getCountry());
+                existingEmployeeProfessionalDetail.setPincode(professional.getPincode());
 
-         employeeProfessionalDetailRepository.save(existingEmployeeProfessionalDetail);
-        }
-        else {
-            employeeProfessionalDetailRepository.save(professional);
+                employeeProfessionalDetailRepository.save(existingEmployeeProfessionalDetail);
+            } else {
+                employeeProfessionalDetailRepository.save(professional);
 
-        }
-    });
+            }
+        });
 
     }
+
     public Page<EmployeePersonalDetail> getUpcomingBirthday(Integer limit, PaginationModel paginationModel) {
-//    }
-//    public List<EmployeePersonalDetail> getUpcomingBirthday(Integer limit) {
+        Page<EmployeePersonalDetail> employeePersonalDetailPage = null;
 //        to get calendar date of today and date after month
         Calendar calendar = Calendar.getInstance(Locale.ENGLISH);
         calendar.setTime(new Date());
@@ -300,35 +372,41 @@ public class EmployeeService {
 
 //        pagination
         String sortBy = paginationModel.getSortBy();
-
-//        Sort sort = paginationModel.getSortDirection().equalsIgnoreCase(Sort.Direction.ASC.name()) ?
-//                Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
-
-        Pageable pageable = PageRequest.of(paginationModel.getPageNo() , paginationModel.getPageSize());
+        Pageable pageable = PageRequest.of(paginationModel.getPageNo(), paginationModel.getPageSize());
 
 
         if (limit == null) {
-            return employeePersonalDetailRepository.findAllUpcomingBirthday(currrentDate, futureDate,pageable);
-        } else {
-            return employeePersonalDetailRepository.findTop3(currrentDate, futureDate,limit, pageable);
-        }
+            employeePersonalDetailPage = employeePersonalDetailRepository.findAllUpcomingBirthday(currrentDate, futureDate, pageable);
 
+            System.out.println(employeePersonalDetailPage);
+            employeePersonalDetailPage.forEach(personalDetail -> {
+                Employee employee = null;
+                employee = employeeRepository.findById(personalDetail.getEmpId()).get();
+                personalDetail.setEmployee(employee);
+                System.out.println(personalDetail);
+            });
+
+//            return employeePersonalDetailPage;
+        }
+        return employeePersonalDetailPage;
     }
 
 
     public EmployeeManager getEmployeeById(Long employeeId) {
         Employee employee;
         Employee manager;
+        EmployeePersonalDetail employeePersonalDetail = null;
 
-        employee=employeeRepository.findById(employeeId).get();
-//        System.out.println("hdjffffffffffdj" +employee.getManagerId());
-        manager= employeeRepository.findById(employee.getManagerId()).get();
-//        System.out.println("hdjffffffffffdj" +employee);
-        System.out.println("manager"+ manager);
+        employee = employeeRepository.findById(employeeId).get();
+        employeePersonalDetail = employeePersonalDetailRepository.findById(employee.getPersonalDetailId()).get();
+        employee.setEmployeePersonalDetail(employeePersonalDetail);
+        manager = employeeRepository.findById(employee.getManagerId()).get();
+
+        System.out.println("manager" + manager);
         EmployeeManager employeeManager = new EmployeeManager();
         employeeManager.setEmployee(employee);
         employeeManager.setManager(manager);
-        System.out.println("smkskdskmks"+employeeManager);
+        System.out.println("smkskdskmks" + employeeManager);
 
         return employeeManager;
     }

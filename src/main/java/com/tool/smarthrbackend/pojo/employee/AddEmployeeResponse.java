@@ -10,6 +10,7 @@ public class AddEmployeeResponse {
 
     Long generatedEmpId;
     Long generatedTmpOtp;
+    String returnMsg;
 
 
 }

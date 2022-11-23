@@ -9,7 +9,6 @@ import com.tool.smarthrbackend.pojo.employee.EmployeeManager;
 import com.tool.smarthrbackend.pojo.employee.checkincheckout.EmployeeCheckInCheckOutRequest;
 import com.tool.smarthrbackend.pojo.login.EmployeeLoginRequest;
 import com.tool.smarthrbackend.pojo.login.EmployeeLoginResponse;
-import com.tool.smarthrbackend.repository.jpa.employee.EmployeeProfessionalDetailRepository;
 import com.tool.smarthrbackend.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -57,7 +56,7 @@ public class  EmployeeController {
         }
     }
 
-
+//new employee add
     @PostMapping(path = "/addEmplyeeRequest")
     public ResponseEntity<?> addEmplyeeRequest(@RequestBody AddEmployeeRequest addEmployeeRequest)
             throws JsonProcessingException {
@@ -80,6 +79,31 @@ public class  EmployeeController {
             return ResponseEntity.ok().headers(responseHeaders).body(addEmployeeResponse);
         }
     }
+
+//    change the details of Existing EMployee
+@PutMapping(path = "/updateEmplyeeRequest")
+public ResponseEntity<?> updateEmplyeeRequest(@RequestParam ("employee_id") Long employeeId,
+                                               @RequestBody AddEmployeeRequest addEmployeeRequest)
+        throws JsonProcessingException {
+    System.out.println("Inside  addEmplyeeRequest");
+
+    HttpHeaders responseHeaders = new HttpHeaders();
+    AddEmployeeResponse updateEmployeeResponse = null;
+    responseHeaders.add("content-type", "application/json");
+    String errorMessage = "";
+    try {
+        updateEmployeeResponse = employeeService.updateEmployee(employeeId,addEmployeeRequest);
+        System.out.println("Sent response ===>" + updateEmployeeResponse);
+    } catch (Exception e) {
+        // TODO Auto-generated catch block
+        errorMessage = e.toString();
+    }
+    if (errorMessage != "") {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMessage);
+    } else {
+        return ResponseEntity.ok().headers(responseHeaders).body(updateEmployeeResponse);
+    }
+}
 
     @GetMapping(path = "/getEmployeesBySearchTerm")
     public ResponseEntity<?> getEmployeesBySearchTerm(@RequestParam("search_term") String searchTerm)

@@ -18,10 +18,10 @@ public interface EmployeeRepository extends CrudRepository<Employee, Long> {
 
     Optional<Employee> findByProfessionalEmailId(String professionalEmailId);
 
-    @Query("select e FROM Employee e where lower(e.name) like '%?1%'  or lower(e.middleName) like '%?1%' or lower(e.lastName) like '%?1%'")
+    @Query("select e FROM Employee e where lower(e.firstName) like '%?1%'  or lower(e.middleName) like '%?1%' or lower(e.lastName) like '%?1%'")
     List<Employee> findEmployeeBySearchString(String searchString);
 
-    List<Employee> findByNameContainingIgnoreCaseOrLastNameContainingIgnoreCase(String searchString,String searchString2);
+    List<Employee> findByFirstNameContainingIgnoreCaseOrLastNameContainingIgnoreCase(String searchString,String searchString2);
 
     @Override
     List<Employee> findAll();

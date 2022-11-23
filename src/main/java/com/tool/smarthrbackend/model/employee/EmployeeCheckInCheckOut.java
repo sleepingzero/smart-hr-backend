@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data
@@ -30,6 +31,9 @@ public class EmployeeCheckInCheckOut {
         @Column(name="status")
         Boolean status;
 
+        @Column(name = "date")
+        LocalDate date;
+
 
 
 
@@ -37,7 +41,25 @@ public class EmployeeCheckInCheckOut {
     public EmployeeCheckInCheckOut() {
     }
 
+    public EmployeeCheckInCheckOut(Long id, Integer employeeId, LocalDateTime checkInCheckOutTime, Boolean status, LocalDate date) {
+        this.id = id;
+        this.employeeId = employeeId;
+        this.checkInCheckOutTime = checkInCheckOutTime;
+        this.status = status;
+        this.date = date;
+    }
 
+    public void setEmployeeId(Integer employeeId) {
+        this.employeeId = employeeId;
+    }
+
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
 
     public Long getId() {
         return id;

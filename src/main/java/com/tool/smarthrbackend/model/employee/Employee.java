@@ -1,8 +1,7 @@
 package com.tool.smarthrbackend.model.employee;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.*;
+import com.tool.smarthrbackend.model.metadata.AttendanceShifts;
 import com.tool.smarthrbackend.model.metadata.Department;
 import com.tool.smarthrbackend.model.metadata.Role;
 import com.tool.smarthrbackend.model.domain.Domain;
@@ -29,8 +28,8 @@ public class Employee {
     @Column(name = "manager_id")
      Long managerId;
 
-    @Column(name = "name")
-    String name;
+    @Column(name = "first_name")
+    String firstName;
 
     @Column(name = "middle_name")
     String middleName;
@@ -40,6 +39,10 @@ public class Employee {
 
     @Column(name = "professional_email_id")
     String professionalEmailId;
+
+    @Column(name = "date_of_joining")
+    String dateOfJoining;
+
 
     @Column(name = "last_name")
     String lastName;
@@ -54,6 +57,10 @@ public class Employee {
     @JoinColumn(name = "dept_id")
     private Department department;
 
+    @ManyToOne
+    @JoinColumn(name = "shift_id")
+    private AttendanceShifts attendanceShifts;
+
 
     @ManyToOne
     @JoinColumn(name = "role_id")
@@ -64,16 +71,7 @@ public class Employee {
     private Long projectId;
 
 
-//    @ManyToOne(cascade=CascadeType.ALL)
-//    @JsonManagedReference
-//    @JoinColumn(name="manager_id")
-//    private Employee manager;
-//
-//    @OneToMany(mappedBy="manager")
-//    @JsonBackReference
-//    private Set<Employee> subordinates = new HashSet<Employee>();
-
-    @ManyToOne
+   @ManyToOne
     @JoinColumn(name = "designation_id")
     private Domain designation;
 
@@ -92,27 +90,39 @@ public class Employee {
     @JoinColumn(name = "emp_id", referencedColumnName = "id")
     private List<EmployeeProfessionalDetail> employeeProfessionalDetails;
 
-    @OneToOne(cascade = CascadeType.ALL)
+
+//    @OneToOne(cascade = CascadeType.ALL)
+//    @JoinColumn(name = "personal_detail_id")
+
+    @Column(name = "personal_detail_id")
+    Long personalDetailId;
+
+    @Transient
+    @JsonProperty
     public EmployeePersonalDetail employeePersonalDetail;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "family_detail_id")
     public EmployeeFamilyDetail employeeFamilyDetail;
 
+
+
     public Employee() {
     }
 
-    public Employee(Long id, Long managerId, String name, String middleName, String personalEmailId, String professionalEmailId, String lastName, Long phoneNumber, String empPassword, Department department, Role role, Long projectId, Domain designation, Long tmpPasswordOtp, List<EmployeeAddress> employeeAddresses, List<EmployeeEducation> employeeEducations, List<EmployeeProfessionalDetail> employeeProfessionalDetails, EmployeePersonalDetail employeePersonalDetail, EmployeeFamilyDetail employeeFamilyDetail) {
+    public Employee(Long id, Long managerId, String firstName, String middleName, String personalEmailId, String professionalEmailId, String dateOfJoining, String lastName, Long phoneNumber, String empPassword, Department department, AttendanceShifts attendanceShifts, Role role, Long projectId, Domain designation, Long tmpPasswordOtp, List<EmployeeAddress> employeeAddresses, List<EmployeeEducation> employeeEducations, List<EmployeeProfessionalDetail> employeeProfessionalDetails, Long personalDetailId, EmployeePersonalDetail employeePersonalDetail, EmployeeFamilyDetail employeeFamilyDetail) {
         this.id = id;
         this.managerId = managerId;
-        this.name = name;
+        this.firstName = firstName;
         this.middleName = middleName;
         this.personalEmailId = personalEmailId;
         this.professionalEmailId = professionalEmailId;
+        this.dateOfJoining = dateOfJoining;
         this.lastName = lastName;
         this.phoneNumber = phoneNumber;
         this.empPassword = empPassword;
         this.department = department;
+        this.attendanceShifts = attendanceShifts;
         this.role = role;
         this.projectId = projectId;
         this.designation = designation;
@@ -120,16 +130,9 @@ public class Employee {
         this.employeeAddresses = employeeAddresses;
         this.employeeEducations = employeeEducations;
         this.employeeProfessionalDetails = employeeProfessionalDetails;
+        this.personalDetailId = personalDetailId;
         this.employeePersonalDetail = employeePersonalDetail;
         this.employeeFamilyDetail = employeeFamilyDetail;
-    }
-
-    public Long getManagerId() {
-        return managerId;
-    }
-
-    public void setManagerId(Long managerId) {
-        this.managerId = managerId;
     }
 
     public Long getId() {
@@ -140,20 +143,20 @@ public class Employee {
         this.id = id;
     }
 
-    public EmployeeFamilyDetail getEmployeeFamilyDetail() {
-        return employeeFamilyDetail;
+    public Long getManagerId() {
+        return managerId;
     }
 
-    public void setEmployeeFamilyDetail(EmployeeFamilyDetail employeeFamilyDetail) {
-        this.employeeFamilyDetail = employeeFamilyDetail;
+    public void setManagerId(Long managerId) {
+        this.managerId = managerId;
     }
 
-    public String getName() {
-        return name;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
     public String getMiddleName() {
@@ -178,6 +181,14 @@ public class Employee {
 
     public void setProfessionalEmailId(String professionalEmailId) {
         this.professionalEmailId = professionalEmailId;
+    }
+
+    public String getDateOfJoining() {
+        return dateOfJoining;
+    }
+
+    public void setDateOfJoining(String dateOfJoining) {
+        this.dateOfJoining = dateOfJoining;
     }
 
     public String getLastName() {
@@ -210,6 +221,14 @@ public class Employee {
 
     public void setDepartment(Department department) {
         this.department = department;
+    }
+
+    public AttendanceShifts getAttendanceShifts() {
+        return attendanceShifts;
+    }
+
+    public void setAttendanceShifts(AttendanceShifts attendanceShifts) {
+        this.attendanceShifts = attendanceShifts;
     }
 
     public Role getRole() {
@@ -268,11 +287,27 @@ public class Employee {
         this.employeeProfessionalDetails = employeeProfessionalDetails;
     }
 
+    public Long getPersonalDetailId() {
+        return personalDetailId;
+    }
+
+    public void setPersonalDetailId(Long personalDetailId) {
+        this.personalDetailId = personalDetailId;
+    }
+
     public EmployeePersonalDetail getEmployeePersonalDetail() {
         return employeePersonalDetail;
     }
 
     public void setEmployeePersonalDetail(EmployeePersonalDetail employeePersonalDetail) {
         this.employeePersonalDetail = employeePersonalDetail;
+    }
+
+    public EmployeeFamilyDetail getEmployeeFamilyDetail() {
+        return employeeFamilyDetail;
+    }
+
+    public void setEmployeeFamilyDetail(EmployeeFamilyDetail employeeFamilyDetail) {
+        this.employeeFamilyDetail = employeeFamilyDetail;
     }
 }

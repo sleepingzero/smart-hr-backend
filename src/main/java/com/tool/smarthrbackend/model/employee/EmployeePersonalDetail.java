@@ -1,6 +1,8 @@
 package com.tool.smarthrbackend.model.employee;
+
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.ToString;
 
@@ -8,7 +10,7 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Date;
 
-@Data
+
 @Entity
 @Table(name = "employee_personal_details")
 @ToString
@@ -19,15 +21,13 @@ public class EmployeePersonalDetail {
     @Column(name = "id")
     Long id;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "emp_id")
-    public Employee employee;
+    @Column(name = "emp_id")
+    Long empId;
 
-//    @JsonBackReference // this for child to avoid infinite recursion
-//    @JoinColumn(name = "emp_id") // A table foreign key in B table
-////    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-//    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-//    Employee employee;
+    @Transient
+    @JsonProperty
+
+    Employee employee;
 
     @Column(name = "date_of_birth")
     LocalDate dateOfBirth;
@@ -47,8 +47,9 @@ public class EmployeePersonalDetail {
     public EmployeePersonalDetail() {
     }
 
-    public EmployeePersonalDetail(Long id, Employee employee, LocalDate dateOfBirth, String gender, String maritalStatus, String bloodGroup, String nationality) {
+    public EmployeePersonalDetail(Long id, Long empId, Employee employee, LocalDate dateOfBirth, String gender, String maritalStatus, String bloodGroup, String nationality) {
         this.id = id;
+        this.empId = empId;
         this.employee = employee;
         this.dateOfBirth = dateOfBirth;
         this.gender = gender;
@@ -63,6 +64,14 @@ public class EmployeePersonalDetail {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getEmpId() {
+        return empId;
+    }
+
+    public void setEmpId(Long empId) {
+        this.empId = empId;
     }
 
     public Employee getEmployee() {

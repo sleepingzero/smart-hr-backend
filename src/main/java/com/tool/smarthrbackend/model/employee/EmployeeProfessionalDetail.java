@@ -25,12 +25,8 @@ public class EmployeeProfessionalDetail {
     @Column(name = "designation")
     String designation;
 
-    @Column(name = "role1")
-    String role1;
-    @Column(name = "role2")
-    String role2;
-    @Column(name = "role3")
-    String role3;
+    @Column(name = "roles_responsibility")
+    String roleAndResponsibility;
 
     @Column(name = "skill")
     String skill;
@@ -57,14 +53,12 @@ public class EmployeeProfessionalDetail {
     public EmployeeProfessionalDetail() {
     }
 
-    public EmployeeProfessionalDetail(Long id, Integer empId, String company, String designation, String role1, String role2, String role3, String skill, Date startDate, Date endDate, Integer city, Integer state, Integer country, String pincode) {
+    public EmployeeProfessionalDetail(Long id, Integer empId, String company, String designation, String roleAndResponsibility, String skill, Date startDate, Date endDate, Integer city, Integer state, Integer country, String pincode) {
         this.id = id;
         this.empId = empId;
         this.company = company;
         this.designation = designation;
-        this.role1 = role1;
-        this.role2 = role2;
-        this.role3 = role3;
+        this.roleAndResponsibility = roleAndResponsibility;
         this.skill = skill;
         this.startDate = startDate;
         this.endDate = endDate;
@@ -106,28 +100,12 @@ public class EmployeeProfessionalDetail {
         this.designation = designation;
     }
 
-    public String getRole1() {
-        return role1;
+    public String getRoleAndResponsibility() {
+        return roleAndResponsibility;
     }
 
-    public void setRole1(String role1) {
-        this.role1 = role1;
-    }
-
-    public String getRole2() {
-        return role2;
-    }
-
-    public void setRole2(String role2) {
-        this.role2 = role2;
-    }
-
-    public String getRole3() {
-        return role3;
-    }
-
-    public void setRole3(String role3) {
-        this.role3 = role3;
+    public void setRoleAndResponsibility(String roleAndResponsibility) {
+        this.roleAndResponsibility = roleAndResponsibility;
     }
 
     public String getSkill() {

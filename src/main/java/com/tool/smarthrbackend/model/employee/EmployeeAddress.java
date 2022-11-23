@@ -29,14 +29,9 @@ import javax.persistence.*;
         @Column(name = "emp_id")
         Integer empId;
 
-        @Column(name = "address_line1")
-        String addressLine1;
+        @Column(name = "address_line")
+        String addressLine;
 
-        @Column(name = "address_line2")
-        String addressLine2;
-
-        @Column(name = "address_line3")
-        String addressLine3;
 
         @Column(name = "city")
         Integer city;
@@ -56,25 +51,15 @@ import javax.persistence.*;
         public EmployeeAddress() {
         }
 
-        public EmployeeAddress(Long id, Integer addressType, Integer emp_id, String addressLine1, String addressLine2, String addressLine3, Integer city, Integer state, Integer country, String pincode) {
+        public EmployeeAddress(Long id, Integer addressType, Integer empId, String addressLine, Integer city, Integer state, Integer country, String pincode) {
             this.id = id;
             this.addressType = addressType;
             this.empId = empId;
-            this.addressLine1 = addressLine1;
-            this.addressLine2 = addressLine2;
-            this.addressLine3 = addressLine3;
+            this.addressLine = addressLine;
             this.city = city;
             this.state = state;
             this.country = country;
             this.pincode = pincode;
-        }
-
-        public Integer getEmpId() {
-            return empId;
-        }
-
-        public void setEmpId(Integer empId) {
-            this.empId = empId;
         }
 
         public Long getId() {
@@ -93,28 +78,20 @@ import javax.persistence.*;
             this.addressType = addressType;
         }
 
-        public String getAddressLine1() {
-            return addressLine1;
+        public Integer getEmpId() {
+            return empId;
         }
 
-        public void setAddressLine1(String addressLine1) {
-            this.addressLine1 = addressLine1;
+        public void setEmpId(Integer empId) {
+            this.empId = empId;
         }
 
-        public String getAddressLine2() {
-            return addressLine2;
+        public String getAddressLine() {
+            return addressLine;
         }
 
-        public void setAddressLine2(String addressLine2) {
-            this.addressLine2 = addressLine2;
-        }
-
-        public String getAddressLine3() {
-            return addressLine3;
-        }
-
-        public void setAddressLine3(String addressLine3) {
-            this.addressLine3 = addressLine3;
+        public void setAddressLine(String addressLine) {
+            this.addressLine = addressLine;
         }
 
         public Integer getCity() {
