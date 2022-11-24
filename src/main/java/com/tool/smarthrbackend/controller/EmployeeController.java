@@ -20,14 +20,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
-
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.List;
 
 @RestController
 @RequestMapping("/smarthr/employee")
-public class  EmployeeController {
+public class EmployeeController {
 
     @Autowired
     EmployeeService employeeService;
@@ -40,11 +39,11 @@ public class  EmployeeController {
         System.out.println("Inside  addEmplyeeRequest");
 
         HttpHeaders responseHeaders = new HttpHeaders();
-        EmployeeManager employeeManager= null;
+        EmployeeManager employeeManager = null;
         responseHeaders.add("content-type", "application/json");
         String errorMessage = "";
         try {
-            employeeManager= employeeService.getEmployeeById(employeeId);
+            employeeManager = employeeService.getEmployeeById(employeeId);
         } catch (Exception e) {
             // TODO Auto-generated catch block
             errorMessage = e.toString();
@@ -56,7 +55,7 @@ public class  EmployeeController {
         }
     }
 
-//new employee add
+    //new employee add
     @PostMapping(path = "/addEmplyeeRequest")
     public ResponseEntity<?> addEmplyeeRequest(@RequestBody AddEmployeeRequest addEmployeeRequest)
             throws JsonProcessingException {
@@ -80,30 +79,30 @@ public class  EmployeeController {
         }
     }
 
-//    change the details of Existing EMployee
-@PutMapping(path = "/updateEmplyeeRequest")
-public ResponseEntity<?> updateEmplyeeRequest(@RequestParam ("employee_id") Long employeeId,
-                                               @RequestBody AddEmployeeRequest addEmployeeRequest)
-        throws JsonProcessingException {
-    System.out.println("Inside  addEmplyeeRequest");
+    //    change the details of Existing EMployee
+    @PutMapping(path = "/updateEmplyeeRequest")
+    public ResponseEntity<?> updateEmplyeeRequest(@RequestParam("employee_id") Long employeeId,
+                                                  @RequestBody AddEmployeeRequest addEmployeeRequest)
+            throws JsonProcessingException {
+        System.out.println("Inside  addEmplyeeRequest");
 
-    HttpHeaders responseHeaders = new HttpHeaders();
-    AddEmployeeResponse updateEmployeeResponse = null;
-    responseHeaders.add("content-type", "application/json");
-    String errorMessage = "";
-    try {
-        updateEmployeeResponse = employeeService.updateEmployee(employeeId,addEmployeeRequest);
-        System.out.println("Sent response ===>" + updateEmployeeResponse);
-    } catch (Exception e) {
-        // TODO Auto-generated catch block
-        errorMessage = e.toString();
+        HttpHeaders responseHeaders = new HttpHeaders();
+        AddEmployeeResponse updateEmployeeResponse = null;
+        responseHeaders.add("content-type", "application/json");
+        String errorMessage = "";
+        try {
+            updateEmployeeResponse = employeeService.updateEmployee(employeeId, addEmployeeRequest);
+            System.out.println("Sent response ===>" + updateEmployeeResponse);
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            errorMessage = e.toString();
+        }
+        if (errorMessage != "") {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMessage);
+        } else {
+            return ResponseEntity.ok().headers(responseHeaders).body(updateEmployeeResponse);
+        }
     }
-    if (errorMessage != "") {
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMessage);
-    } else {
-        return ResponseEntity.ok().headers(responseHeaders).body(updateEmployeeResponse);
-    }
-}
 
     @GetMapping(path = "/getEmployeesBySearchTerm")
     public ResponseEntity<?> getEmployeesBySearchTerm(@RequestParam("search_term") String searchTerm)
@@ -167,7 +166,8 @@ public ResponseEntity<?> updateEmplyeeRequest(@RequestParam ("employee_id") Long
         }
 
     }
-// this end point to get all the  list of  employee check_in and check_out details
+
+    // this end point to get all the  list of  employee check_in and check_out details
     @GetMapping(path = "/getEmployeeCheckInCheckOutAllById/{empid}")
     public List<EmployeeCheckInCheckOut> getEmployeesCheckInCheckOutId(@PathVariable("empid") Integer employeeId)
             throws JsonProcessingException, ParseException {
@@ -176,12 +176,12 @@ public ResponseEntity<?> updateEmplyeeRequest(@RequestParam ("employee_id") Long
 
     }
 
-//    this is end point with date if date is null then it show according to current date
+    //    this is end point with date if date is null then it show according to current date
     @GetMapping(path = "/getEmployeeCheckInCheckOutByDate")
-    public ResponseEntity<?> getEmployeeCheckInCheckOutByDate(@RequestParam(value = "date", required = false ) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
+    public ResponseEntity<?> getEmployeeCheckInCheckOutByDate(@RequestParam(value = "date", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
                                                               @RequestParam("employeeId") Integer employeeId)
             throws JsonProcessingException, ParseException {
-         System.out.println(date+" controller");
+        System.out.println(date + " controller");
 
         List<EmployeeCheckInCheckOut> employeeCheckInCheckOuts = null;
         HttpHeaders responseHeaders = new HttpHeaders();
@@ -204,35 +204,34 @@ public ResponseEntity<?> updateEmplyeeRequest(@RequestParam ("employee_id") Long
     //    this is end point with  get current status
     @GetMapping(path = "/getEmployeeCheckInCheckOutstatus/{empid}")
     public ResponseEntity<?> getEmployeesCheckInCheckOutStatus(@PathVariable("empid") Integer employeeId)
-            throws JsonProcessingException{
-        EmployeeCheckInCheckOut employeeCheckInCheckOut=null;
+            throws JsonProcessingException {
+        EmployeeCheckInCheckOut employeeCheckInCheckOut = null;
 
-        HttpHeaders responseHeaders= new HttpHeaders();
-        responseHeaders.add("content-type","application/json");
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.add("content-type", "application/json");
         String errorMessage = "";
 
         try {
-            employeeCheckInCheckOut=employeeService.getEmployeeCheckInCheckOutStatus(employeeId);
+            employeeCheckInCheckOut = employeeService.getEmployeeCheckInCheckOutStatus(employeeId);
+        } catch (Exception e) {
+            errorMessage = e.toString();
         }
-        catch (Exception e){
-            errorMessage=e.toString();
-        }
-        if(errorMessage !=""){
+        if (errorMessage != "") {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMessage);
-        }
-        else {
-            return  ResponseEntity.ok().body(employeeCheckInCheckOut);
+        } else {
+            return ResponseEntity.ok().body(employeeCheckInCheckOut);
         }
 
     }
-//APi for update EMployee  Addresses if not present than add
+
+    //APi for update EMployee  Addresses if not present than add
     @PutMapping(value = "/updateEmployeeAddress")
 
-    public  ResponseEntity<?>  updateAddress(@RequestBody List<EmployeeAddress> employeeAddresses)
-    throws JsonProcessingException{
+    public ResponseEntity<?> updateAddress(@RequestBody List<EmployeeAddress> employeeAddresses)
+            throws JsonProcessingException {
 
         HttpHeaders responseHeaders = new HttpHeaders();
-        List<EmployeeAddress> employeeAddressList= null;
+        List<EmployeeAddress> employeeAddressList = null;
         responseHeaders.add("content-type", "application/json");
         String errorMessage = "";
         try {
@@ -252,17 +251,16 @@ public ResponseEntity<?> updateEmplyeeRequest(@RequestParam ("employee_id") Long
 //    Api for update education details of student if not present than Add
 
     @PutMapping(value = "/updateEmployeeEducation")
-    public ResponseEntity<? >updateEducation(@RequestBody List<EmployeeEducation> employeeEducations)
-    throws JsonProcessingException{
+    public ResponseEntity<?> updateEducation(@RequestBody List<EmployeeEducation> employeeEducations)
+            throws JsonProcessingException {
         HttpHeaders responseHeaders = new HttpHeaders();
-        List<EmployeeEducation> employeeEducationList=null;
+        List<EmployeeEducation> employeeEducationList = null;
         responseHeaders.add("content-type", "application/json");
-        String errorMessage="";
-        try{
-                    employeeService.updateEducation(employeeEducations);
-        }
-        catch(Exception e){
-            errorMessage=e.toString();
+        String errorMessage = "";
+        try {
+            employeeService.updateEducation(employeeEducations);
+        } catch (Exception e) {
+            errorMessage = e.toString();
         }
         if (errorMessage != "") {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMessage);
@@ -272,19 +270,18 @@ public ResponseEntity<?> updateEmplyeeRequest(@RequestParam ("employee_id") Long
 
     }
 
-//end point for update employee professional detail
+    //end point for update employee professional detail
     @PutMapping(value = "/updateEmployeeProfessionalDetail")
-    public ResponseEntity<? >updateProfessionalDetail(@RequestBody List<EmployeeProfessionalDetail> employeeProfessionalDetails )
-            throws JsonProcessingException{
+    public ResponseEntity<?> updateProfessionalDetail(@RequestBody List<EmployeeProfessionalDetail> employeeProfessionalDetails)
+            throws JsonProcessingException {
         HttpHeaders responseHeaders = new HttpHeaders();
 
         responseHeaders.add("content-type", "application/json");
-        String errorMessage="";
-        try{
+        String errorMessage = "";
+        try {
             employeeService.updateProfessionalDetail(employeeProfessionalDetails);
-        }
-        catch(Exception e){
-            errorMessage=e.toString();
+        } catch (Exception e) {
+            errorMessage = e.toString();
         }
         if (errorMessage != "") {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMessage);
@@ -296,18 +293,18 @@ public ResponseEntity<?> updateEmplyeeRequest(@RequestParam ("employee_id") Long
 
 
     //  get ALL upcoming Birthday or limited if paramater is 3 given list is give top 3 or else all list
-    @PostMapping (value ="/upcominBirthday")
-    public  ResponseEntity<?>  getPersonalDetail(@RequestParam(value = "limit",required = false)Integer limit,
-                                                    @RequestBody PaginationModel paginationModel){
-        Page<EmployeePersonalDetail> employeePersonalDetails=null;
+    @PostMapping(value = "/upcominBirthday")
+    public ResponseEntity<?> getPersonalDetail(@RequestParam(value = "limit", required = false) Integer limit,
+                                               @RequestBody PaginationModel paginationModel) {
+        Page<EmployeePersonalDetail> employeePersonalDetails = null;
 
         HttpHeaders responseHeaders = new HttpHeaders();
-       responseHeaders.add("content-type", "application/json");
-        String errorMessage="";
-        try{
-            employeePersonalDetails=employeeService.getUpcomingBirthday(limit,paginationModel);
-        }catch ( Exception e){
-            errorMessage=e.toString();
+        responseHeaders.add("content-type", "application/json");
+        String errorMessage = "";
+        try {
+            employeePersonalDetails = employeeService.getUpcomingBirthday(limit, paginationModel);
+        } catch (Exception e) {
+            errorMessage = e.toString();
         }
         if (errorMessage != "") {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMessage);
@@ -315,6 +312,29 @@ public ResponseEntity<?> updateEmplyeeRequest(@RequestParam ("employee_id") Long
             return ResponseEntity.ok().headers(responseHeaders).body(employeePersonalDetails);
         }
 
+    }
+
+    @GetMapping(value = "/team")
+    public ResponseEntity<?> getTeamList(@RequestParam("manager_id") Long managerId) throws JsonProcessingException {
+
+        List<Employee> employeeList = null;
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.add("content-type", "application/json");
+        String errorMessage = "";
+
+        try {
+            employeeList = employeeService.getTeamList(managerId);
         }
+        catch (Exception e){
+            errorMessage=e.toString();
+        }
+       if (!errorMessage.equalsIgnoreCase("")){
+           return  ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMessage);
+       }
+       else {
+           return ResponseEntity.ok().headers(responseHeaders).body(employeeList);
+       }
+
+    }
 
 }

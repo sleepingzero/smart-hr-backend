@@ -18,6 +18,8 @@ public class AddEmployeeRequest {
     String professionalEmailId;
     String lastName;
     Long departmentId;
+
+    Long attendanceShiftId;
     Long employeeRoleId;
     Long designationId;
     Boolean isFirstTimeCreation;
@@ -81,6 +83,14 @@ public class AddEmployeeRequest {
 
     public void setDepartmentId(Long departmentId) {
         this.departmentId = departmentId;
+    }
+
+    public Long getAttendanceShiftId() {
+        return attendanceShiftId;
+    }
+
+    public void setAttendanceShiftId(Long attendanceShiftId) {
+        this.attendanceShiftId = attendanceShiftId;
     }
 
     public Long getEmployeeRoleId() {

@@ -1,12 +1,14 @@
 package com.tool.smarthrbackend.model.metadata;
 
 import lombok.Data;
+import lombok.ToString;
 
 import javax.persistence.*;
 
 @Data
 @Entity
 @Table(name ="attendance_shifts")
+@ToString
 public class AttendanceShifts {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)

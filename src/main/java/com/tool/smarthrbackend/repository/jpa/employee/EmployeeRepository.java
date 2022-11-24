@@ -25,4 +25,6 @@ public interface EmployeeRepository extends CrudRepository<Employee, Long> {
 
     @Override
     List<Employee> findAll();
+
+    List<Employee>findAllByManagerId(Long managerId);
 }

@@ -3,6 +3,7 @@ package com.tool.smarthrbackend.service;
 import com.tool.smarthrbackend.model.common.PaginationModel;
 import com.tool.smarthrbackend.model.domain.Domain;
 import com.tool.smarthrbackend.model.employee.*;
+import com.tool.smarthrbackend.model.metadata.AttendanceShifts;
 import com.tool.smarthrbackend.model.metadata.Department;
 import com.tool.smarthrbackend.pojo.employee.AddEmployeeRequest;
 import com.tool.smarthrbackend.pojo.employee.AddEmployeeResponse;
@@ -12,6 +13,7 @@ import com.tool.smarthrbackend.pojo.login.EmployeeLoginRequest;
 import com.tool.smarthrbackend.pojo.login.EmployeeLoginResponse;
 import com.tool.smarthrbackend.repository.jpa.domain.DomainRepository;
 import com.tool.smarthrbackend.repository.jpa.employee.*;
+import com.tool.smarthrbackend.repository.jpa.metadata.AttendanceShiftsRepository;
 import com.tool.smarthrbackend.repository.jpa.metadata.DepartmentRepository;
 import com.tool.smarthrbackend.repository.jpa.metadata.RoleRepository;
 import org.springframework.beans.BeanUtils;
@@ -60,6 +62,9 @@ public class EmployeeService {
 
     @Autowired
     EmployeeFamilyDetailRepository employeeFamilyDetailRepository;
+
+    @Autowired
+    AttendanceShiftsRepository attendanceShiftsRepository;
 
     private Pattern pattern = Pattern.compile("-?\\d+(\\.\\d+)?");
 
@@ -140,6 +145,10 @@ public class EmployeeService {
         if (!Objects.isNull(addEmployeeRequest.getDesignationId())) {
             Domain domain = domainRepository.findById(addEmployeeRequest.getDesignationId()).get();
             emp.setDesignation(domain);
+        }
+        if(!Objects.isNull(addEmployeeRequest.getAttendanceShiftId())){
+            AttendanceShifts shifts=attendanceShiftsRepository.findById(addEmployeeRequest.getAttendanceShiftId()).get();
+            emp.setAttendanceShifts(shifts);
         }
         employeePersonalDetail = addEmployeeRequest.getEmployeePersonalDetail();
         emp.setEmployeeAddresses(addEmployeeRequest.getEmployeeAddresses());
@@ -412,4 +421,8 @@ public class EmployeeService {
     }
 
 
+    public List<Employee> getTeamList(Long managerId) {
+        
+   return employeeRepository.findAllByManagerId(managerId);
+    }
 }
