@@ -1,5 +1,6 @@
 package com.tool.smarthrbackend.service;
 
+import com.tool.smarthrbackend.model.attendance.Attendance;
 import com.tool.smarthrbackend.model.common.PaginationModel;
 import com.tool.smarthrbackend.model.domain.Domain;
 import com.tool.smarthrbackend.model.employee.*;
@@ -11,6 +12,7 @@ import com.tool.smarthrbackend.pojo.employee.EmployeeManager;
 import com.tool.smarthrbackend.pojo.employee.checkincheckout.EmployeeCheckInCheckOutRequest;
 import com.tool.smarthrbackend.pojo.login.EmployeeLoginRequest;
 import com.tool.smarthrbackend.pojo.login.EmployeeLoginResponse;
+import com.tool.smarthrbackend.repository.jpa.attendance.AttendanceRepository;
 import com.tool.smarthrbackend.repository.jpa.domain.DomainRepository;
 import com.tool.smarthrbackend.repository.jpa.employee.*;
 import com.tool.smarthrbackend.repository.jpa.metadata.AttendanceShiftsRepository;
@@ -65,6 +67,10 @@ public class EmployeeService {
 
     @Autowired
     AttendanceShiftsRepository attendanceShiftsRepository;
+
+
+    @Autowired
+    AttendanceRepository attendanceRepository;
 
     private Pattern pattern = Pattern.compile("-?\\d+(\\.\\d+)?");
 
@@ -235,11 +241,38 @@ public class EmployeeService {
 
     public EmployeeCheckInCheckOutRequest addCheckin(EmployeeCheckInCheckOutRequest employeeCheckInCheckOutRequest) {
         EmployeeCheckInCheckOut employeeCheckInCheckOut = new EmployeeCheckInCheckOut();
-        employeeCheckInCheckOut.setEmployeeId(employeeCheckInCheckOutRequest.getEmployeeId());
+
+        Long empId= employeeCheckInCheckOutRequest.getEmployeeId();
+        boolean checkIn= employeeCheckInCheckOutRequest.getStatus();
+
+        LocalDate dateToday= LocalDate.now();
+        boolean isExistAttendance;
+
+        employeeCheckInCheckOut.setEmployeeId(empId);
         employeeCheckInCheckOut.setStatus(employeeCheckInCheckOutRequest.getStatus());
         employeeCheckInCheckOut.setCheckInCheckOutTime(LocalDateTime.now());
+        employeeCheckInCheckOut.setDate(dateToday);
+
+//        if employee check iin then check attendance for today attendance not present than add
+        if (checkIn){
+            System.out.println("check in check in check inn innnnnnnnnn");
+            isExistAttendance= attendanceRepository.existsByEmployeeIdAndDate(empId,dateToday);
+            if (!isExistAttendance){
+                Attendance attendance = new Attendance();
+                Employee employee;
+                AttendanceShifts attendanceShifts;
+                employee=employeeRepository.findById(empId).get();
+                attendance.setEmployee(employee);
+                attendanceShifts=employee.getAttendanceShifts();
+                attendance.setAttendanceShifts(attendanceShifts);
+                attendance.setDate(dateToday);
+                System.out.println(attendance);
+                attendanceRepository.save(attendance);
+            }
+        }
+
         employeeCheckInCheckOutRepository.save(employeeCheckInCheckOut);
-        return employeeCheckInCheckOutRequest;
+         return employeeCheckInCheckOutRequest;
     }
 
     public List<EmployeeCheckInCheckOut> getEmployeeCheckInCheckOutAllById(Integer employeeId) {

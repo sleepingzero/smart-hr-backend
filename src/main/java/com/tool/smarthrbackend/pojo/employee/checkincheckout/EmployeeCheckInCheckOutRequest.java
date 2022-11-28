@@ -2,14 +2,14 @@ package com.tool.smarthrbackend.pojo.employee.checkincheckout;
 
 public class EmployeeCheckInCheckOutRequest
 {
-Integer employeeId;
+Long employeeId;
 Boolean status;
 
-    public Integer getEmployeeId() {
+    public Long getEmployeeId() {
         return employeeId;
     }
 
-    public void setEmployeeId(Integer employeeId) {
+    public void setEmployeeId(Long employeeId) {
         this.employeeId = employeeId;
     }
 

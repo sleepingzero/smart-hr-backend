@@ -22,7 +22,7 @@ public class EmployeeCheckInCheckOut {
 
 
         @Column(name = "emp_id")
-        Integer employeeId;
+     Long employeeId;
 
        @Column(name="check_in_check_out_time")
 
@@ -41,7 +41,7 @@ public class EmployeeCheckInCheckOut {
     public EmployeeCheckInCheckOut() {
     }
 
-    public EmployeeCheckInCheckOut(Long id, Integer employeeId, LocalDateTime checkInCheckOutTime, Boolean status, LocalDate date) {
+    public EmployeeCheckInCheckOut(Long id, Long employeeId, LocalDateTime checkInCheckOutTime, Boolean status, LocalDate date) {
         this.id = id;
         this.employeeId = employeeId;
         this.checkInCheckOutTime = checkInCheckOutTime;
@@ -49,9 +49,7 @@ public class EmployeeCheckInCheckOut {
         this.date = date;
     }
 
-    public void setEmployeeId(Integer employeeId) {
-        this.employeeId = employeeId;
-    }
+
 
     public LocalDate getDate() {
         return date;
@@ -69,11 +67,11 @@ public class EmployeeCheckInCheckOut {
         this.id = id;
     }
 
-    public int getEmployeeId() {
+    public Long getEmployeeId() {
         return employeeId;
     }
 
-    public void setEmployeeId(int employeeId) {
+    public void setEmployeeId(Long employeeId) {
         this.employeeId = employeeId;
     }
 
