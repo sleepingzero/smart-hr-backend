@@ -30,4 +30,9 @@ public interface EmployeeCheckInCheckOutRepository extends JpaRepository<Employe
 //List<Entity> findByCreationDate(LocalDate date);
 //     select * from main.employee_checkin_checkout
 //     where date(check_in_check_out_time)='2022-08-03' And emp_id=8  ;
+
+
+    EmployeeCheckInCheckOut findTop1ByEmployeeIdAndStatusOrderByIdDesc(Long empid, boolean Status);
+
+    List<EmployeeCheckInCheckOut> findByemployeeIdAndDateOrderByCheckInCheckOutTime(Long empId , LocalDate date);
 }

@@ -34,6 +34,9 @@ public class EmployeeCheckInCheckOut {
         @Column(name = "date")
         LocalDate date;
 
+        @Column(name = "duration")
+        Integer workDuration;
+
 
 
 
@@ -41,22 +44,14 @@ public class EmployeeCheckInCheckOut {
     public EmployeeCheckInCheckOut() {
     }
 
-    public EmployeeCheckInCheckOut(Long id, Long employeeId, LocalDateTime checkInCheckOutTime, Boolean status, LocalDate date) {
+
+    public EmployeeCheckInCheckOut(Long id, Long employeeId, LocalDateTime checkInCheckOutTime, Boolean status, LocalDate date, Integer workDuration) {
         this.id = id;
         this.employeeId = employeeId;
         this.checkInCheckOutTime = checkInCheckOutTime;
         this.status = status;
         this.date = date;
-    }
-
-
-
-    public LocalDate getDate() {
-        return date;
-    }
-
-    public void setDate(LocalDate date) {
-        this.date = date;
+        this.workDuration = workDuration;
     }
 
     public Long getId() {
@@ -89,5 +84,21 @@ public class EmployeeCheckInCheckOut {
 
     public void setStatus(Boolean status) {
         this.status = status;
+    }
+
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
+
+    public Integer getWorkDuration() {
+        return workDuration;
+    }
+
+    public void setWorkDuration(Integer workDuration) {
+        this.workDuration = workDuration;
     }
 }

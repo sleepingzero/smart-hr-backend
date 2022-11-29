@@ -225,7 +225,7 @@ public class EmployeeController {
     }
 
     //APi for update EMployee  Addresses if not present than add
-    @PutMapping(value = "/updateEmployeeAddress")
+    @PutMapping(path = "/updateEmployeeAddress")
 
     public ResponseEntity<?> updateAddress(@RequestBody List<EmployeeAddress> employeeAddresses)
             throws JsonProcessingException {
@@ -250,7 +250,7 @@ public class EmployeeController {
 
 //    Api for update education details of student if not present than Add
 
-    @PutMapping(value = "/updateEmployeeEducation")
+    @PutMapping(path = "/updateEmployeeEducation")
     public ResponseEntity<?> updateEducation(@RequestBody List<EmployeeEducation> employeeEducations)
             throws JsonProcessingException {
         HttpHeaders responseHeaders = new HttpHeaders();
@@ -271,7 +271,7 @@ public class EmployeeController {
     }
 
     //end point for update employee professional detail
-    @PutMapping(value = "/updateEmployeeProfessionalDetail")
+    @PutMapping(path = "/updateEmployeeProfessionalDetail")
     public ResponseEntity<?> updateProfessionalDetail(@RequestBody List<EmployeeProfessionalDetail> employeeProfessionalDetails)
             throws JsonProcessingException {
         HttpHeaders responseHeaders = new HttpHeaders();
@@ -293,7 +293,7 @@ public class EmployeeController {
 
 
     //  get ALL upcoming Birthday or limited if paramater is 3 given list is give top 3 or else all list
-    @PostMapping(value = "/upcominBirthday")
+    @PostMapping(path = "/upcominBirthday")
     public ResponseEntity<?> getPersonalDetail(@RequestParam(value = "limit", required = false) Integer limit,
                                                @RequestBody PaginationModel paginationModel) {
         Page<EmployeePersonalDetail> employeePersonalDetails = null;
@@ -314,7 +314,7 @@ public class EmployeeController {
 
     }
 
-    @GetMapping(value = "/team")
+    @GetMapping(path = "/team")
     public ResponseEntity<?> getTeamList(@RequestParam("manager_id") Long managerId) throws JsonProcessingException {
 
         List<Employee> employeeList = null;
@@ -336,5 +336,7 @@ public class EmployeeController {
        }
 
     }
+
+
 
 }

@@ -28,6 +28,8 @@ import org.springframework.stereotype.Service;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.regex.Pattern;
 
@@ -270,6 +272,27 @@ public class EmployeeService {
                 attendanceRepository.save(attendance);
             }
         }
+        if (!checkIn){
+            System.out.println("check out out ");
+            EmployeeCheckInCheckOut lastCheckInDetail;
+            boolean statusSend=true;
+            lastCheckInDetail= employeeCheckInCheckOutRepository.findTop1ByEmployeeIdAndStatusOrderByIdDesc(empId,statusSend);
+            LocalDateTime lastcheckinDateTime= lastCheckInDetail.getCheckInCheckOutTime();
+            LocalDateTime checkOutDateTime= LocalDateTime.now();
+            long totalMinutes = ChronoUnit.MINUTES.between(lastcheckinDateTime, checkOutDateTime);
+            Integer total= Math.toIntExact(totalMinutes);
+//            long hours=totalMinutes/60;
+//            long mitute= totalMinutes%60;
+//            String str= hours+"."+mitute;
+//            double workDuration =Double.parseDouble(str);
+            if (total<123456789){
+                employeeCheckInCheckOut.setWorkDuration(total);
+            }
+            else {
+                employeeCheckInCheckOut.setWorkDuration(0);
+            }
+
+        }
 
         employeeCheckInCheckOutRepository.save(employeeCheckInCheckOut);
          return employeeCheckInCheckOutRequest;
@@ -458,4 +481,6 @@ public class EmployeeService {
         
    return employeeRepository.findAllByManagerId(managerId);
     }
+
+
 }

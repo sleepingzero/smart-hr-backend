@@ -2,6 +2,7 @@ package com.tool.smarthrbackend.model.attendance;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.tool.smarthrbackend.model.employee.Employee;
+import com.tool.smarthrbackend.model.employee.EmployeeCheckInCheckOut;
 import com.tool.smarthrbackend.model.metadata.AttendanceShifts;
 import lombok.Data;
 import lombok.ToString;
@@ -9,6 +10,7 @@ import lombok.ToString;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.List;
 
 
 @Data
@@ -27,6 +29,7 @@ public class Attendance {
     Long empId;
 
     @ManyToOne
+
     @JoinColumn(name = "emp_id", referencedColumnName = "id")
     Employee employee;
 
@@ -41,17 +44,33 @@ public class Attendance {
     @Column(name = "date")
     LocalDate date;
 
+    @Transient
+    @JsonProperty
+    @OneToMany
+    List<EmployeeCheckInCheckOut> employeeCheckInCheckOutList;
+
+
 
     public Attendance() {
     }
 
-    public Attendance(Long id, Long empId, Employee employee, Long shiftId, AttendanceShifts attendanceShifts, LocalDate date) {
+    public Attendance(Long id, Long empId, Employee employee, Long shiftId, AttendanceShifts attendanceShifts, LocalDate date, List<EmployeeCheckInCheckOut> employeeCheckInCheckOutList) {
         this.id = id;
         this.empId = empId;
         this.employee = employee;
         this.shiftId = shiftId;
         this.attendanceShifts = attendanceShifts;
         this.date = date;
+        this.employeeCheckInCheckOutList = employeeCheckInCheckOutList;
+    }
+
+
+    public List<EmployeeCheckInCheckOut> getEmployeeCheckInCheckOutList() {
+        return employeeCheckInCheckOutList;
+    }
+
+    public void setEmployeeCheckInCheckOutList(List<EmployeeCheckInCheckOut> employeeCheckInCheckOutList) {
+        this.employeeCheckInCheckOutList = employeeCheckInCheckOutList;
     }
 
     public Long getId() {
