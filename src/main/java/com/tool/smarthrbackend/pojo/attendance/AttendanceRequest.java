@@ -4,10 +4,15 @@ import java.time.LocalDate;
 import java.util.List;
 
 public class AttendanceRequest {
-    Long empId;
+
     List<Long> empIdList;
     LocalDate fromdate;
     LocalDate toDate;
+
+
+    Integer pageNo;
+    Integer pageSize;
+
 
 
     public List<Long> getEmpIdList() {
@@ -18,13 +23,6 @@ public class AttendanceRequest {
         this.empIdList = empIdList;
     }
 
-    public Long getEmpId() {
-        return empId;
-    }
-
-    public void setEmpId(Long empId) {
-        this.empId = empId;
-    }
 
     public LocalDate getFromdate() {
         return fromdate;
@@ -40,5 +38,22 @@ public class AttendanceRequest {
 
     public void setToDate(LocalDate toDate) {
         this.toDate = toDate;
+    }
+
+
+    public Integer getPageNo() {
+        return pageNo;
+    }
+
+    public void setPageNo(Integer pageNo) {
+        this.pageNo = pageNo;
+    }
+
+    public Integer getPageSize() {
+        return pageSize;
+    }
+
+    public void setPageSize(Integer pageSize) {
+        this.pageSize = pageSize;
     }
 }

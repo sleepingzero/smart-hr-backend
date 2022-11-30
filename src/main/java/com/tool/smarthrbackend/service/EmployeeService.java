@@ -298,25 +298,25 @@ public class EmployeeService {
          return employeeCheckInCheckOutRequest;
     }
 
-    public List<EmployeeCheckInCheckOut> getEmployeeCheckInCheckOutAllById(Integer employeeId) {
+    public List<EmployeeCheckInCheckOut> getEmployeeCheckInCheckOutAllById(Long employeeId) {
 
         return employeeCheckInCheckOutRepository.findAllByEmployeeId(employeeId);
 
     }
 
 
-    public List<EmployeeCheckInCheckOut> getEmployeeCheckInCheckOutByDate(LocalDate date, Integer employeeId) {
+    public List<EmployeeCheckInCheckOut> getEmployeeCheckInCheckOutByDate(LocalDate date, Long employeeId) {
         System.out.println(date);
         if (date == null) {
             LocalDate currentdate = LocalDate.now();
             date = currentdate;
         }
         System.out.println(date + " service");
-        return employeeCheckInCheckOutRepository.findAllByEmployeeIdAndDate(date, employeeId);
+        return employeeCheckInCheckOutRepository.findByEmployeeIdAndDateOrderByCheckInCheckOutTime(employeeId, date);
 
     }
 
-    public EmployeeCheckInCheckOut getEmployeeCheckInCheckOutStatus(Integer employeeId) {
+    public EmployeeCheckInCheckOut getEmployeeCheckInCheckOutStatus(Long employeeId) {
 
         return employeeCheckInCheckOutRepository.findTop1ByEmployeeIdOrderByCheckInCheckOutTimeDesc(employeeId);
     }

@@ -2,6 +2,7 @@ package com.tool.smarthrbackend.pojo.attendance;
 
 import com.tool.smarthrbackend.model.attendance.Attendance;
 import com.tool.smarthrbackend.model.employee.EmployeeCheckInCheckOut;
+import com.tool.smarthrbackend.model.metadata.AttendanceShifts;
 import lombok.Data;
 import lombok.ToString;
 
@@ -11,61 +12,40 @@ import java.util.List;
 @Data
 @ToString
 public class AttendanceResponse {
- Long empId;
+    Long AttendanceId;
+    Long EmployeeId;
+    Long ManagerId;
+    LocalDate date;
+    String firstName;
+    String LastName;
+    String MiddleName;
 
- LocalDate date;
- String empfirstName;
- String empMiddleName;
- String empLastName;
- Attendance attendance;
- List<EmployeeCheckInCheckOut> employeeCheckInCheckOutList;
+    Integer totalWorkHours;
+    AttendanceShifts attendanceShifts;
+    List<EmployeeCheckInCheckOut> employeeCheckInCheckOutList;
 
-    public String getEmpfirstName() {
-        return empfirstName;
+    public Long getAttendanceId() {
+        return AttendanceId;
     }
 
-    public void setEmpfirstName(String empfirstName) {
-        this.empfirstName = empfirstName;
+    public void setAttendanceId(Long attendanceId) {
+        AttendanceId = attendanceId;
     }
 
-    public String getEmpMiddleName() {
-        return empMiddleName;
+    public Long getEmployeeId() {
+        return EmployeeId;
     }
 
-    public void setEmpMiddleName(String empMiddleName) {
-        this.empMiddleName = empMiddleName;
+    public void setEmployeeId(Long employeeId) {
+        EmployeeId = employeeId;
     }
 
-    public String getEmpLastName() {
-        return empLastName;
+    public Long getManagerId() {
+        return ManagerId;
     }
 
-    public void setEmpLastName(String empLastName) {
-        this.empLastName = empLastName;
-    }
-
-    public Long getEmpId() {
-        return empId;
-    }
-
-    public void setEmpId(Long empId) {
-        this.empId = empId;
-    }
-
-      public Attendance getAttendance() {
-        return attendance;
-    }
-
-    public void setAttendance(Attendance attendance) {
-        this.attendance = attendance;
-    }
-
-    public List<EmployeeCheckInCheckOut> getEmployeeCheckInCheckOutList() {
-        return employeeCheckInCheckOutList;
-    }
-
-    public void setEmployeeCheckInCheckOutList(List<EmployeeCheckInCheckOut> employeeCheckInCheckOutList) {
-        this.employeeCheckInCheckOutList = employeeCheckInCheckOutList;
+    public void setManagerId(Long managerId) {
+        ManagerId = managerId;
     }
 
     public LocalDate getDate() {
@@ -74,5 +54,53 @@ public class AttendanceResponse {
 
     public void setDate(LocalDate date) {
         this.date = date;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return LastName;
+    }
+
+    public void setLastName(String lastName) {
+        LastName = lastName;
+    }
+
+    public String getMiddleName() {
+        return MiddleName;
+    }
+
+    public void setMiddleName(String middleName) {
+        MiddleName = middleName;
+    }
+
+    public Integer getTotalWorkHours() {
+        return totalWorkHours;
+    }
+
+    public void setTotalWorkHours(Integer totalWorkHours) {
+        this.totalWorkHours = totalWorkHours;
+    }
+
+    public AttendanceShifts getAttendanceShifts() {
+        return attendanceShifts;
+    }
+
+    public void setAttendanceShifts(AttendanceShifts attendanceShifts) {
+        this.attendanceShifts = attendanceShifts;
+    }
+
+    public List<EmployeeCheckInCheckOut> getEmployeeCheckInCheckOutList() {
+        return employeeCheckInCheckOutList;
+    }
+
+    public void setEmployeeCheckInCheckOutList(List<EmployeeCheckInCheckOut> employeeCheckInCheckOutList) {
+        this.employeeCheckInCheckOutList = employeeCheckInCheckOutList;
     }
 }

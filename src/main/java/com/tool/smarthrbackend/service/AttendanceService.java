@@ -1,9 +1,9 @@
 package com.tool.smarthrbackend.service;
 
 import com.tool.smarthrbackend.model.attendance.Attendance;
+import com.tool.smarthrbackend.model.common.PaginationModel;
 import com.tool.smarthrbackend.model.employee.Employee;
 import com.tool.smarthrbackend.model.employee.EmployeeCheckInCheckOut;
-import com.tool.smarthrbackend.model.metadata.AttendanceShifts;
 import com.tool.smarthrbackend.pojo.attendance.AttendanceRequest;
 import com.tool.smarthrbackend.pojo.attendance.AttendanceResponse;
 import com.tool.smarthrbackend.repository.jpa.attendance.AttendanceRepository;
@@ -11,78 +11,76 @@ import com.tool.smarthrbackend.repository.jpa.employee.EmployeeCheckInCheckOutRe
 import com.tool.smarthrbackend.repository.jpa.employee.EmployeeRepository;
 import com.tool.smarthrbackend.repository.jpa.metadata.AttendanceShiftsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 @Service
 public class AttendanceService {
 
-@Autowired
-AttendanceRepository attendancerepository;
+    @Autowired
+    AttendanceRepository attendancerepository;
 
-@Autowired
-AttendanceShiftsRepository attendanceShiftsRepository;
+    @Autowired
+    AttendanceShiftsRepository attendanceShiftsRepository;
 
-@Autowired
+    @Autowired
     EmployeeRepository employeeRepository;
 
-@Autowired
+    @Autowired
     EmployeeCheckInCheckOutRepository employeeCheckInCheckOutRepository;
 
-    public AttendanceResponse getAttendanceData(AttendanceRequest attendanceRequest) {
-     AttendanceResponse attendanceResponse = new AttendanceResponse();
-     List<EmployeeCheckInCheckOut> employeeCheckInCheckOutList;
-     Employee employee;
-     Attendance attendance;
 
- attendance=attendancerepository.findByEmployeeIdAndDate(attendanceRequest.getEmpId(),attendanceRequest.getFromdate()).get();
- attendanceResponse.setAttendance(attendance);
- employeeCheckInCheckOutList=employeeCheckInCheckOutRepository.findByemployeeIdAndDateOrderByCheckInCheckOutTime(attendanceRequest.getEmpId(), attendanceRequest.getFromdate());
-attendanceResponse.setEmployeeCheckInCheckOutList(employeeCheckInCheckOutList);
-employee =employeeRepository.findById(attendanceRequest.getEmpId()).get();
-attendanceResponse.setEmpfirstName(employee.getFirstName());
-attendanceResponse.setEmpMiddleName(employee.getMiddleName());
-attendanceResponse.setEmpLastName(employee.getLastName());
-return attendanceResponse;
-    }
+    public List<AttendanceResponse> getAttendanceDatalist(AttendanceRequest attendanceRequest) {
+        Page<Attendance> attendanceList;
+        List<AttendanceResponse> attendanceResponseList = new ArrayList<AttendanceResponse>();
 
-    public List<Attendance> getAttendanceDatalist(AttendanceRequest attendanceRequest) {
-        List<Attendance> attendanceList;
-        attendanceList=attendancerepository.findByEmployeeIdAndDateBetween(attendanceRequest.getEmpId()
-        ,attendanceRequest.getFromdate(),attendanceRequest.getToDate());
+        //        pagination
+
+        Pageable pageable = PageRequest.of(attendanceRequest.getPageNo(), attendanceRequest.getPageSize());
+
+        attendanceList = attendancerepository.findByEmployeeIdInAndDateBetweenOrderByDateDesc(attendanceRequest.getEmpIdList()
+                , attendanceRequest.getToDate(), attendanceRequest.getFromdate(),pageable);
         attendanceList.forEach(attendance -> {
+
+            AttendanceResponse attendanceResponse = new AttendanceResponse();
+            Employee employee = attendance.getEmployee();
+            List<EmployeeCheckInCheckOut> employeeCheckInCheckOutList=employeeCheckInCheckOutRepository.findByEmployeeIdAndDateOrderByCheckInCheckOutTime(
+                    employee.getId(), attendance.getDate());
             attendance.setEmployeeCheckInCheckOutList(
-                    employeeCheckInCheckOutRepository.findByemployeeIdAndDateOrderByCheckInCheckOutTime(
-                            attendanceRequest.getEmpId(),attendance.getDate()
+                    employeeCheckInCheckOutRepository.findByEmployeeIdAndDateOrderByCheckInCheckOutTime(
+                            employee.getId(), attendance.getDate()
                     )
             );
+            Integer totalDuration=0;
+                 for (int i=0; i<employeeCheckInCheckOutList.size();i++  ){
+
+                     EmployeeCheckInCheckOut employeeCheckInCheckOut= employeeCheckInCheckOutList.get(i);
+                     if (employeeCheckInCheckOut.getWorkDuration()!=null){
+                         totalDuration=totalDuration+employeeCheckInCheckOut.getWorkDuration();
+                     }
+
+
+                 }
+            attendanceResponse.setTotalWorkHours(totalDuration);
+            attendanceResponse.setAttendanceId(attendance.getId());
+            attendanceResponse.setEmployeeId(employee.getId());
+            attendanceResponse.setManagerId(employee.getManagerId());
+            attendanceResponse.setFirstName(employee.getFirstName());
+            attendanceResponse.setLastName(employee.getLastName());
+            attendanceResponse.setMiddleName(employee.getMiddleName());
+            attendanceResponse.setDate(attendance.getDate());
+            attendanceResponse.setAttendanceShifts(employee.getAttendanceShifts());
+            attendanceResponse.setEmployeeCheckInCheckOutList(attendance.getEmployeeCheckInCheckOutList());
+
+            attendanceResponseList.add(attendanceResponse);
         });
-        return attendanceList;
+
+        return attendanceResponseList;
     }
-//
-//    public void submitAttendance(Long empId) {
-//        Attendance atd=null ;
-//        LocalDate date1= LocalDate.now();
-//        atd=attendancerepository.findByEmployeeIdAndDate(4L,date1).get();
-//        System.out.println("fgggggggggggggggfjffg"+attendancerepository.existsByEmployeeIdAndDate(5L,date1));
-//        System.out.println(atd);
-//        Attendance attendance = new Attendance();
-//        Employee employee;
-//        AttendanceShifts attendanceShifts;
-//        employee=employeeRepository.findById(empId).get();
-//        attendance.setEmployee(employee);
-//        attendanceShifts=employee.getAttendanceShifts();
-//        attendance.setAttendanceShifts(attendanceShifts);
-//        java.util.Date today = new java.util.Date();
-//
-//      attendance.setDate(LocalDate.now());
-//        //        LocalDate date= LocalDate.now();
-////        java.sql.Date mySqlDate = java.sql.Date.valueOf( date );
-////        attendance.setCurrentDate(mySqlDate);
-////        System.out.println(date);
-//        attendancerepository.save(attendance);
-//    }
 }

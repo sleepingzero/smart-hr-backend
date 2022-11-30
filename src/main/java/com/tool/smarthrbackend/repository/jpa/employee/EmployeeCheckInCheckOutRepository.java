@@ -13,15 +13,15 @@ import java.util.List;
 @Repository
 public interface EmployeeCheckInCheckOutRepository extends JpaRepository<EmployeeCheckInCheckOut,Long> {
 
-     List<EmployeeCheckInCheckOut> findAllByEmployeeId(Integer employeeId) ;
+     List<EmployeeCheckInCheckOut> findAllByEmployeeId(Long employeeId) ;
 
-    EmployeeCheckInCheckOut findTop1ByEmployeeIdOrderByCheckInCheckOutTimeDesc(Integer employeeId);
+    EmployeeCheckInCheckOut findTop1ByEmployeeIdOrderByCheckInCheckOutTimeDesc(Long employeeId);
 
 
     @Query(
      value = "SELECT e.*  FROM employee_checkin_checkout e WHERE DATE(check_in_check_out_time)=?1 " +
              "And emp_id=?2" ,nativeQuery = true)
-     List<EmployeeCheckInCheckOut> findAllByEmployeeIdAndDate(LocalDate date, Integer employeeId );
+     List<EmployeeCheckInCheckOut> findAllByEmployeeIdAndDate(LocalDate date, Long employeeId );
 
 
 
@@ -34,5 +34,5 @@ public interface EmployeeCheckInCheckOutRepository extends JpaRepository<Employe
 
     EmployeeCheckInCheckOut findTop1ByEmployeeIdAndStatusOrderByIdDesc(Long empid, boolean Status);
 
-    List<EmployeeCheckInCheckOut> findByemployeeIdAndDateOrderByCheckInCheckOutTime(Long empId , LocalDate date);
+    List<EmployeeCheckInCheckOut> findByEmployeeIdAndDateOrderByCheckInCheckOutTime(Long empId , LocalDate date);
 }

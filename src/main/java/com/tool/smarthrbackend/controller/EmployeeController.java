@@ -152,34 +152,55 @@ public class EmployeeController {
     }
 
 
-    //employee checkin checkout  post mapping
+    // when employee checkin checkout  post mapping
     @PostMapping(path = "/employeeCheckInCheckOut")
-    public void employeeCheckIn(@RequestBody EmployeeCheckInCheckOutRequest employeeCheckInCheckOutRequest)
+    public ResponseEntity<?> employeeCheckIn(@RequestBody EmployeeCheckInCheckOutRequest employeeCheckInCheckOutRequest)
             throws JsonProcessingException {
-        String errormessage = "";
+
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.add("content-type", "application/json");
+        String errorMessage = "";
+
         try {
             employeeService.addCheckin(employeeCheckInCheckOutRequest);
         } catch (Exception e) {
-            errormessage = e.toString();
-            System.out.println(errormessage);
+            errorMessage = e.toString();
+            System.out.println(errorMessage);
 
         }
-
+        if (!errorMessage.equalsIgnoreCase("")) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMessage);
+        } else {
+            return ResponseEntity.ok().headers(responseHeaders).body("");
+        }
     }
 
     // this end point to get all the  list of  employee check_in and check_out details
     @GetMapping(path = "/getEmployeeCheckInCheckOutAllById/{empid}")
-    public List<EmployeeCheckInCheckOut> getEmployeesCheckInCheckOutId(@PathVariable("empid") Integer employeeId)
+    public ResponseEntity<?>  getEmployeesCheckInCheckOutId(@PathVariable("empid")  Long employeeId)
             throws JsonProcessingException, ParseException {
-        List<EmployeeCheckInCheckOut> employeeCheckInCheckOuts;
-        return employeeCheckInCheckOuts = employeeService.getEmployeeCheckInCheckOutAllById(employeeId);
+        List<EmployeeCheckInCheckOut> employeeCheckInCheckOuts = null;
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.add("content-type", "application/json");
+        String errorMessage = "";
+        try {
+            employeeCheckInCheckOuts = employeeService.getEmployeeCheckInCheckOutAllById(employeeId);
+        }
+        catch (Exception e){
+            errorMessage= e.toString();
+        }
 
+        if (!errorMessage.equalsIgnoreCase("")) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMessage);
+        } else {
+            return ResponseEntity.ok().headers(responseHeaders).body(employeeCheckInCheckOuts);
+        }
     }
 
     //    this is end point with date if date is null then it show according to current date
     @GetMapping(path = "/getEmployeeCheckInCheckOutByDate")
     public ResponseEntity<?> getEmployeeCheckInCheckOutByDate(@RequestParam(value = "date", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
-                                                              @RequestParam("employeeId") Integer employeeId)
+                                                              @RequestParam("employeeId") Long employeeId)
             throws JsonProcessingException, ParseException {
         System.out.println(date + " controller");
 
@@ -203,7 +224,7 @@ public class EmployeeController {
 
     //    this is end point with  get current status
     @GetMapping(path = "/getEmployeeCheckInCheckOutstatus/{empid}")
-    public ResponseEntity<?> getEmployeesCheckInCheckOutStatus(@PathVariable("empid") Integer employeeId)
+    public ResponseEntity<?> getEmployeesCheckInCheckOutStatus(@PathVariable("empid") Long employeeId)
             throws JsonProcessingException {
         EmployeeCheckInCheckOut employeeCheckInCheckOut = null;
 
@@ -244,7 +265,7 @@ public class EmployeeController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMessage);
         } else {
 
-            return ResponseEntity.ok().headers(responseHeaders).body("updated");
+            return ResponseEntity.ok().headers(responseHeaders).body("");
         }
     }
 

@@ -2,6 +2,7 @@ package com.tool.smarthrbackend.controller;
 
 
 import com.tool.smarthrbackend.model.attendance.Attendance;
+import com.tool.smarthrbackend.model.common.PaginationModel;
 import com.tool.smarthrbackend.pojo.attendance.AttendanceRequest;
 import com.tool.smarthrbackend.pojo.attendance.AttendanceResponse;
 import com.tool.smarthrbackend.service.AttendanceService;
@@ -19,18 +20,11 @@ public class AttendanceController {
     @Autowired
     AttendanceService attendanceService;
 
-
-    @PostMapping (path = "/getAttendanceData")
-    public AttendanceResponse getAttendanceData(@RequestBody AttendanceRequest attendanceRequest){
-        AttendanceResponse attendanceResponse=null;
-        attendanceResponse=attendanceService.getAttendanceData(attendanceRequest);
-        return attendanceResponse;
-    }
-
     @PostMapping (path = "/getAttendanceDatalist")
-    public List<Attendance> getAttendanceDataList(@RequestBody AttendanceRequest attendanceRequest){
+    public List<AttendanceResponse> getAttendanceDataList(@RequestBody AttendanceRequest attendanceRequest){
         List<Attendance> attendanceList;
-        attendanceList=attendanceService.getAttendanceDatalist(attendanceRequest);
-        return attendanceList;
+        List<AttendanceResponse> attendanceResponseList;
+        attendanceResponseList=attendanceService.getAttendanceDatalist(attendanceRequest);
+        return attendanceResponseList;
     }
 }
