@@ -49,6 +49,11 @@ public class AttendanceService {
         attendanceList.forEach(attendance -> {
 
             AttendanceResponse attendanceResponse = new AttendanceResponse();
+            attendanceResponse.setTotalElement((int) attendanceList.getTotalElements());
+            attendanceResponse.setPageNo(attendanceList.getNumber());
+            attendanceResponse.setTotalPage(attendanceList.getTotalPages());
+
+
             Employee employee = attendance.getEmployee();
             List<EmployeeCheckInCheckOut> employeeCheckInCheckOutList=employeeCheckInCheckOutRepository.findByEmployeeIdAndDateOrderByCheckInCheckOutTime(
                     employee.getId(), attendance.getDate());

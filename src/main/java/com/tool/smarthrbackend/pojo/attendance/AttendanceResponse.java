@@ -5,6 +5,7 @@ import com.tool.smarthrbackend.model.employee.EmployeeCheckInCheckOut;
 import com.tool.smarthrbackend.model.metadata.AttendanceShifts;
 import lombok.Data;
 import lombok.ToString;
+import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -20,9 +21,47 @@ public class AttendanceResponse {
     String LastName;
     String MiddleName;
 
+    String Status;
     Integer totalWorkHours;
     AttendanceShifts attendanceShifts;
     List<EmployeeCheckInCheckOut> employeeCheckInCheckOutList;
+
+    Integer PageNo;
+    Integer TotalElement;
+
+ Integer totalPage;
+
+    public Integer getTotalPage() {
+        return totalPage;
+    }
+
+    public void setTotalPage(Integer totalPage) {
+        this.totalPage = totalPage;
+    }
+
+    public Integer getPageNo() {
+        return PageNo;
+    }
+
+    public void setPageNo(Integer pageNo) {
+        PageNo = pageNo;
+    }
+
+    public Integer getTotalElement() {
+        return TotalElement;
+    }
+
+    public void setTotalElement(Integer totalElement) {
+        TotalElement = totalElement;
+    }
+
+    public String getStatus() {
+        return Status;
+    }
+
+    public void setStatus(String status) {
+        Status = status;
+    }
 
     public Long getAttendanceId() {
         return AttendanceId;

@@ -285,7 +285,7 @@ public class EmployeeService {
 //            long mitute= totalMinutes%60;
 //            String str= hours+"."+mitute;
 //            double workDuration =Double.parseDouble(str);
-            if (total<123456789){
+            if (total < 1440) {
                 employeeCheckInCheckOut.setWorkDuration(total);
             }
             else {

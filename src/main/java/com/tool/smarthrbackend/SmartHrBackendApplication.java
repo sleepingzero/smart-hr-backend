@@ -9,6 +9,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.Ordered;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
@@ -20,7 +21,7 @@ import java.util.Collections;
 @EntityScan(basePackages = {"com.tool.smarthrbackend.model"})
 //@EnableWebMvc
 @OpenAPIDefinition
-
+@EnableScheduling
 public class SmartHrBackendApplication {
 
 	public static void main(String[] args) {
