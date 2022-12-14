@@ -1,10 +1,10 @@
 package com.tool.smarthrbackend.service;
 
 import com.tool.smarthrbackend.model.attendance.Attendance;
-import com.tool.smarthrbackend.model.common.PaginationModel;
 import com.tool.smarthrbackend.model.employee.Employee;
 import com.tool.smarthrbackend.model.employee.EmployeeCheckInCheckOut;
 import com.tool.smarthrbackend.pojo.attendance.AttendanceRequest;
+import com.tool.smarthrbackend.pojo.attendance.AttendanceData;
 import com.tool.smarthrbackend.pojo.attendance.AttendanceResponse;
 import com.tool.smarthrbackend.repository.jpa.attendance.AttendanceRepository;
 import com.tool.smarthrbackend.repository.jpa.employee.EmployeeCheckInCheckOutRepository;
@@ -18,7 +18,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 
 @Service
 public class AttendanceService {
@@ -36,9 +35,10 @@ public class AttendanceService {
     EmployeeCheckInCheckOutRepository employeeCheckInCheckOutRepository;
 
 
-    public List<AttendanceResponse> getAttendanceDatalist(AttendanceRequest attendanceRequest) {
+    public AttendanceResponse getAttendanceDatalist(AttendanceRequest attendanceRequest) {
         Page<Attendance> attendanceList;
-        List<AttendanceResponse> attendanceResponseList = new ArrayList<AttendanceResponse>();
+        AttendanceResponse attendanceResponse= new AttendanceResponse();
+        List<AttendanceData> attendanceDataList = new ArrayList<AttendanceData>();
 
         //        pagination
 
@@ -48,13 +48,8 @@ public class AttendanceService {
                 , attendanceRequest.getToDate(), attendanceRequest.getFromdate(),pageable);
         attendanceList.forEach(attendance -> {
 
-            AttendanceResponse attendanceResponse = new AttendanceResponse();
-            attendanceResponse.setTotalElement((int) attendanceList.getTotalElements());
-            attendanceResponse.setPageNo(attendanceList.getNumber());
-            attendanceResponse.setTotalPage(attendanceList.getTotalPages());
-
-
-            Employee employee = attendance.getEmployee();
+            AttendanceData attendanceData = new AttendanceData();
+                Employee employee = attendance.getEmployee();
             List<EmployeeCheckInCheckOut> employeeCheckInCheckOutList=employeeCheckInCheckOutRepository.findByEmployeeIdAndDateOrderByCheckInCheckOutTime(
                     employee.getId(), attendance.getDate());
             attendance.setEmployeeCheckInCheckOutList(
@@ -72,20 +67,23 @@ public class AttendanceService {
 
 
                  }
-            attendanceResponse.setTotalWorkHours(totalDuration);
-            attendanceResponse.setAttendanceId(attendance.getId());
-            attendanceResponse.setEmployeeId(employee.getId());
-            attendanceResponse.setManagerId(employee.getManagerId());
-            attendanceResponse.setFirstName(employee.getFirstName());
-            attendanceResponse.setLastName(employee.getLastName());
-            attendanceResponse.setMiddleName(employee.getMiddleName());
-            attendanceResponse.setDate(attendance.getDate());
-            attendanceResponse.setAttendanceShifts(employee.getAttendanceShifts());
-            attendanceResponse.setEmployeeCheckInCheckOutList(attendance.getEmployeeCheckInCheckOutList());
+            attendanceData.setTotalWorkHours(totalDuration);
+            attendanceData.setAttendanceId(attendance.getId());
+            attendanceData.setEmployeeId(employee.getId());
+            attendanceData.setManagerId(employee.getManagerId());
+            attendanceData.setFirstName(employee.getFirstName());
+            attendanceData.setLastName(employee.getLastName());
+            attendanceData.setMiddleName(employee.getMiddleName());
+            attendanceData.setDate(attendance.getDate());
+            attendanceData.setAttendanceShifts(employee.getAttendanceShifts());
+            attendanceData.setEmployeeCheckInCheckOutList(attendance.getEmployeeCheckInCheckOutList());
 
-            attendanceResponseList.add(attendanceResponse);
+            attendanceDataList.add(attendanceData);
         });
-
-        return attendanceResponseList;
+        attendanceResponse.setAttendanceDataList(attendanceDataList);
+        attendanceResponse.setTotalElement((int) attendanceList.getTotalElements());
+        attendanceResponse.setPageNo(attendanceList.getNumber());
+        attendanceResponse.setTotalPage(attendanceList.getTotalPages());
+        return attendanceResponse;
     }
 }

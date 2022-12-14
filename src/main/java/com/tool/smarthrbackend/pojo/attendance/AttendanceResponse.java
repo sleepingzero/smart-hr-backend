@@ -1,145 +1,42 @@
 package com.tool.smarthrbackend.pojo.attendance;
 
-import com.tool.smarthrbackend.model.attendance.Attendance;
-import com.tool.smarthrbackend.model.employee.EmployeeCheckInCheckOut;
-import com.tool.smarthrbackend.model.metadata.AttendanceShifts;
-import lombok.Data;
-import lombok.ToString;
-import org.springframework.data.domain.Pageable;
-
-import java.time.LocalDate;
 import java.util.List;
 
-@Data
-@ToString
 public class AttendanceResponse {
-    Long AttendanceId;
-    Long EmployeeId;
-    Long ManagerId;
-    LocalDate date;
-    String firstName;
-    String LastName;
-    String MiddleName;
+    List<AttendanceData> attendanceDataList;
+    int totalElement;
+    int totalPage;
+    int pageNo;
 
-    String Status;
-    Integer totalWorkHours;
-    AttendanceShifts attendanceShifts;
-    List<EmployeeCheckInCheckOut> employeeCheckInCheckOutList;
+    public List<AttendanceData> getAttendanceDataList() {
+        return attendanceDataList;
+    }
 
-    Integer PageNo;
-    Integer TotalElement;
+    public void setAttendanceDataList(List<AttendanceData> attendanceDataList) {
+        this.attendanceDataList = attendanceDataList;
+    }
 
- Integer totalPage;
+    public int getTotalElement() {
+        return totalElement;
+    }
 
-    public Integer getTotalPage() {
+    public void setTotalElement(int totalElement) {
+        this.totalElement = totalElement;
+    }
+
+    public int getTotalPage() {
         return totalPage;
     }
 
-    public void setTotalPage(Integer totalPage) {
+    public void setTotalPage(int totalPage) {
         this.totalPage = totalPage;
     }
 
-    public Integer getPageNo() {
-        return PageNo;
+    public int getPageNo() {
+        return pageNo;
     }
 
-    public void setPageNo(Integer pageNo) {
-        PageNo = pageNo;
-    }
-
-    public Integer getTotalElement() {
-        return TotalElement;
-    }
-
-    public void setTotalElement(Integer totalElement) {
-        TotalElement = totalElement;
-    }
-
-    public String getStatus() {
-        return Status;
-    }
-
-    public void setStatus(String status) {
-        Status = status;
-    }
-
-    public Long getAttendanceId() {
-        return AttendanceId;
-    }
-
-    public void setAttendanceId(Long attendanceId) {
-        AttendanceId = attendanceId;
-    }
-
-    public Long getEmployeeId() {
-        return EmployeeId;
-    }
-
-    public void setEmployeeId(Long employeeId) {
-        EmployeeId = employeeId;
-    }
-
-    public Long getManagerId() {
-        return ManagerId;
-    }
-
-    public void setManagerId(Long managerId) {
-        ManagerId = managerId;
-    }
-
-    public LocalDate getDate() {
-        return date;
-    }
-
-    public void setDate(LocalDate date) {
-        this.date = date;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return LastName;
-    }
-
-    public void setLastName(String lastName) {
-        LastName = lastName;
-    }
-
-    public String getMiddleName() {
-        return MiddleName;
-    }
-
-    public void setMiddleName(String middleName) {
-        MiddleName = middleName;
-    }
-
-    public Integer getTotalWorkHours() {
-        return totalWorkHours;
-    }
-
-    public void setTotalWorkHours(Integer totalWorkHours) {
-        this.totalWorkHours = totalWorkHours;
-    }
-
-    public AttendanceShifts getAttendanceShifts() {
-        return attendanceShifts;
-    }
-
-    public void setAttendanceShifts(AttendanceShifts attendanceShifts) {
-        this.attendanceShifts = attendanceShifts;
-    }
-
-    public List<EmployeeCheckInCheckOut> getEmployeeCheckInCheckOutList() {
-        return employeeCheckInCheckOutList;
-    }
-
-    public void setEmployeeCheckInCheckOutList(List<EmployeeCheckInCheckOut> employeeCheckInCheckOutList) {
-        this.employeeCheckInCheckOutList = employeeCheckInCheckOutList;
+    public void setPageNo(int pageNo) {
+        this.pageNo = pageNo;
     }
 }
