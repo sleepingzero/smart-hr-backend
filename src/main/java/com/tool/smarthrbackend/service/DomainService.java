@@ -1,5 +1,6 @@
 package com.tool.smarthrbackend.service;
 
+import com.tool.smarthrbackend.model.common.PaginationModel;
 import com.tool.smarthrbackend.model.domain.Domain;
 import com.tool.smarthrbackend.model.domain.EmployeeProject;
 import com.tool.smarthrbackend.model.domain.EmployeeProjectTask;
@@ -7,6 +8,10 @@ import com.tool.smarthrbackend.repository.jpa.domain.DomainRepository;
 import com.tool.smarthrbackend.repository.jpa.domain.EmployeeProjectRepository;
 import com.tool.smarthrbackend.repository.jpa.domain.EmployeeProjectTaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -57,5 +62,31 @@ public class DomainService {
 
     public EmployeeProjectTask saveTask(EmployeeProjectTask employeeProjectTask) {
         return employeeProjectTaskRepository.save(employeeProjectTask);
+    }
+
+    public Page<EmployeeProject> getAllProjectPagination(PaginationModel paginationModel) {
+        String sortBy = paginationModel.getSortBy();
+
+        Sort sort = paginationModel.getSortDirection().equalsIgnoreCase(Sort.Direction.ASC.name()) ?
+                Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
+
+        Pageable pageable = PageRequest.of(paginationModel.getPageNo(), paginationModel.getPageSize(), sort);
+
+        Page<EmployeeProject> employeeProjectPage=null;
+        employeeProjectPage=employeeProjectRepository.findAll(pageable);
+        return  employeeProjectPage;
+
+    }
+
+    public Page<EmployeeProjectTask> getAllTaskPagination(PaginationModel paginationModel) {
+        String sortBy = paginationModel.getSortBy();
+
+        Sort sort = paginationModel.getSortDirection().equalsIgnoreCase(Sort.Direction.ASC.name()) ?
+                Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
+
+        Pageable pageable = PageRequest.of(paginationModel.getPageNo(), paginationModel.getPageSize(), sort);
+        Page<EmployeeProjectTask> employeeProjectTaskPage=null;
+        employeeProjectTaskPage=employeeProjectTaskRepository.findAll(pageable);
+        return employeeProjectTaskPage;
     }
 }

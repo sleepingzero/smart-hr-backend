@@ -1,12 +1,14 @@
 package com.tool.smarthrbackend.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.tool.smarthrbackend.model.common.PaginationModel;
 import com.tool.smarthrbackend.model.domain.Domain;
 import com.tool.smarthrbackend.model.domain.EmployeeProject;
 import com.tool.smarthrbackend.model.domain.EmployeeProjectTask;
 import com.tool.smarthrbackend.repository.jpa.domain.EmployeeProjectRepository;
 import com.tool.smarthrbackend.service.DomainService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -161,6 +163,8 @@ public class DomainController {
 		 } else {
 			 return  ResponseEntity.ok().headers(responseHeaders).body("success".toString()+employeeProject1);
 		 }
+
+
 	}
 
 	@PutMapping (path="/addProjectTask")
@@ -179,6 +183,54 @@ public class DomainController {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMessage);
 		} else {
 			return  ResponseEntity.ok().headers(responseHeaders).body("success".toString()+employeeProjectTask1);
+		}
+	}
+
+	@PostMapping(path = "/getAllProjectsWithPagination")
+	public ResponseEntity<?> getAllProjectPagination(@RequestBody PaginationModel paginationModel)
+			throws  JsonProcessingException{
+
+		HttpHeaders responseHeaders= new HttpHeaders();
+		Page<EmployeeProject> employeeProjectPage=null;
+		responseHeaders.add("content-type","application/json");
+		String errorMessage="";
+
+		try {
+			employeeProjectPage= domainService.getAllProjectPagination(paginationModel);
+		}
+		catch (Exception e){
+			errorMessage=e.toString();
+		}
+		if (errorMessage !=""){
+			return  ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMessage);
+
+		}
+		else {
+			return  ResponseEntity.ok().headers(responseHeaders).body(employeeProjectPage);
+		}
+	}
+
+	@PostMapping(path = "/getAllTaskWithPagination")
+	public ResponseEntity<?> getAllTaskPagination(@RequestBody PaginationModel paginationModel)
+			throws  JsonProcessingException{
+
+		HttpHeaders responseHeaders= new HttpHeaders();
+		Page<EmployeeProjectTask> employeeProjectTasks=null;
+		responseHeaders.add("content-type","application/json");
+		String errorMessage="";
+
+		try {
+			employeeProjectTasks= domainService.getAllTaskPagination(paginationModel);
+		}
+		catch (Exception e){
+			errorMessage=e.toString();
+		}
+		if (errorMessage !=""){
+			return  ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMessage);
+
+		}
+		else {
+			return  ResponseEntity.ok().headers(responseHeaders).body(employeeProjectTasks);
 		}
 	}
 }
