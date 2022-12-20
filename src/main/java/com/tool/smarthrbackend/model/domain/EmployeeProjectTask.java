@@ -6,8 +6,8 @@ import javax.persistence.*;
 
 @Data
 @Entity
-@Table(name = "employee_task")
-public class EmployeeTask {
+@Table(name = "project_task")
+public class EmployeeProjectTask {
 
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
@@ -17,17 +17,29 @@ public class EmployeeTask {
     @Column(name="task_name")
     String taskName;
 
+    @Column(name="task_description")
+    String taskDescription;
+
     @ManyToOne
     @JoinColumn (name="project_id")
     private  EmployeeProject employeeProject;
 
-    public EmployeeTask() {
+    public EmployeeProjectTask() {
     }
 
-    public EmployeeTask(Long id, String taskName, EmployeeProject employeeProject) {
+    public EmployeeProjectTask(Long id, String taskName, String taskDescription, EmployeeProject employeeProject) {
         this.id = id;
         this.taskName = taskName;
+        this.taskDescription = taskDescription;
         this.employeeProject = employeeProject;
+    }
+
+    public String getTaskDescription() {
+        return taskDescription;
+    }
+
+    public void setTaskDescription(String taskDescription) {
+        this.taskDescription = taskDescription;
     }
 
     public Long getId() {

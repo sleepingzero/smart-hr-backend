@@ -2,12 +2,10 @@ package com.tool.smarthrbackend.service;
 
 import com.tool.smarthrbackend.model.domain.Domain;
 import com.tool.smarthrbackend.model.domain.EmployeeProject;
-import com.tool.smarthrbackend.model.domain.EmployeeTask;
-import com.tool.smarthrbackend.model.holiday.PublicHoliday;
+import com.tool.smarthrbackend.model.domain.EmployeeProjectTask;
 import com.tool.smarthrbackend.repository.jpa.domain.DomainRepository;
 import com.tool.smarthrbackend.repository.jpa.domain.EmployeeProjectRepository;
-import com.tool.smarthrbackend.repository.jpa.domain.EmployeeTaskRepository;
-import com.tool.smarthrbackend.repository.jpa.holiday.PublicHolidayRepository;
+import com.tool.smarthrbackend.repository.jpa.domain.EmployeeProjectTaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +23,7 @@ public class DomainService {
     EmployeeProjectRepository employeeProjectRepository;
 
    @Autowired
-    EmployeeTaskRepository employeeTaskRepository;
+   EmployeeProjectTaskRepository employeeProjectTaskRepository;
 
     public List<Domain> findChildDomainsByDomainName(String domainName){
         return  domainRepository.findChildDomainsByDomainName(domainName);
@@ -48,7 +46,16 @@ public class DomainService {
     }
 
 // for list of all task by project id
-    public List<EmployeeTask> getTaskByProjectId(Long projectId) {
-        return employeeTaskRepository.findTaskByEmployeeProjectId(projectId);
+    public List<EmployeeProjectTask> getTaskByProjectId(Long projectId) {
+        return employeeProjectTaskRepository.findTaskByEmployeeProjectId(projectId);
+    }
+
+    public EmployeeProject saveProject(EmployeeProject employeeProject) {
+
+        return employeeProjectRepository.save(employeeProject);
+    }
+
+    public EmployeeProjectTask saveTask(EmployeeProjectTask employeeProjectTask) {
+        return employeeProjectTaskRepository.save(employeeProjectTask);
     }
 }

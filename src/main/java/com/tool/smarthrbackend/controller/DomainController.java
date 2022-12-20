@@ -3,11 +3,9 @@ package com.tool.smarthrbackend.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.tool.smarthrbackend.model.domain.Domain;
 import com.tool.smarthrbackend.model.domain.EmployeeProject;
-import com.tool.smarthrbackend.model.domain.EmployeeTask;
-import com.tool.smarthrbackend.model.holiday.PublicHoliday;
+import com.tool.smarthrbackend.model.domain.EmployeeProjectTask;
 import com.tool.smarthrbackend.repository.jpa.domain.EmployeeProjectRepository;
 import com.tool.smarthrbackend.service.DomainService;
-import com.tool.smarthrbackend.service.HolidayService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -78,7 +76,7 @@ public class DomainController {
 	@CrossOrigin("http://localhost:4200")
 	public ResponseEntity<?> saveDomain(@RequestBody  Domain domain)
 			throws JsonProcessingException {
-		System.out.println("Inside  publicHolidays");
+		System.out.println("Inside  publicHolidays"+domain);
 		HttpHeaders responseHeaders = new HttpHeaders();
 		responseHeaders.add("content-type", "application/json");
 		String errorMessage = "";
@@ -127,12 +125,12 @@ public class DomainController {
 			throws  JsonProcessingException{
 
 		HttpHeaders responseHeaders= new HttpHeaders();
-		List<EmployeeTask> employeeTasks=null;
+		List<EmployeeProjectTask> employeeProjectTasks =null;
 		responseHeaders.add("content-type","application/json");
 		String errorMessage="";
 
 		try {
-			employeeTasks= domainService.getTaskByProjectId(projectId);
+			employeeProjectTasks = domainService.getTaskByProjectId(projectId);
 		}
 		catch (Exception e){
 			errorMessage=e.toString();
@@ -142,7 +140,45 @@ public class DomainController {
 
 		}
 		else {
-			return  ResponseEntity.ok().headers(responseHeaders).body(employeeTasks);
+			return  ResponseEntity.ok().headers(responseHeaders).body(employeeProjectTasks);
+		}
+	}
+
+	@PutMapping (path="/addProject")
+	public ResponseEntity<?> addNewProject(@RequestBody EmployeeProject employeeProject){
+		EmployeeProject employeeProject1= null;
+		 HttpHeaders responseHeaders= new HttpHeaders();
+		 responseHeaders.add("content-type","application/json");
+		 String errorMessage="";
+		 try{
+			 employeeProject1= domainService.saveProject(employeeProject);
+		 }
+		 catch (Exception e){
+			 errorMessage=e.toString();
+		 }
+		 if (!errorMessage.equalsIgnoreCase("")){
+			 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMessage);
+		 } else {
+			 return  ResponseEntity.ok().headers(responseHeaders).body("success".toString()+employeeProject1);
+		 }
+	}
+
+	@PutMapping (path="/addProjectTask")
+	public ResponseEntity<?> addNewProjectTask(@RequestBody EmployeeProjectTask employeeProjectTask){
+		EmployeeProjectTask employeeProjectTask1= null;
+		HttpHeaders responseHeaders= new HttpHeaders();
+		responseHeaders.add("content-type","application/json");
+		String errorMessage="";
+		try{
+			employeeProjectTask1= domainService.saveTask(employeeProjectTask);
+		}
+		catch (Exception e){
+			errorMessage=e.toString();
+		}
+		if (!errorMessage.equalsIgnoreCase("")){
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMessage);
+		} else {
+			return  ResponseEntity.ok().headers(responseHeaders).body("success".toString()+employeeProjectTask1);
 		}
 	}
 }

@@ -16,12 +16,25 @@ public class EmployeeProject {
     @Column(name = "project_name")
     String projectName;
 
+    @Column(name = "project_description")
+    String projectDescription;
+
+
     public EmployeeProject() {
     }
 
-    public EmployeeProject(Long id, String projectName) {
+    public EmployeeProject(Long id, String projectName, String projectDescription) {
         this.id = id;
         this.projectName = projectName;
+        this.projectDescription = projectDescription;
+    }
+
+    public String getProjectDescription() {
+        return projectDescription;
+    }
+
+    public void setProjectDescription(String projectDescription) {
+        this.projectDescription = projectDescription;
     }
 
     public Long getId() {

@@ -17,10 +17,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.time.LocalDate;
+import java.util.*;
 
 
 @Service
@@ -199,4 +197,10 @@ public class LeaveService {
 //        return leaveApplicationRepository.findAll(pageable);
 //    }
 
+    public List<LeaveApplication> leave(List<Integer> getEmpList, LocalDate todatte, LocalDate fromdate){
+        List<LeaveApplication> leaveApplicationList=new ArrayList<>();
+   leaveApplicationList= leaveApplicationRepository.findAllByIdAndFromDateLessThanEqualAndToDateGreaterThanEqual(10,todatte,fromdate);
+
+      return   leaveApplicationList;
+    }
 }

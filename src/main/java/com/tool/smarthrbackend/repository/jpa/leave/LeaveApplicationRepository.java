@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 @Repository
@@ -21,4 +22,6 @@ public interface LeaveApplicationRepository extends CrudRepository<LeaveApplicat
     List<LeaveApplication> findByEmpManagerId(Long managerId);
 
     Page<LeaveApplication> findAll(Pageable pageable);
+
+    List<LeaveApplication> findAllByIdAndFromDateLessThanEqualAndToDateGreaterThanEqual(Integer id,LocalDate date1, LocalDate date2);
 }
