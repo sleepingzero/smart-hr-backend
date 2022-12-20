@@ -161,7 +161,7 @@ public class DomainController {
 		 if (!errorMessage.equalsIgnoreCase("")){
 			 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMessage);
 		 } else {
-			 return  ResponseEntity.ok().headers(responseHeaders).body("success".toString()+employeeProject1);
+			 return  ResponseEntity.ok().headers(responseHeaders).body(employeeProject1);
 		 }
 
 
@@ -182,7 +182,7 @@ public class DomainController {
 		if (!errorMessage.equalsIgnoreCase("")){
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMessage);
 		} else {
-			return  ResponseEntity.ok().headers(responseHeaders).body("success".toString()+employeeProjectTask1);
+			return  ResponseEntity.ok().headers(responseHeaders).body(employeeProjectTask1);
 		}
 	}
 
