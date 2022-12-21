@@ -97,4 +97,12 @@ public class DomainService {
     public EmployeeProjectTask getTaskById(Long taskId) {
         return  employeeProjectTaskRepository.findById(taskId).get();
     }
+
+    public void deleteTaskById(Long taskId) {
+        employeeProjectTaskRepository.deleteById(taskId);
+    }
+
+    public void deleteProjectById(Long projectId) {
+        employeeProjectRepository.deleteById(projectId);
+    }
 }

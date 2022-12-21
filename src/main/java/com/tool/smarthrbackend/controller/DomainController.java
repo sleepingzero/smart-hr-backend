@@ -259,14 +259,14 @@ public class DomainController {
 
 
 	@GetMapping(path = "/getTaskById")
-	public ResponseEntity<?> getTaskById(@RequestParam(value="TaskId")  Long TaskId)
+	public ResponseEntity<?> getTaskById(@RequestParam(value="taskId")  Long taskId)
 			throws  JsonProcessingException{
 		EmployeeProjectTask employeeProjectTask =new EmployeeProjectTask();
 		HttpHeaders responseHeaders= new HttpHeaders();
 		responseHeaders.add("content-type","application/json");
 		String errorMessage="";
 		try{
-			employeeProjectTask= domainService.getTaskById(TaskId);
+			employeeProjectTask= domainService.getTaskById(taskId);
 		}
 		catch(Exception e){
 			errorMessage=e.toString();
@@ -279,5 +279,51 @@ public class DomainController {
 			return  ResponseEntity.ok().headers(responseHeaders).body(employeeProjectTask);
 		}
 	}
+
+
+	@DeleteMapping(path = "/deleteTaskById")
+	public ResponseEntity<?> deleteTaskById(@RequestParam(value="taskId")  Long taskId)
+			throws  JsonProcessingException{
+
+		HttpHeaders responseHeaders= new HttpHeaders();
+		responseHeaders.add("content-type","application/json");
+		String errorMessage="";
+		try{
+			 domainService.deleteTaskById(taskId);
+		}
+		catch(Exception e){
+			errorMessage=e.toString();
+		}
+
+		if (errorMessage !=""){
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMessage);
+		}
+		else{
+			return  ResponseEntity.ok().headers(responseHeaders).body("");
+		}
+	}
+
+	@DeleteMapping(path = "/deleteProjectById")
+	public ResponseEntity<?> deleteProjectById(@RequestParam(value="projectId")  Long projectId)
+			throws  JsonProcessingException{
+
+		HttpHeaders responseHeaders= new HttpHeaders();
+		responseHeaders.add("content-type","application/json");
+		String errorMessage="";
+		try{
+		 domainService.deleteProjectById(projectId);
+		}
+		catch(Exception e){
+			errorMessage=e.toString();
+		}
+
+		if (errorMessage !=""){
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMessage);
+		}
+		else{
+			return  ResponseEntity.ok().headers(responseHeaders).body("");
+		}
+	}
+
 
 }
