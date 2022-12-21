@@ -233,4 +233,51 @@ public class DomainController {
 			return  ResponseEntity.ok().headers(responseHeaders).body(employeeProjectTasks);
 		}
 	}
+
+	@GetMapping(path = "/getProjectById")
+	public ResponseEntity<?> getProjectById(@RequestParam(value="projectId")  Long projectId)
+			throws  JsonProcessingException{
+		EmployeeProject employeeProject=new EmployeeProject();
+             HttpHeaders responseHeaders= new HttpHeaders();
+			 responseHeaders.add("content-type","application/json");
+			 String errorMessage="";
+			 try{
+				 employeeProject= domainService.getProjectById(projectId);
+			 }
+			 catch(Exception e){
+				 errorMessage=e.toString();
+			 }
+
+			 if (errorMessage !=""){
+				 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMessage);
+			 }
+			 else{
+				 return  ResponseEntity.ok().headers(responseHeaders).body(employeeProject);
+			 }
+	}
+
+
+
+	@GetMapping(path = "/getTaskById")
+	public ResponseEntity<?> getTaskById(@RequestParam(value="TaskId")  Long TaskId)
+			throws  JsonProcessingException{
+		EmployeeProjectTask employeeProjectTask =new EmployeeProjectTask();
+		HttpHeaders responseHeaders= new HttpHeaders();
+		responseHeaders.add("content-type","application/json");
+		String errorMessage="";
+		try{
+			employeeProjectTask= domainService.getTaskById(TaskId);
+		}
+		catch(Exception e){
+			errorMessage=e.toString();
+		}
+
+		if (errorMessage !=""){
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMessage);
+		}
+		else{
+			return  ResponseEntity.ok().headers(responseHeaders).body(employeeProjectTask);
+		}
+	}
+
 }

@@ -7,6 +7,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 @Repository
@@ -23,5 +24,9 @@ public interface LeaveApplicationRepository extends CrudRepository<LeaveApplicat
 
     Page<LeaveApplication> findAll(Pageable pageable);
 
-    List<LeaveApplication> findAllByIdAndFromDateLessThanEqualAndToDateGreaterThanEqual(Integer id,LocalDate date1, LocalDate date2);
+    List<LeaveApplication> findAllByEmpIdAndFromDateLessThanAndToDateGreaterThan(Long id, Date date1, Date date2);
+
+    List<LeaveApplication> findAllByEmpIdAndFromDateIs(Long id, Date date1);
+
+    List<LeaveApplication> findByEmpIdAndToDate(Long id, Date date1);
 }

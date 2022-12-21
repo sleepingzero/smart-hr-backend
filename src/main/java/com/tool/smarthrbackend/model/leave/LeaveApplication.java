@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Data
@@ -36,10 +37,10 @@ public class LeaveApplication {
     LeaveType leaveType;
 
     @Column(name = "from_date")
-    Date fromDate;
+    LocalDate fromDate;
 
     @Column(name = "to_date")
-    Date toDate;
+    LocalDate toDate;
 
     @Column(name = "from_date_half")
     Integer fromDateHalf;
@@ -79,7 +80,7 @@ public class LeaveApplication {
     public LeaveApplication() {
     }
 
-    public LeaveApplication(Long id, Long employeeId, Employee emp, Long leaveTypeId, LeaveType leaveType, Date fromDate, Date toDate, Integer fromDateHalf, Integer toDateHalf, Date createdDate, Date updatedDate, double totalLeaveDays, Integer leaveStatusId, String leaveStatus, String leaveReason, String leaveDescription, Long approvedById) {
+    public LeaveApplication(Long id, Long employeeId, Employee emp, Long leaveTypeId, LeaveType leaveType, LocalDate fromDate, LocalDate toDate, Integer fromDateHalf, Integer toDateHalf, Date createdDate, Date updatedDate, double totalLeaveDays, Integer leaveStatusId, String leaveStatus, String leaveReason, String leaveDescription, Long approvedById) {
         this.id = id;
         this.employeeId = employeeId;
         this.emp = emp;
@@ -148,19 +149,19 @@ public class LeaveApplication {
         this.leaveType = leaveType;
     }
 
-    public Date getFromDate() {
+    public LocalDate getFromDate() {
         return fromDate;
     }
 
-    public void setFromDate(Date fromDate) {
+    public void setFromDate(LocalDate fromDate) {
         this.fromDate = fromDate;
     }
 
-    public Date getToDate() {
+    public LocalDate getToDate() {
         return toDate;
     }
 
-    public void setToDate(Date toDate) {
+    public void setToDate(LocalDate toDate) {
         this.toDate = toDate;
     }
 

@@ -6,6 +6,7 @@ import com.tool.smarthrbackend.model.common.PaginationModel;
 import com.tool.smarthrbackend.model.leave.LeaveApplication;
 import com.tool.smarthrbackend.model.leave.LeaveBalance;
 import com.tool.smarthrbackend.model.leave.LeaveType;
+import com.tool.smarthrbackend.pojo.attendance.Leaveaa;
 import com.tool.smarthrbackend.pojo.leave.LeaveStatusUpdate;
 import com.tool.smarthrbackend.service.LeaveService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -223,9 +225,11 @@ public class LeaveController {
 
 
     }
-//     Pagination sorting
-//    @GetMapping(value = "/allLeave")
-//    public Page<LeaveApplication> getleaveList(@RequestBody PaginationModel paginationModel){
-//       return leaveService.getleaveList(paginationModel);
-//    }
+
+    @PostMapping(value = "/allLeave")
+    public List<LeaveApplication> getleaveList(@RequestBody Leaveaa leaveaa){
+        List<LeaveApplication> leaveApplicationList=null;
+        leaveApplicationList= leaveService.leave(leaveaa);
+       return leaveApplicationList;
+    }
 }

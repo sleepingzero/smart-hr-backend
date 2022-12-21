@@ -89,4 +89,12 @@ public class DomainService {
         employeeProjectTaskPage=employeeProjectTaskRepository.findAll(pageable);
         return employeeProjectTaskPage;
     }
+
+    public EmployeeProject getProjectById(Long projectId) {
+        return  employeeProjectRepository.findById(projectId).get();
+    }
+
+    public EmployeeProjectTask getTaskById(Long taskId) {
+        return  employeeProjectTaskRepository.findById(taskId).get();
+    }
 }

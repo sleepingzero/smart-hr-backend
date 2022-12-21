@@ -5,6 +5,7 @@ import com.tool.smarthrbackend.model.employee.Employee;
 import com.tool.smarthrbackend.model.leave.LeaveApplication;
 import com.tool.smarthrbackend.model.leave.LeaveBalance;
 import com.tool.smarthrbackend.model.leave.LeaveType;
+import com.tool.smarthrbackend.pojo.attendance.Leaveaa;
 import com.tool.smarthrbackend.pojo.leave.LeaveStatusUpdate;
 import com.tool.smarthrbackend.repository.jpa.employee.EmployeeRepository;
 import com.tool.smarthrbackend.repository.jpa.leave.LeaveApplicationRepository;
@@ -197,10 +198,29 @@ public class LeaveService {
 //        return leaveApplicationRepository.findAll(pageable);
 //    }
 
-    public List<LeaveApplication> leave(List<Integer> getEmpList, LocalDate todatte, LocalDate fromdate){
+      public List<LeaveApplication> leave(Leaveaa leaveaa) {
         List<LeaveApplication> leaveApplicationList=new ArrayList<>();
-   leaveApplicationList= leaveApplicationRepository.findAllByIdAndFromDateLessThanEqualAndToDateGreaterThanEqual(10,todatte,fromdate);
+        Date date1= new Date();
+        Date date2= leaveaa.getToDate();
+//        leaveaa.getEmpIdList().forEach(id->{
+//            List<LeaveApplication> leaveApplications2=null;
+//            leaveApplications2= leaveApplicationRepository.findAllByEmpIdAndFromDateLessThanAndToDateGreaterThan(id,date1,date2);
+//           leaveApplicationList.addAll(leaveApplications2);
+//        });
+//          leaveaa.getEmpIdList().forEach(id->{
+//              List<LeaveApplication> leaveApplications3=null;
+//              leaveApplications3=leaveApplicationRepository.findAllByEmpIdAndFromDateIs(id,  date1);
+//              leaveApplicationList.addAll(leaveApplications3);
+//          });
+          leaveaa.getEmpIdList().forEach(id->{
+              List<LeaveApplication> leaveApplications4=null;
+              System.out.println(id);
+              System.out.println(date1);
+              leaveApplications4=leaveApplicationRepository.findByEmpIdAndToDate(id,  date1);
+              System.out.println(leaveApplications4);
+              leaveApplicationList.addAll(leaveApplications4);
+          });
 
-      return   leaveApplicationList;
+        return   leaveApplicationList;
     }
 }
