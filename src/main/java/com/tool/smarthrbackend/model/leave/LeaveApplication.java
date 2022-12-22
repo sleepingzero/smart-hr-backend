@@ -37,10 +37,10 @@ public class LeaveApplication {
     LeaveType leaveType;
 
     @Column(name = "from_date")
-    LocalDate fromDate;
+    Date fromDate;
 
     @Column(name = "to_date")
-    LocalDate toDate;
+    Date toDate;
 
     @Column(name = "from_date_half")
     Integer fromDateHalf;
@@ -80,7 +80,7 @@ public class LeaveApplication {
     public LeaveApplication() {
     }
 
-    public LeaveApplication(Long id, Long employeeId, Employee emp, Long leaveTypeId, LeaveType leaveType, LocalDate fromDate, LocalDate toDate, Integer fromDateHalf, Integer toDateHalf, Date createdDate, Date updatedDate, double totalLeaveDays, Integer leaveStatusId, String leaveStatus, String leaveReason, String leaveDescription, Long approvedById) {
+    public LeaveApplication(Long id, Long employeeId, Employee emp, Long leaveTypeId, LeaveType leaveType, Date fromDate, Date toDate, Integer fromDateHalf, Integer toDateHalf, Date createdDate, Date updatedDate, double totalLeaveDays, Integer leaveStatusId, String leaveStatus, String leaveReason, String leaveDescription, Long approvedById) {
         this.id = id;
         this.employeeId = employeeId;
         this.emp = emp;
@@ -149,19 +149,20 @@ public class LeaveApplication {
         this.leaveType = leaveType;
     }
 
-    public LocalDate getFromDate() {
+
+    public Date getFromDate() {
         return fromDate;
     }
 
-    public void setFromDate(LocalDate fromDate) {
+    public void setFromDate(Date fromDate) {
         this.fromDate = fromDate;
     }
 
-    public LocalDate getToDate() {
+    public Date getToDate() {
         return toDate;
     }
 
-    public void setToDate(LocalDate toDate) {
+    public void setToDate(Date toDate) {
         this.toDate = toDate;
     }
 

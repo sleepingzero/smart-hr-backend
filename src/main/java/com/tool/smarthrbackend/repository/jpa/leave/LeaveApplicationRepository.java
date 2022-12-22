@@ -24,9 +24,5 @@ public interface LeaveApplicationRepository extends CrudRepository<LeaveApplicat
 
     Page<LeaveApplication> findAll(Pageable pageable);
 
-    List<LeaveApplication> findAllByEmpIdAndFromDateLessThanAndToDateGreaterThan(Long id, Date date1, Date date2);
-
-    List<LeaveApplication> findAllByEmpIdAndFromDateIs(Long id, Date date1);
-
-    List<LeaveApplication> findByEmpIdAndToDate(Long id, Date date1);
+LeaveApplication findByEmpIdAndFromDateLessThanAndToDateGreaterThanEqual(Long id, Date date1, Date date2);
 }

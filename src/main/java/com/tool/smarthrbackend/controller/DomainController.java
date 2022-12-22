@@ -92,9 +92,30 @@ public class DomainController {
 		if (!errorMessage.equalsIgnoreCase("")) {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMessage);
 		} else {
-			return ResponseEntity.ok().headers(responseHeaders).body("success");
+			return ResponseEntity.ok().headers(responseHeaders).body("");
 		}
 	}
+
+	@DeleteMapping(path = "/deleteDomainChildById")
+	public ResponseEntity<?> deleteDomainChildById(@RequestParam (value = "domainChildId") Long domainChildId ){
+		HttpHeaders responseHeaders= new HttpHeaders();
+		responseHeaders.add("content-type","application/json");
+		String errorMessage="";
+		try{
+			domainService.deleteDomainChildById(domainChildId);
+		}
+		catch (Exception e){
+			errorMessage=e.toString();
+		}
+
+		if (errorMessage !=""){
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMessage);
+		}
+		else{
+			return  ResponseEntity.ok().headers(responseHeaders).body("");
+		}
+	}
+
 //endpoint	for get list of all project with project_id
     @GetMapping(path = "/getAllProjects")
 	public ResponseEntity<?> getAllProject()

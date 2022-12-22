@@ -6,6 +6,7 @@ import com.tool.smarthrbackend.model.leave.LeaveApplication;
 import com.tool.smarthrbackend.model.leave.LeaveBalance;
 import com.tool.smarthrbackend.model.leave.LeaveType;
 import com.tool.smarthrbackend.pojo.attendance.Leaveaa;
+import com.tool.smarthrbackend.pojo.leave.LeaveForAttendance;
 import com.tool.smarthrbackend.pojo.leave.LeaveStatusUpdate;
 import com.tool.smarthrbackend.repository.jpa.employee.EmployeeRepository;
 import com.tool.smarthrbackend.repository.jpa.leave.LeaveApplicationRepository;
@@ -19,7 +20,11 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 
 @Service
@@ -46,12 +51,6 @@ public class LeaveService {
     public List<LeaveBalance> getAllLeaveBalanceByEmployeeId(Long employeeId) throws Exception {
         return leaveBalanceRepository.findByEmployeeId(employeeId);
     }
-
-//    public List<LeaveApplication> getAppliedLeaveApplications(Long employeeId, String status) throws Exception {
-//        return leaveApplicationRepository.
-//                findByEmpIdAndLeaveStatusOrderByCreatedDateDescIdDesc(employeeId, status);
-//    }
-
 
     //    LEAVE LIST WITH PAGINATION
     public Page<LeaveApplication> getAppliedLeaveApplications(Long employeeId,
@@ -110,6 +109,15 @@ public class LeaveService {
 
     }
 
+
+//    public List<LeaveApplication> getAllLeaveApplications(String status, Long managerId) {
+//        if (status == null) {
+//            return leaveApplicationRepository.findByEmpManagerId(managerId);
+//        } else {
+//            return leaveApplicationRepository.findByLeaveStatusAndEmpManagerId(status, managerId, pageable);
+//        }
+//    }
+
     public String deleteLeaveApplication(Long leaveId) {
         boolean isExist = leaveApplicationRepository.findById(leaveId).isPresent();
         String returnStatment = "";
@@ -124,21 +132,21 @@ public class LeaveService {
         return returnStatment;
     }
 
-
     public List<Map<String, Object>> getAvailableLeavesByEmployeeId(Long employeeId) {
         //return  leaveRepository.getAvailableLeavesByEmployeeId(employeeId);
         return null;
     }
 
-
-//    public List<LeaveApplication> getAllLeaveApplications(String status, Long managerId) {
-//        if (status == null) {
-//            return leaveApplicationRepository.findByEmpManagerId(managerId);
-//        } else {
-//            return leaveApplicationRepository.findByLeaveStatusAndEmpManagerId(status, managerId, pageable);
-//        }
+// Pagination sorting
+//    public Page<LeaveApplication> getleaveList(PaginationModel paginationModel) {
+//        String sortBy = paginationModel.getSortBy();
+//
+//        Sort sort = paginationModel.getSortDirection().equalsIgnoreCase(Sort.Direction.ASC.name()) ?
+//                Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
+//
+//        Pageable pageable = PageRequest.of(paginationModel.getPageNo() - 1, paginationModel.getPageSize(), sort);
+//        return leaveApplicationRepository.findAll(pageable);
 //    }
-
 
     public Page<LeaveApplication> getAllLeaveRequestApplications
             (String status, Long managerId, PaginationModel paginationModel) {
@@ -187,40 +195,62 @@ public class LeaveService {
 
     }
 
-// Pagination sorting
-//    public Page<LeaveApplication> getleaveList(PaginationModel paginationModel) {
-//        String sortBy = paginationModel.getSortBy();
+    public List<LeaveForAttendance> leave(Leaveaa leaveaa) {
+        List<LeaveApplication> leaveApplicationList = new ArrayList<>();
+      List<LeaveForAttendance> leaveForAttendanceList=new ArrayList<>();
+        List<LocalDate> LocalDatelis= getDatesBetweenUsingJava8(leaveaa.getFromDate(), leaveaa.getToDate());
+        System.out.println(LocalDatelis);
+        LocalDatelis.forEach(localDate -> {
+            LeaveForAttendance leaveForAttendance=new LeaveForAttendance();
+            Date date = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+            System.out.println("jdskhdddddd7erewyreuriwei" +date);
+            LeaveApplication leaveApplication=leaveApplicationRepository.findByEmpIdAndFromDateLessThanAndToDateGreaterThanEqual(10L,date,date);
+           if (leaveApplication != null){
+               leaveForAttendance.setLeaveId(leaveApplication.getId());
+               leaveForAttendance.setDate(date);
+               leaveForAttendance.setEmpId(leaveApplication.getEmp().getId());
+               leaveForAttendanceList.add(leaveForAttendance);
+           }
+
+            leaveApplicationList.add(leaveApplication);
+
+        });
+        System.out.println("57777777777777777777777777777"+leaveForAttendanceList);
+//        LeaveApplication leaveApplication=leaveApplicationRepository.findByEmpIdAndFromDateLessThanAndToDateGreaterThanEqual(10L,leaveaa.getFromDate(),leaveaa.getToDate());
+//        System.out.println(leaveApplication);
+
+       return leaveForAttendanceList;
+    }
+
+//    public static List<Date> getDaysBetweenDates(Date startdate, Date enddate) {
+//        List<Date> dates = new ArrayList<Date>();
+//        Calendar calendar = new GregorianCalendar();
+//        calendar.setTime(startdate);
 //
-//        Sort sort = paginationModel.getSortDirection().equalsIgnoreCase(Sort.Direction.ASC.name()) ?
-//                Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
-//
-//        Pageable pageable = PageRequest.of(paginationModel.getPageNo() - 1, paginationModel.getPageSize(), sort);
-//        return leaveApplicationRepository.findAll(pageable);
+//        while (calendar.getTime().before(enddate)) {
+//            Date result = calendar.getTime();
+//            dates.add(result);
+//            calendar.add(Calendar.DATE, 1);
+//        }
+//        return dates;
 //    }
 
-      public List<LeaveApplication> leave(Leaveaa leaveaa) {
-        List<LeaveApplication> leaveApplicationList=new ArrayList<>();
-        Date date1= new Date();
-        Date date2= leaveaa.getToDate();
-//        leaveaa.getEmpIdList().forEach(id->{
-//            List<LeaveApplication> leaveApplications2=null;
-//            leaveApplications2= leaveApplicationRepository.findAllByEmpIdAndFromDateLessThanAndToDateGreaterThan(id,date1,date2);
-//           leaveApplicationList.addAll(leaveApplications2);
-//        });
-//          leaveaa.getEmpIdList().forEach(id->{
-//              List<LeaveApplication> leaveApplications3=null;
-//              leaveApplications3=leaveApplicationRepository.findAllByEmpIdAndFromDateIs(id,  date1);
-//              leaveApplicationList.addAll(leaveApplications3);
-//          });
-          leaveaa.getEmpIdList().forEach(id->{
-              List<LeaveApplication> leaveApplications4=null;
-              System.out.println(id);
-              System.out.println(date1);
-              leaveApplications4=leaveApplicationRepository.findByEmpIdAndToDate(id,  date1);
-              System.out.println(leaveApplications4);
-              leaveApplicationList.addAll(leaveApplications4);
-          });
-
-        return   leaveApplicationList;
+    public static List<LocalDate> getDatesBetweenUsingJava8(
+             Date endDate, Date startDate ) {
+        LocalDate start = startDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        LocalDate end = endDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate().plusDays(1);
+        List<LocalDate> totalDates = new ArrayList<>();
+        while (!start.isAfter(end)) {
+            totalDates.add(start);
+            start = start.plusDays(1);
+        }
+        System.out.println("ddddddddddddddddaaaaaaaaa" + totalDates);
+        return totalDates;
     }
+
+//    public List<LeaveApplication> getAppliedLeaveApplications(Long employeeId, String status) throws Exception {
+//        return leaveApplicationRepository.
+//                findByEmpIdAndLeaveStatusOrderByCreatedDateDescIdDesc(employeeId, status);
+//    }
+
 }

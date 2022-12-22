@@ -105,4 +105,8 @@ public class DomainService {
     public void deleteProjectById(Long projectId) {
         employeeProjectRepository.deleteById(projectId);
     }
+
+    public void deleteDomainChildById(Long domainChildId) {
+        domainRepository.deleteById(domainChildId);
+    }
 }

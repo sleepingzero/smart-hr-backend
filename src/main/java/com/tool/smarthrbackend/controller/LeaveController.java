@@ -7,6 +7,7 @@ import com.tool.smarthrbackend.model.leave.LeaveApplication;
 import com.tool.smarthrbackend.model.leave.LeaveBalance;
 import com.tool.smarthrbackend.model.leave.LeaveType;
 import com.tool.smarthrbackend.pojo.attendance.Leaveaa;
+import com.tool.smarthrbackend.pojo.leave.LeaveForAttendance;
 import com.tool.smarthrbackend.pojo.leave.LeaveStatusUpdate;
 import com.tool.smarthrbackend.service.LeaveService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -227,8 +228,8 @@ public class LeaveController {
     }
 
     @PostMapping(value = "/allLeave")
-    public List<LeaveApplication> getleaveList(@RequestBody Leaveaa leaveaa){
-        List<LeaveApplication> leaveApplicationList=null;
+    public List<LeaveForAttendance> getleaveList(@RequestBody Leaveaa leaveaa){
+        List<LeaveForAttendance> leaveApplicationList=null;
         leaveApplicationList= leaveService.leave(leaveaa);
        return leaveApplicationList;
     }
