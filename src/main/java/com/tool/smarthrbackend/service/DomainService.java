@@ -30,8 +30,14 @@ public class DomainService {
    @Autowired
    EmployeeProjectTaskRepository employeeProjectTaskRepository;
 
-    public List<Domain> findChildDomainsByDomainName(String domainName){
-        return  domainRepository.findChildDomainsByDomainName(domainName);
+    public Page<Domain> findChildDomainsByDomainName(String domainName, PaginationModel paginationModel){
+        String sortBy = paginationModel.getSortBy();
+
+        Sort sort = paginationModel.getSortDirection().equalsIgnoreCase(Sort.Direction.ASC.name()) ?
+                Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
+
+        Pageable pageable = PageRequest.of(paginationModel.getPageNo(), paginationModel.getPageSize(), sort);
+        return  domainRepository.findChildDomainsByDomainName(domainName, pageable);
     }
 
 

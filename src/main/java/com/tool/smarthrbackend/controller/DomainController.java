@@ -51,17 +51,17 @@ public class DomainController {
 	}
 
 
-		@GetMapping(path = "/getChildDomainsByDomainName")
+		@PostMapping(path = "/getChildDomainsByDomainName")
 		@CrossOrigin("http://localhost:4200")
-	public ResponseEntity<?> getPublicHolidaysByYear(@RequestParam("domain_name") String domainName)
+	public ResponseEntity<?> getPublicHolidaysByYear(@RequestParam("domain_name") String domainName, PaginationModel paginationModel)
 			throws JsonProcessingException {
 		System.out.println("Inside  publicHolidays");
-		List<Domain> domains = null;
+		Page<Domain> domains = null;
 		HttpHeaders responseHeaders = new HttpHeaders();
 		responseHeaders.add("content-type", "application/json");
 		String errorMessage = "";
 		try {
-			domains = domainService.findChildDomainsByDomainName(domainName);
+			domains = domainService.findChildDomainsByDomainName(domainName, paginationModel);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
