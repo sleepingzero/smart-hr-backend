@@ -19,7 +19,10 @@ public interface DomainRepository extends CrudRepository<Domain, Long> {
     List<Domain> findAll();
 
     @Query("select d FROM Domain d WHERE d.parentId = (select p.id from Domain p where p.domainName = ?1) order by d.id desc")
-    Page<Domain> findChildDomainsByDomainName(String domainName, Pageable pageable);
+    List<Domain> findChildDomainsByDomainName(String domainName);
+
+    @Query("select d FROM Domain d WHERE d.parentId = (select p.id from Domain p where p.domainName = ?1) order by d.id desc")
+    Page<Domain> findChildDomainsByDomainName(String domainName,Pageable pageable);
 
     Domain findByDomainName(String domainName);
 

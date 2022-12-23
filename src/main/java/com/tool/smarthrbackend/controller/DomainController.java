@@ -1,6 +1,7 @@
 package com.tool.smarthrbackend.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.tool.smarthrbackend.model.common.PaginationForDomain;
 import com.tool.smarthrbackend.model.common.PaginationModel;
 import com.tool.smarthrbackend.model.domain.Domain;
 import com.tool.smarthrbackend.model.domain.EmployeeProject;
@@ -53,15 +54,15 @@ public class DomainController {
 
 		@PostMapping(path = "/getChildDomainsByDomainName")
 		@CrossOrigin("http://localhost:4200")
-	public ResponseEntity<?> getPublicHolidaysByYear(@RequestParam("domain_name") String domainName, PaginationModel paginationModel)
+	public ResponseEntity<?> getPublicHolidaysByYear(@RequestParam("domain_name") String domainName)
 			throws JsonProcessingException {
 		System.out.println("Inside  publicHolidays");
-		Page<Domain> domains = null;
+		List<Domain> domains = null;
 		HttpHeaders responseHeaders = new HttpHeaders();
 		responseHeaders.add("content-type", "application/json");
 		String errorMessage = "";
 		try {
-			domains = domainService.findChildDomainsByDomainName(domainName, paginationModel);
+			domains = domainService.findChildDomainsByDomainName(domainName);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -73,6 +74,29 @@ public class DomainController {
 			return ResponseEntity.ok().headers(responseHeaders).body(domains);
 		}
 	}
+	@PostMapping(path = "/getChildDomainsByDomainNameWithPagination")
+	@CrossOrigin("http://localhost:4200")
+	public ResponseEntity<?> getPublicHolidaysByYear(@RequestBody PaginationForDomain paginationForDomain)
+			throws JsonProcessingException {
+		System.out.println("Inside  publicHolidays");
+		Page<Domain> domains = null;
+		HttpHeaders responseHeaders = new HttpHeaders();
+		responseHeaders.add("content-type", "application/json");
+		String errorMessage = "";
+		try {
+			domains = domainService.findChildDomainsByDomainNameWithPagination(paginationForDomain);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			errorMessage = e.toString();
+		}
+		if (!errorMessage.equalsIgnoreCase("")) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMessage);
+		} else {
+			return ResponseEntity.ok().headers(responseHeaders).body(domains);
+		}
+	}
+
 
 	@PostMapping(path = "/saveDomain")
 	@CrossOrigin("http://localhost:4200")

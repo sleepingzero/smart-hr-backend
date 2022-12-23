@@ -1,5 +1,6 @@
 package com.tool.smarthrbackend.service;
 
+import com.tool.smarthrbackend.model.common.PaginationForDomain;
 import com.tool.smarthrbackend.model.common.PaginationModel;
 import com.tool.smarthrbackend.model.domain.Domain;
 import com.tool.smarthrbackend.model.domain.EmployeeProject;
@@ -30,14 +31,9 @@ public class DomainService {
    @Autowired
    EmployeeProjectTaskRepository employeeProjectTaskRepository;
 
-    public Page<Domain> findChildDomainsByDomainName(String domainName, PaginationModel paginationModel){
-        String sortBy = paginationModel.getSortBy();
+    public List<Domain> findChildDomainsByDomainName(String domainName){
 
-        Sort sort = paginationModel.getSortDirection().equalsIgnoreCase(Sort.Direction.ASC.name()) ?
-                Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
-
-        Pageable pageable = PageRequest.of(paginationModel.getPageNo(), paginationModel.getPageSize(), sort);
-        return  domainRepository.findChildDomainsByDomainName(domainName, pageable);
+        return  domainRepository.findChildDomainsByDomainName(domainName);
     }
 
 
@@ -114,5 +110,15 @@ public class DomainService {
 
     public void deleteDomainChildById(Long domainChildId) {
         domainRepository.deleteById(domainChildId);
+    }
+
+    public Page<Domain> findChildDomainsByDomainNameWithPagination(PaginationForDomain paginationForDomain) {
+        String sortBy = paginationForDomain.getSortBy();
+
+        Sort sort = paginationForDomain.getSortDirection().equalsIgnoreCase(Sort.Direction.ASC.name()) ?
+                Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
+
+        Pageable pageable = PageRequest.of(paginationForDomain.getPageNo(), paginationForDomain.getPageSize(), sort);
+        return  domainRepository.findChildDomainsByDomainName(paginationForDomain.getDomainName(),pageable);
     }
 }
