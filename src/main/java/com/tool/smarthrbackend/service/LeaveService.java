@@ -19,6 +19,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
@@ -204,16 +206,51 @@ public class LeaveService {
             LeaveForAttendance leaveForAttendance=new LeaveForAttendance();
             Date date = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
             System.out.println("jdskhdddddd7erewyreuriwei" +date);
-            LeaveApplication leaveApplication=leaveApplicationRepository.findByEmpIdAndFromDateLessThanAndToDateGreaterThanEqual(10L,date,date);
-           if (leaveApplication != null){
-               leaveForAttendance.setLeaveId(leaveApplication.getId());
-               leaveForAttendance.setDate(date);
-               leaveForAttendance.setEmpId(leaveApplication.getEmp().getId());
-               leaveForAttendanceList.add(leaveForAttendance);
+            LeaveApplication leaveApplication=leaveApplicationRepository.findByEmpIdAndFromDateLessThanEqualAndToDateGreaterThanEqual(10L,date,date);
+           if (leaveApplication == null){
+
            }
+           else {
+               leaveForAttendance.setLeaveId(leaveApplication.getId());
+               Calendar cal = Calendar.getInstance();
+               cal.setTime(date);
+               cal.add(Calendar.DATE, 1);
+               Date toDate = cal.getTime();
+               leaveForAttendance.setDate(toDate);
+               leaveForAttendance.setEmpId(leaveApplication.getEmp().getId());
 
-            leaveApplicationList.add(leaveApplication);
+               java.util.Date dt = date;
 
+               java.text.SimpleDateFormat sdf =
+                       new java.text.SimpleDateFormat("yyyy-MM-dd");
+
+               String currentTime = sdf.format(date);
+               String leavefromDtae=sdf.format(leaveApplication.getFromDate());
+               String leaveToDate = sdf.format(leaveApplication.getToDate());
+               System.out.println(currentTime+leavefromDtae+"488888888888888888888888888888888888888888888888888888887");
+
+               if (leavefromDtae.equals(leaveToDate)) {
+                   if (leaveApplication.getToDateHalf()==1 && leaveApplication.getFromDateHalf()==1){
+                       leaveForAttendance.setLeaveStatus("first half");
+                   }
+                  else if (leaveApplication.getToDateHalf()==2 && leaveApplication.getFromDateHalf()==2){
+                       leaveForAttendance.setLeaveStatus("second half");
+                   }
+                    else {
+                       leaveForAttendance.setLeaveStatus("full day leave");
+                   }
+
+               }
+               else if(currentTime.equals(leavefromDtae) && leaveApplication.getFromDateHalf()==2){
+                   leaveForAttendance.setLeaveStatus("second half");
+               }
+               else if (currentTime.equals(leaveToDate) && leaveApplication.getToDateHalf()==1) {
+                   leaveForAttendance.setLeaveStatus("first half");
+               } else {
+                   leaveForAttendance.setLeaveStatus(" full day leave");
+               }
+                 leaveForAttendanceList.add(leaveForAttendance);
+           }
         });
         System.out.println("57777777777777777777777777777"+leaveForAttendanceList);
 //        LeaveApplication leaveApplication=leaveApplicationRepository.findByEmpIdAndFromDateLessThanAndToDateGreaterThanEqual(10L,leaveaa.getFromDate(),leaveaa.getToDate());

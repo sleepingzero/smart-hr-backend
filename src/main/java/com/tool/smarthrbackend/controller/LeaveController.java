@@ -227,7 +227,7 @@ public class LeaveController {
 
     }
 
-    @PostMapping(value = "/allLeave")
+    @PostMapping(value = "/allLeaveForAttendance")
     public List<LeaveForAttendance> getleaveList(@RequestBody Leaveaa leaveaa){
         List<LeaveForAttendance> leaveApplicationList=null;
         leaveApplicationList= leaveService.leave(leaveaa);
