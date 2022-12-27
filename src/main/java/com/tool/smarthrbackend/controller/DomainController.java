@@ -52,7 +52,7 @@ public class DomainController {
 	}
 
 
-		@PostMapping(path = "/getChildDomainsByDomainName")
+		@GetMapping (path = "/getChildDomainsByDomainName")
 		@CrossOrigin("http://localhost:4200")
 	public ResponseEntity<?> getPublicHolidaysByYear(@RequestParam("domain_name") String domainName)
 			throws JsonProcessingException {
