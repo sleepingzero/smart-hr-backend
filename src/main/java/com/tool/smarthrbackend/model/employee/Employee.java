@@ -90,6 +90,10 @@ public class Employee {
     @JoinColumn(name = "emp_id", referencedColumnName = "id")
     private List<EmployeeProfessionalDetail> employeeProfessionalDetails;
 
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "emp_id", referencedColumnName = "id")
+    private List<Asset> assets;
+
 
 //    @OneToOne(cascade = CascadeType.ALL)
 //    @JoinColumn(name = "personal_detail_id")
@@ -110,7 +114,7 @@ public class Employee {
     public Employee() {
     }
 
-    public Employee(Long id, Long managerId, String firstName, String middleName, String personalEmailId, String professionalEmailId, String dateOfJoining, String lastName, Long phoneNumber, String empPassword, Department department, AttendanceShifts attendanceShifts, Role role, Long projectId, Domain designation, Long tmpPasswordOtp, List<EmployeeAddress> employeeAddresses, List<EmployeeEducation> employeeEducations, List<EmployeeProfessionalDetail> employeeProfessionalDetails, Long personalDetailId, EmployeePersonalDetail employeePersonalDetail, EmployeeFamilyDetail employeeFamilyDetail) {
+    public Employee(Long id, Long managerId, String firstName, String middleName, String personalEmailId, String professionalEmailId, String dateOfJoining, String lastName, Long phoneNumber, String empPassword, Department department, AttendanceShifts attendanceShifts, Role role, Long projectId, Domain designation, Long tmpPasswordOtp, List<EmployeeAddress> employeeAddresses, List<EmployeeEducation> employeeEducations, List<EmployeeProfessionalDetail> employeeProfessionalDetails, List<Asset> assets, Long personalDetailId, EmployeePersonalDetail employeePersonalDetail, EmployeeFamilyDetail employeeFamilyDetail) {
         this.id = id;
         this.managerId = managerId;
         this.firstName = firstName;
@@ -130,9 +134,18 @@ public class Employee {
         this.employeeAddresses = employeeAddresses;
         this.employeeEducations = employeeEducations;
         this.employeeProfessionalDetails = employeeProfessionalDetails;
+        this.assets = assets;
         this.personalDetailId = personalDetailId;
         this.employeePersonalDetail = employeePersonalDetail;
         this.employeeFamilyDetail = employeeFamilyDetail;
+    }
+
+    public List<Asset> getAssets() {
+        return assets;
+    }
+
+    public void setAssets(List<Asset> assets) {
+        this.assets = assets;
     }
 
     public Long getId() {

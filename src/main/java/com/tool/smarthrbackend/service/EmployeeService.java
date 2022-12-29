@@ -28,7 +28,6 @@ import org.springframework.stereotype.Service;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.regex.Pattern;
@@ -67,6 +66,8 @@ public class EmployeeService {
     @Autowired
     EmployeeFamilyDetailRepository employeeFamilyDetailRepository;
 
+    @Autowired
+    AssetRepository assetRepository;
     @Autowired
     AttendanceShiftsRepository attendanceShiftsRepository;
 
@@ -141,8 +142,9 @@ public class EmployeeService {
 
     public AddEmployeeResponse addEmployee(AddEmployeeRequest addEmployeeRequest) {
         Employee emp = new Employee();
-//        EmployeePersonalDetail personalDetail=new EmployeePersonalDetail();
+
         AddEmployeeResponse addEmployeeResponse = new AddEmployeeResponse();
+
         EmployeePersonalDetail employeePersonalDetail = new EmployeePersonalDetail();
 
         BeanUtils.copyProperties(addEmployeeRequest, emp);
@@ -162,9 +164,7 @@ public class EmployeeService {
         emp.setEmployeeAddresses(addEmployeeRequest.getEmployeeAddresses());
         emp.setEmployeeEducations(addEmployeeRequest.getEmployeeEducations());
         emp.setEmployeeProfessionalDetails(addEmployeeRequest.getEmployeeProfessionalDetails());
-//        emp.setEmployeePersonalDetail(employeePersonalDetail);
-
-
+        emp.setAssets(addEmployeeRequest.getAssets());
         emp.setEmployeeFamilyDetail(addEmployeeRequest.getEmployeeFamilyDetail());
 
 
@@ -227,7 +227,7 @@ public class EmployeeService {
             updateProfessionalDetail(addEmployeeRequest.getEmployeeProfessionalDetails());
             updatePersonalDetail(addEmployeeRequest.getEmployeePersonalDetail());
             updateFamilyDetail(addEmployeeRequest.getEmployeeFamilyDetail());
-
+            updateAsset(addEmployeeRequest.getAssets());
 
             employeeRepository.save(emp);
             addEmployeeResponse.setReturnMsg("successfully update");
@@ -239,6 +239,8 @@ public class EmployeeService {
         }
 
     }
+
+
 
 
     public EmployeeCheckInCheckOutRequest addCheckin(EmployeeCheckInCheckOutRequest employeeCheckInCheckOutRequest) {
@@ -346,6 +348,7 @@ public class EmployeeService {
 
     }
 
+
     public void updatePersonalDetail(EmployeePersonalDetail employeePersonalDetail) {
         EmployeePersonalDetail existEmployeePersonalDetail1 = null;
         if (employeePersonalDetail.getId() != null) {
@@ -395,7 +398,28 @@ public class EmployeeService {
 
 
     }
+    private void updateAsset(List<Asset> asset) {
+        asset.forEach(asset1 -> {
+            Asset existingAsset= new Asset();
+            if (asset1.getId() != null) {
+                existingAsset = assetRepository.findById(asset1.getId()).get();
+                existingAsset.setAssetType(asset1.getAssetType());
+                existingAsset.setAssetModelNo(asset1.getAssetModelNo());
+                existingAsset.setAssetIssueDate(asset1.getAssetIssueDate());
+                existingAsset.setAssetReturnDate(asset1.getAssetReturnDate());
+                existingAsset.setCreatedBy(asset1.getCreatedBy());
+                existingAsset.setUpdatedBy(asset1.getUpdatedBy());
+                existingAsset.setAssetDescription(asset1.getAssetDescription());
+                existingAsset.setStatus(asset1.getStatus());
+                assetRepository.save(existingAsset);
+            }
+            else
+            {
+                assetRepository.save(asset1);
+            }
+        });
 
+    }
     public void updateProfessionalDetail(List<EmployeeProfessionalDetail> employeeProfessionalDetail) {
         employeeProfessionalDetail.forEach(professional -> {
             EmployeeProfessionalDetail existingEmployeeProfessionalDetail = null;

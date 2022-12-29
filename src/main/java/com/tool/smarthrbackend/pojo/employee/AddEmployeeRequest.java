@@ -36,6 +36,15 @@ public class AddEmployeeRequest {
     EmployeePersonalDetail employeePersonalDetail;
 
     EmployeeFamilyDetail employeeFamilyDetail;
+List<Asset> assets;
+
+    public List<Asset> getAssets() {
+        return assets;
+    }
+
+    public void setAssets(List<Asset> assets) {
+        this.assets = assets;
+    }
 
     public String getFirstName() {
         return firstName;
