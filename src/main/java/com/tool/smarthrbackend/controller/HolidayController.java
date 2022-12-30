@@ -26,8 +26,8 @@ public class HolidayController {
 	HolidayService holidayService;
 
 
-		@PostMapping (path = "/getPublicHolidaysByYear")
-//	@CrossOrigin("http://localhost:3000")
+	@PostMapping (path = "/getPublicHolidaysByYear")
+
 	public ResponseEntity<?> getPublicHolidaysByYear(@RequestParam("year") Long year
 		                                          , @RequestBody PaginationModel paginationModel)
 			throws JsonProcessingException {
@@ -49,5 +49,7 @@ public class HolidayController {
 			return ResponseEntity.ok().headers(responseHeaders).body(publicHolidays);
 		}
 	}
+
+
 
 }

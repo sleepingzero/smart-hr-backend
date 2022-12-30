@@ -358,6 +358,44 @@ public class EmployeeController {
 
     }
 
+    @PutMapping(path = "/addUpdateAssets")
+    public ResponseEntity<?>  addUpdateAssets(@RequestBody List<Asset> assets)
+    throws  JsonProcessingException{
+        List<Asset> assetList=null;
+        HttpHeaders responseHeaders= new HttpHeaders();
+        responseHeaders.add("content-type", "application/json");
+        String errorMessage = "";
+        try{
+            employeeService.updateAsset(assets);
 
+        }
+        catch (Exception e){
+              errorMessage= e.toString();
+        }
+        if (!errorMessage.equalsIgnoreCase("")) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMessage);
+        } else {
+            return ResponseEntity.ok().headers(responseHeaders).body("");
+        }
+}
+ @DeleteMapping(path="/deleteAsset")
+    public ResponseEntity<?> deleteAsset(@RequestParam ("asset_id") Long assetId){
+     HttpHeaders responseHeaders = new HttpHeaders();
+     responseHeaders.add("content-type", "application/json");
 
+     String errorMessage = "";
+     try{
+         employeeService.deleteAsset(assetId);
+
+ } catch (Exception e) {
+
+        errorMessage = e.toString();
+    }
+
+        if (!errorMessage.equalsIgnoreCase("")) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMessage);
+    } else {
+        return ResponseEntity.ok().headers(responseHeaders).body("");
+    }
+ }
 }

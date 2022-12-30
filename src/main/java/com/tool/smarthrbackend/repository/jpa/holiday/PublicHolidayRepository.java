@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,4 +21,6 @@ public interface PublicHolidayRepository extends CrudRepository<PublicHoliday, L
     List<PublicHoliday> findAll();
 
     Page<PublicHoliday> findByHolidayYear(Long year, Pageable pageable);
+
+    List<PublicHoliday> findByHolidayDateBetween(LocalDate startDate ,LocalDate endDate);
 }

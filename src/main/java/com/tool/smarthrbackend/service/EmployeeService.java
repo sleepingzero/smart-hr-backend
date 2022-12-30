@@ -398,7 +398,7 @@ public class EmployeeService {
 
 
     }
-    private void updateAsset(List<Asset> asset) {
+    public void updateAsset(List<Asset> asset) {
         asset.forEach(asset1 -> {
             Asset existingAsset= new Asset();
             if (asset1.getId() != null) {
@@ -507,4 +507,7 @@ public class EmployeeService {
     }
 
 
+    public void deleteAsset(Long assetId) {
+        assetRepository.deleteById(assetId);
+    }
 }

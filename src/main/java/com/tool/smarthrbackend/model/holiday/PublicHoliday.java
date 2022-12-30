@@ -3,6 +3,7 @@ package com.tool.smarthrbackend.model.holiday;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 
 @Data
 @Entity
@@ -27,6 +28,9 @@ public class PublicHoliday {
 
     @Column(name = "holiday_day")
     Long holidayDay;
+
+    @Column(name = "holiday_date")
+    LocalDate holidayDate;
 
     @Column(name = "holiday_name")
     String holidayName;

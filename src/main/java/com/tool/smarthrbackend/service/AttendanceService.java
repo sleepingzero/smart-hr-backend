@@ -3,12 +3,16 @@ package com.tool.smarthrbackend.service;
 import com.tool.smarthrbackend.model.attendance.Attendance;
 import com.tool.smarthrbackend.model.employee.Employee;
 import com.tool.smarthrbackend.model.employee.EmployeeCheckInCheckOut;
+import com.tool.smarthrbackend.model.holiday.PublicHoliday;
 import com.tool.smarthrbackend.pojo.attendance.AttendanceRequest;
 import com.tool.smarthrbackend.pojo.attendance.AttendanceData;
 import com.tool.smarthrbackend.pojo.attendance.AttendanceResponse;
+import com.tool.smarthrbackend.pojo.attendance.LeaveAttendanceResponse;
+import com.tool.smarthrbackend.pojo.leave.LeaveForAttendance;
 import com.tool.smarthrbackend.repository.jpa.attendance.AttendanceRepository;
 import com.tool.smarthrbackend.repository.jpa.employee.EmployeeCheckInCheckOutRepository;
 import com.tool.smarthrbackend.repository.jpa.employee.EmployeeRepository;
+import com.tool.smarthrbackend.repository.jpa.leave.LeaveApplicationRepository;
 import com.tool.smarthrbackend.repository.jpa.metadata.AttendanceShiftsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -33,6 +37,14 @@ public class AttendanceService {
 
     @Autowired
     EmployeeCheckInCheckOutRepository employeeCheckInCheckOutRepository;
+
+    @Autowired
+    LeaveService leaveService;
+    @Autowired
+    HolidayService holidayService;
+
+    @Autowired
+    LeaveApplicationRepository leaveApplicationRepository;
 
 
     public AttendanceResponse getAttendanceDatalist(AttendanceRequest attendanceRequest) {
@@ -80,6 +92,16 @@ public class AttendanceService {
 
             attendanceDataList.add(attendanceData);
         });
+        List<PublicHoliday> publicHolidayList=holidayService.getHolidayForAttendance(attendanceRequest.getToDate(), attendanceRequest.getFromdate());
+
+        LeaveAttendanceResponse leaveAttendanceResponse=new LeaveAttendanceResponse();
+        leaveAttendanceResponse.setEmpIdList(attendanceRequest.getEmpIdList());
+        leaveAttendanceResponse.setToDate(attendanceRequest.getToDate());
+        leaveAttendanceResponse.setFromDate(attendanceRequest.getFromdate());
+        System.out.println(leaveAttendanceResponse+"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+        List<LeaveForAttendance> leaveForAttendanceList=leaveService.leave(leaveAttendanceResponse);
+        attendanceResponse.setPublicHolidayList(publicHolidayList);
+        attendanceResponse.setLeaveForAttendanceList(leaveForAttendanceList);
         attendanceResponse.setAttendanceDataList(attendanceDataList);
         attendanceResponse.setTotalElement((int) attendanceList.getTotalElements());
         attendanceResponse.setPageNo(attendanceList.getNumber());

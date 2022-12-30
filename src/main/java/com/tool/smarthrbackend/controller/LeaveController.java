@@ -5,8 +5,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.tool.smarthrbackend.model.common.PaginationModel;
 import com.tool.smarthrbackend.model.leave.LeaveApplication;
 import com.tool.smarthrbackend.model.leave.LeaveBalance;
-import com.tool.smarthrbackend.model.leave.LeaveType;
-import com.tool.smarthrbackend.pojo.attendance.Leaveaa;
+import com.tool.smarthrbackend.pojo.attendance.LeaveAttendanceResponse;
 import com.tool.smarthrbackend.pojo.leave.LeaveForAttendance;
 import com.tool.smarthrbackend.pojo.leave.LeaveStatusUpdate;
 import com.tool.smarthrbackend.service.LeaveService;
@@ -17,10 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.util.List;
-import java.util.Locale;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/smarthr/leave")
@@ -228,9 +224,9 @@ public class LeaveController {
     }
 
     @PostMapping(value = "/allLeaveForAttendance")
-    public List<LeaveForAttendance> getleaveList(@RequestBody Leaveaa leaveaa){
+    public List<LeaveForAttendance> getleaveList(@RequestBody LeaveAttendanceResponse leaveAttendanceResponse){
         List<LeaveForAttendance> leaveApplicationList=null;
-        leaveApplicationList= leaveService.leave(leaveaa);
+        leaveApplicationList= leaveService.leave(leaveAttendanceResponse);
        return leaveApplicationList;
     }
 }

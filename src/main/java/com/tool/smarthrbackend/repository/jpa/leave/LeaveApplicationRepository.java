@@ -30,6 +30,6 @@ public interface LeaveApplicationRepository extends CrudRepository<LeaveApplicat
 //    where employee_id=10 and from_date <= '2022-12-17' And to_date >= '2022-12-17';
 
 
-LeaveApplication findByEmpIdAndFromDateLessThanEqualAndToDateGreaterThanEqual(Long id, Date date1, Date date2);
+List<LeaveApplication> findByEmpIdAndFromDateLessThanEqualAndToDateGreaterThanEqual(Long id, Date date1, Date date2);
 
 }

@@ -5,7 +5,8 @@ import com.tool.smarthrbackend.model.employee.Employee;
 import com.tool.smarthrbackend.model.leave.LeaveApplication;
 import com.tool.smarthrbackend.model.leave.LeaveBalance;
 import com.tool.smarthrbackend.model.leave.LeaveType;
-import com.tool.smarthrbackend.pojo.attendance.Leaveaa;
+
+import com.tool.smarthrbackend.pojo.attendance.LeaveAttendanceResponse;
 import com.tool.smarthrbackend.pojo.leave.LeaveForAttendance;
 import com.tool.smarthrbackend.pojo.leave.LeaveStatusUpdate;
 import com.tool.smarthrbackend.repository.jpa.employee.EmployeeRepository;
@@ -197,60 +198,72 @@ public class LeaveService {
 
     }
 
-    public List<LeaveForAttendance> leave(Leaveaa leaveaa) {
+    public List<LeaveForAttendance> leave(LeaveAttendanceResponse leaveAttendanceResponse) {
         List<LeaveApplication> leaveApplicationList = new ArrayList<>();
       List<LeaveForAttendance> leaveForAttendanceList=new ArrayList<>();
-        List<LocalDate> LocalDatelis= getDatesBetweenUsingJava8(leaveaa.getFromDate(), leaveaa.getToDate());
+        List<LocalDate> LocalDatelis= getDatesBetweenUsingJava8(leaveAttendanceResponse.getFromDate(), leaveAttendanceResponse.getToDate());
         System.out.println(LocalDatelis);
+        leaveAttendanceResponse.getEmpIdList().forEach(empid->{
+
+
         LocalDatelis.forEach(localDate -> {
             LeaveForAttendance leaveForAttendance=new LeaveForAttendance();
+            List<LeaveApplication> applicationList=new ArrayList<>();
             Date date = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
             System.out.println("jdskhdddddd7erewyreuriwei" +date);
-            LeaveApplication leaveApplication=leaveApplicationRepository.findByEmpIdAndFromDateLessThanEqualAndToDateGreaterThanEqual(10L,date,date);
-           if (leaveApplication == null){
 
-           }
-           else {
-               leaveForAttendance.setLeaveId(leaveApplication.getId());
-               Calendar cal = Calendar.getInstance();
-               cal.setTime(date);
-               cal.add(Calendar.DATE, 1);
-               Date toDate = cal.getTime();
-               leaveForAttendance.setDate(toDate);
-               leaveForAttendance.setEmpId(leaveApplication.getEmp().getId());
+//            LeaveApplication leaveApplication=new LeaveApplication();
+                    applicationList=       leaveApplicationRepository.findByEmpIdAndFromDateLessThanEqualAndToDateGreaterThanEqual(empid,date,date);
 
-               java.util.Date dt = date;
+          applicationList.forEach(leaveApplication->{
 
-               java.text.SimpleDateFormat sdf =
-                       new java.text.SimpleDateFormat("yyyy-MM-dd");
+              if (leaveApplication == null){
 
-               String currentTime = sdf.format(date);
-               String leavefromDtae=sdf.format(leaveApplication.getFromDate());
-               String leaveToDate = sdf.format(leaveApplication.getToDate());
-               System.out.println(currentTime+leavefromDtae+"488888888888888888888888888888888888888888888888888888887");
+              }
+              else {
+                  leaveForAttendance.setLeaveId(leaveApplication.getId());
+                  Calendar cal = Calendar.getInstance();
+                  cal.setTime(date);
+                  cal.add(Calendar.DATE, 1);
+                  Date toDate = cal.getTime();
+                  leaveForAttendance.setDate(toDate);
+                  leaveForAttendance.setEmpId(leaveApplication.getEmp().getId());
 
-               if (leavefromDtae.equals(leaveToDate)) {
-                   if (leaveApplication.getToDateHalf()==1 && leaveApplication.getFromDateHalf()==1){
-                       leaveForAttendance.setLeaveStatus("first half");
-                   }
-                  else if (leaveApplication.getToDateHalf()==2 && leaveApplication.getFromDateHalf()==2){
-                       leaveForAttendance.setLeaveStatus("second half");
-                   }
-                    else {
-                       leaveForAttendance.setLeaveStatus("full day leave");
-                   }
+                  java.util.Date dt = date;
 
-               }
-               else if(currentTime.equals(leavefromDtae) && leaveApplication.getFromDateHalf()==2){
-                   leaveForAttendance.setLeaveStatus("second half");
-               }
-               else if (currentTime.equals(leaveToDate) && leaveApplication.getToDateHalf()==1) {
-                   leaveForAttendance.setLeaveStatus("first half");
-               } else {
-                   leaveForAttendance.setLeaveStatus(" full day leave");
-               }
-                 leaveForAttendanceList.add(leaveForAttendance);
-           }
+                  java.text.SimpleDateFormat sdf =
+                          new java.text.SimpleDateFormat("yyyy-MM-dd");
+
+                  String currentTime = sdf.format(date);
+                  String leavefromDtae=sdf.format(leaveApplication.getFromDate());
+                  String leaveToDate = sdf.format(leaveApplication.getToDate());
+                  System.out.println(currentTime+leavefromDtae+"488888888888888888888888888888888888888888888888888888887");
+
+                  if (leavefromDtae.equals(leaveToDate)) {
+                      if (leaveApplication.getToDateHalf()==1 && leaveApplication.getFromDateHalf()==1){
+                          leaveForAttendance.setLeaveStatus("first half");
+                      }
+                      else if (leaveApplication.getToDateHalf()==2 && leaveApplication.getFromDateHalf()==2){
+                          leaveForAttendance.setLeaveStatus("second half");
+                      }
+                      else {
+                          leaveForAttendance.setLeaveStatus("full day leave");
+                      }
+
+                  }
+                  else if(currentTime.equals(leavefromDtae) && leaveApplication.getFromDateHalf()==2){
+                      leaveForAttendance.setLeaveStatus("second half");
+                  }
+                  else if (currentTime.equals(leaveToDate) && leaveApplication.getToDateHalf()==1) {
+                      leaveForAttendance.setLeaveStatus("first half");
+                  } else {
+                      leaveForAttendance.setLeaveStatus(" full day leave");
+                  }
+                  leaveForAttendanceList.add(leaveForAttendance);
+              }
+          });
+
+        });
         });
         System.out.println("57777777777777777777777777777"+leaveForAttendanceList);
 //        LeaveApplication leaveApplication=leaveApplicationRepository.findByEmpIdAndFromDateLessThanAndToDateGreaterThanEqual(10L,leaveaa.getFromDate(),leaveaa.getToDate());
@@ -273,9 +286,9 @@ public class LeaveService {
 //    }
 
     public static List<LocalDate> getDatesBetweenUsingJava8(
-             Date endDate, Date startDate ) {
-        LocalDate start = startDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-        LocalDate end = endDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate().plusDays(1);
+             LocalDate endDate, LocalDate startDate ) {
+        LocalDate start = startDate;
+        LocalDate end = endDate;
         List<LocalDate> totalDates = new ArrayList<>();
         while (!start.isAfter(end)) {
             totalDates.add(start);

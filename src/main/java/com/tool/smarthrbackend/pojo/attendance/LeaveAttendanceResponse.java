@@ -4,10 +4,10 @@ import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
-public class Leaveaa {
+public class LeaveAttendanceResponse {
     List<Long> empIdList;
-    Date fromDate;
-    Date toDate;
+    LocalDate fromDate;
+    LocalDate toDate;
 
     public List<Long> getEmpIdList() {
         return empIdList;
@@ -17,19 +17,19 @@ public class Leaveaa {
         this.empIdList = empIdList;
     }
 
-    public Date getFromDate() {
+    public LocalDate getFromDate() {
         return fromDate;
     }
 
-    public void setFromDate(Date fromDate) {
+    public void setFromDate(LocalDate fromDate) {
         this.fromDate = fromDate;
     }
 
-    public Date getToDate() {
+    public LocalDate getToDate() {
         return toDate;
     }
 
-    public void setToDate(Date toDate) {
+    public void setToDate(LocalDate toDate) {
         this.toDate = toDate;
     }
 }
