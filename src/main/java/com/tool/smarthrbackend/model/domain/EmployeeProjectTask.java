@@ -22,16 +22,29 @@ public class EmployeeProjectTask {
 
     @ManyToOne
     @JoinColumn (name="project_id")
-    private  EmployeeProject employeeProject;
+    public  EmployeeProject employeeProject;
+
+    @Column(name = "active_status")
+    boolean activeStatus;
+
 
     public EmployeeProjectTask() {
     }
 
-    public EmployeeProjectTask(Long id, String taskName, String taskDescription, EmployeeProject employeeProject) {
+    public EmployeeProjectTask(Long id, String taskName, String taskDescription, EmployeeProject employeeProject, boolean activeStatus) {
         this.id = id;
         this.taskName = taskName;
         this.taskDescription = taskDescription;
         this.employeeProject = employeeProject;
+        this.activeStatus = activeStatus;
+    }
+
+    public boolean isActiveStatus() {
+        return activeStatus;
+    }
+
+    public void setActiveStatus(boolean activeStatus) {
+        this.activeStatus = activeStatus;
     }
 
     public String getTaskDescription() {

@@ -165,7 +165,8 @@ public class EmployeeService {
         emp.setEmployeeEducations(addEmployeeRequest.getEmployeeEducations());
         emp.setEmployeeProfessionalDetails(addEmployeeRequest.getEmployeeProfessionalDetails());
         emp.setAssets(addEmployeeRequest.getAssets());
-        emp.setEmployeeFamilyDetail(addEmployeeRequest.getEmployeeFamilyDetail());
+       emp.setEmployeeFamilyDetail(addEmployeeRequest.getEmployeeFamilyDetailList());
+
 
 
 //       if(addEmployeeRequest!= null && addEmployeeRequest.getRoles()!=null && addEmployeeRequest.getRoles().size() >0){
@@ -226,7 +227,7 @@ public class EmployeeService {
             updateEducation(addEmployeeRequest.getEmployeeEducations());
             updateProfessionalDetail(addEmployeeRequest.getEmployeeProfessionalDetails());
             updatePersonalDetail(addEmployeeRequest.getEmployeePersonalDetail());
-            updateFamilyDetail(addEmployeeRequest.getEmployeeFamilyDetail());
+            updateFamilyDetail(addEmployeeRequest.getEmployeeFamilyDetailList());
             updateAsset(addEmployeeRequest.getAssets());
 
             employeeRepository.save(emp);
@@ -358,7 +359,7 @@ public class EmployeeService {
             existEmployeePersonalDetail1.setNationality(employeePersonalDetail.getNationality());
             existEmployeePersonalDetail1.setBloodGroup(employeePersonalDetail.getBloodGroup());
             existEmployeePersonalDetail1.setDateOfBirth(employeePersonalDetail.getDateOfBirth());
-
+            existEmployeePersonalDetail1.setPersonalNumber(employeePersonalDetail.getPersonalNumber());
             employeePersonalDetailRepository.save(existEmployeePersonalDetail1);
         } else {
             employeePersonalDetailRepository.save(employeePersonalDetail);
@@ -366,11 +367,23 @@ public class EmployeeService {
 
     }
 
-    public void updateFamilyDetail(EmployeeFamilyDetail employeeFamilyDetail) {
-        EmployeeFamilyDetail existingEmployeeFamilyDetail = null;
-        if (employeeFamilyDetail != null) {
+    public void updateFamilyDetail(List<EmployeeFamilyDetail> employeeFamilyDetailList) {
+   employeeFamilyDetailList.forEach(familyDetail->{
+       EmployeeFamilyDetail existingEmployeeFamilyDetail=new EmployeeFamilyDetail();
+       if (familyDetail.getId() != null){
+           existingEmployeeFamilyDetail=employeeFamilyDetailRepository.findById(familyDetail.getId()).get();
+           existingEmployeeFamilyDetail.setNameRelative(familyDetail.getNameRelative());
+           existingEmployeeFamilyDetail.setDobOfRelative(familyDetail.getDobOfRelative());
+           existingEmployeeFamilyDetail.setRelation(familyDetail.getRelation());
+              existingEmployeeFamilyDetail.setOccupationRelative(familyDetail.getOccupationRelative());
+              existingEmployeeFamilyDetail.setDependent(familyDetail.isDependent());
+              employeeFamilyDetailRepository.save(existingEmployeeFamilyDetail);
+       }
+       else {
+           employeeFamilyDetailRepository.save(familyDetail);
+       }
+   });
 
-        }
     }
 
     //    to update employee education
@@ -407,7 +420,6 @@ public class EmployeeService {
                 existingAsset.setAssetModelNo(asset1.getAssetModelNo());
                 existingAsset.setAssetIssueDate(asset1.getAssetIssueDate());
                 existingAsset.setAssetReturnDate(asset1.getAssetReturnDate());
-                existingAsset.setCreatedBy(asset1.getCreatedBy());
                 existingAsset.setUpdatedBy(asset1.getUpdatedBy());
                 existingAsset.setAssetDescription(asset1.getAssetDescription());
                 existingAsset.setStatus(asset1.getStatus());

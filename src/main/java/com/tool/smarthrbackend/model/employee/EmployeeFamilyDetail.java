@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 
 @Data
 @Entity
@@ -13,35 +14,39 @@ import javax.persistence.*;
 public class EmployeeFamilyDetail {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     Long id;
 
-    @Column(name="father_name")
-    String fatherName;
+    @Column(name = "emp_id")
+    Integer empId;
 
-    @Column(name="mother_name")
-    String motherName;
+    @Column(name="relation")
+    String relation;
 
-    @Column(name="father_occupation")
-    String fatherOccupation;
+    @Column(name = "name")
+    String nameRelative;
 
-    @Column(name="mother_occupation")
-    String  motherOccupation;
+    @Column(name = "occupation")
+    String occupationRelative;
 
-    @Column(name="spouse_name")
-    String spouseName;
+    @Column(name = "dob")
+    LocalDate dobOfRelative;
+
+    @Column(name = "id_dependent")
+    boolean isDependent;
 
     public EmployeeFamilyDetail() {
     }
 
-    public EmployeeFamilyDetail(Long id,  String fatherName, String motherName, String fatherOccupation, String motherOccupation, String spouseName) {
+    public EmployeeFamilyDetail(Long id, Integer empId, String relation, String nameRelative, String occupationRelative, LocalDate dobOfRelative, boolean isDependent) {
         this.id = id;
-        this.fatherName = fatherName;
-        this.motherName = motherName;
-        this.fatherOccupation = fatherOccupation;
-        this.motherOccupation = motherOccupation;
-        this.spouseName = spouseName;
+        this.empId = empId;
+        this.relation = relation;
+        this.nameRelative = nameRelative;
+        this.occupationRelative = occupationRelative;
+        this.dobOfRelative = dobOfRelative;
+        this.isDependent = isDependent;
     }
 
     public Long getId() {
@@ -52,44 +57,51 @@ public class EmployeeFamilyDetail {
         this.id = id;
     }
 
-
-    public String getFatherName() {
-        return fatherName;
+    public Integer getEmpId() {
+        return empId;
     }
 
-    public void setFatherName(String fatherName) {
-        this.fatherName = fatherName;
+    public void setEmpId(Integer empId) {
+        this.empId = empId;
     }
 
-    public String getMotherName() {
-        return motherName;
+    public String getRelation() {
+        return relation;
     }
 
-    public void setMotherName(String motherName) {
-        this.motherName = motherName;
+    public void setRelation(String relation) {
+        this.relation = relation;
     }
 
-    public String getFatherOccupation() {
-        return fatherOccupation;
+    public String getNameRelative() {
+        return nameRelative;
     }
 
-    public void setFatherOccupation(String fatherOccupation) {
-        this.fatherOccupation = fatherOccupation;
+    public void setNameRelative(String nameRelative) {
+        this.nameRelative = nameRelative;
     }
 
-    public String getMotherOccupation() {
-        return motherOccupation;
+    public String getOccupationRelative() {
+        return occupationRelative;
     }
 
-    public void setMotherOccupation(String motherOccupation) {
-        this.motherOccupation = motherOccupation;
+    public void setOccupationRelative(String occupationRelative) {
+        this.occupationRelative = occupationRelative;
     }
 
-    public String getSpouseName() {
-        return spouseName;
+    public LocalDate getDobOfRelative() {
+        return dobOfRelative;
     }
 
-    public void setSpouseName(String spouseName) {
-        this.spouseName = spouseName;
+    public void setDobOfRelative(LocalDate dobOfRelative) {
+        this.dobOfRelative = dobOfRelative;
+    }
+
+    public boolean isDependent() {
+        return isDependent;
+    }
+
+    public void setDependent(boolean dependent) {
+        isDependent = dependent;
     }
 }

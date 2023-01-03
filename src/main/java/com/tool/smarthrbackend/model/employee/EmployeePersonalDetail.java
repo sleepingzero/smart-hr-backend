@@ -44,10 +44,13 @@ public class EmployeePersonalDetail {
     @Column(name = "nationality")
     String nationality;
 
+    @Column(name = "personal_number")
+    Integer personalNumber;
+
     public EmployeePersonalDetail() {
     }
 
-    public EmployeePersonalDetail(Long id, Long empId, Employee employee, LocalDate dateOfBirth, String gender, String maritalStatus, String bloodGroup, String nationality) {
+    public EmployeePersonalDetail(Long id, Long empId, Employee employee, LocalDate dateOfBirth, String gender, String maritalStatus, String bloodGroup, String nationality, Integer personalNumber) {
         this.id = id;
         this.empId = empId;
         this.employee = employee;
@@ -56,6 +59,15 @@ public class EmployeePersonalDetail {
         this.maritalStatus = maritalStatus;
         this.bloodGroup = bloodGroup;
         this.nationality = nationality;
+        this.personalNumber = personalNumber;
+    }
+
+    public Integer getPersonalNumber() {
+        return personalNumber;
+    }
+
+    public void setPersonalNumber(Integer personalNumber) {
+        this.personalNumber = personalNumber;
     }
 
     public Long getId() {

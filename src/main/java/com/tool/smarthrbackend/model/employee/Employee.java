@@ -92,6 +92,10 @@ public class Employee {
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "emp_id", referencedColumnName = "id")
+    public List<EmployeeFamilyDetail> employeeFamilyDetail;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "emp_id", referencedColumnName = "id")
     private List<Asset> assets;
 
 
@@ -105,16 +109,14 @@ public class Employee {
     @JsonProperty
     public EmployeePersonalDetail employeePersonalDetail;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "family_detail_id")
-    public EmployeeFamilyDetail employeeFamilyDetail;
+
 
 
 
     public Employee() {
     }
 
-    public Employee(Long id, Long managerId, String firstName, String middleName, String personalEmailId, String professionalEmailId, String dateOfJoining, String lastName, Long phoneNumber, String empPassword, Department department, AttendanceShifts attendanceShifts, Role role, Long projectId, Domain designation, Long tmpPasswordOtp, List<EmployeeAddress> employeeAddresses, List<EmployeeEducation> employeeEducations, List<EmployeeProfessionalDetail> employeeProfessionalDetails, List<Asset> assets, Long personalDetailId, EmployeePersonalDetail employeePersonalDetail, EmployeeFamilyDetail employeeFamilyDetail) {
+    public Employee(Long id, Long managerId, String firstName, String middleName, String personalEmailId, String professionalEmailId, String dateOfJoining, String lastName, Long phoneNumber, String empPassword, Department department, AttendanceShifts attendanceShifts, Role role, Long projectId, Domain designation, Long tmpPasswordOtp, List<EmployeeAddress> employeeAddresses, List<EmployeeEducation> employeeEducations, List<EmployeeProfessionalDetail> employeeProfessionalDetails, List<EmployeeFamilyDetail> employeeFamilyDetail, List<Asset> assets, Long personalDetailId, EmployeePersonalDetail employeePersonalDetail) {
         this.id = id;
         this.managerId = managerId;
         this.firstName = firstName;
@@ -134,10 +136,10 @@ public class Employee {
         this.employeeAddresses = employeeAddresses;
         this.employeeEducations = employeeEducations;
         this.employeeProfessionalDetails = employeeProfessionalDetails;
+        this.employeeFamilyDetail = employeeFamilyDetail;
         this.assets = assets;
         this.personalDetailId = personalDetailId;
         this.employeePersonalDetail = employeePersonalDetail;
-        this.employeeFamilyDetail = employeeFamilyDetail;
     }
 
     public List<Asset> getAssets() {
@@ -316,11 +318,11 @@ public class Employee {
         this.employeePersonalDetail = employeePersonalDetail;
     }
 
-    public EmployeeFamilyDetail getEmployeeFamilyDetail() {
+    public List<EmployeeFamilyDetail> getEmployeeFamilyDetail() {
         return employeeFamilyDetail;
     }
 
-    public void setEmployeeFamilyDetail(EmployeeFamilyDetail employeeFamilyDetail) {
+    public void setEmployeeFamilyDetail(List<EmployeeFamilyDetail> employeeFamilyDetail) {
         this.employeeFamilyDetail = employeeFamilyDetail;
     }
 }

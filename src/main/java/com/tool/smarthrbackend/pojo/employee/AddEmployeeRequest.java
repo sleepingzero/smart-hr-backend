@@ -27,7 +27,7 @@ public class AddEmployeeRequest {
 
     Date dateOfJoining;
     Long managerId;
-//    List<Long> managerIds;
+    //    List<Long> managerIds;
 //    List<Long> roles;
     List<EmployeeAddress> employeeAddresses;
     List<EmployeeEducation> employeeEducations;
@@ -35,8 +35,17 @@ public class AddEmployeeRequest {
     List<EmployeeProfessionalDetail> employeeProfessionalDetails;
     EmployeePersonalDetail employeePersonalDetail;
 
-    EmployeeFamilyDetail employeeFamilyDetail;
-List<Asset> assets;
+    List<EmployeeFamilyDetail> employeeFamilyDetailList;
+    List<Asset> assets;
+
+
+    public List<EmployeeFamilyDetail> getEmployeeFamilyDetailList() {
+        return employeeFamilyDetailList;
+    }
+
+    public void setEmployeeFamilyDetailList(List<EmployeeFamilyDetail> employeeFamilyDetailList) {
+        this.employeeFamilyDetailList = employeeFamilyDetailList;
+    }
 
     public List<Asset> getAssets() {
         return assets;
@@ -182,11 +191,5 @@ List<Asset> assets;
         this.employeePersonalDetail = employeePersonalDetail;
     }
 
-    public EmployeeFamilyDetail getEmployeeFamilyDetail() {
-        return employeeFamilyDetail;
-    }
 
-    public void setEmployeeFamilyDetail(EmployeeFamilyDetail employeeFamilyDetail) {
-        this.employeeFamilyDetail = employeeFamilyDetail;
-    }
 }
