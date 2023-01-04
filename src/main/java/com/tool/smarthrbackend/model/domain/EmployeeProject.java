@@ -20,14 +20,14 @@ public class EmployeeProject {
     String projectDescription;
 
     @Column(name = "active_status")
-    Boolean activeStatus;
+      Integer activeStatus;
 
     public EmployeeProject() {
 
 
 }
 
-    public EmployeeProject(Long id, String projectName, String projectDescription, Boolean activeStatus) {
+    public EmployeeProject(Long id, String projectName, String projectDescription, Integer activeStatus) {
         this.id = id;
         this.projectName = projectName;
         this.projectDescription = projectDescription;
@@ -58,11 +58,11 @@ public class EmployeeProject {
         this.projectDescription = projectDescription;
     }
 
-    public Boolean getActiveStatus() {
+    public Integer getActiveStatus() {
         return activeStatus;
     }
 
-    public void setActiveStatus(Boolean activeStatus) {
+    public void setActiveStatus(Integer activeStatus) {
         this.activeStatus = activeStatus;
     }
 }
