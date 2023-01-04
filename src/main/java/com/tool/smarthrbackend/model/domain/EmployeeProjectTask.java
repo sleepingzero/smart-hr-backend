@@ -25,34 +25,18 @@ public class EmployeeProjectTask {
     public  EmployeeProject employeeProject;
 
     @Column(name = "active_status")
-    boolean activeStatus;
+    Boolean activeStatus;
 
 
     public EmployeeProjectTask() {
     }
 
-    public EmployeeProjectTask(Long id, String taskName, String taskDescription, EmployeeProject employeeProject, boolean activeStatus) {
+    public EmployeeProjectTask(Long id, String taskName, String taskDescription, EmployeeProject employeeProject, Boolean activeStatus) {
         this.id = id;
         this.taskName = taskName;
         this.taskDescription = taskDescription;
         this.employeeProject = employeeProject;
         this.activeStatus = activeStatus;
-    }
-
-    public boolean isActiveStatus() {
-        return activeStatus;
-    }
-
-    public void setActiveStatus(boolean activeStatus) {
-        this.activeStatus = activeStatus;
-    }
-
-    public String getTaskDescription() {
-        return taskDescription;
-    }
-
-    public void setTaskDescription(String taskDescription) {
-        this.taskDescription = taskDescription;
     }
 
     public Long getId() {
@@ -71,11 +55,27 @@ public class EmployeeProjectTask {
         this.taskName = taskName;
     }
 
+    public String getTaskDescription() {
+        return taskDescription;
+    }
+
+    public void setTaskDescription(String taskDescription) {
+        this.taskDescription = taskDescription;
+    }
+
     public EmployeeProject getEmployeeProject() {
         return employeeProject;
     }
 
     public void setEmployeeProject(EmployeeProject employeeProject) {
         this.employeeProject = employeeProject;
+    }
+
+    public Boolean getActiveStatus() {
+        return activeStatus;
+    }
+
+    public void setActiveStatus(Boolean activeStatus) {
+        this.activeStatus = activeStatus;
     }
 }
