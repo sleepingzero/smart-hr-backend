@@ -377,7 +377,7 @@ public class EmployeeService {
            existingEmployeeFamilyDetail.setDobOfRelative(familyDetail.getDobOfRelative());
            existingEmployeeFamilyDetail.setRelation(familyDetail.getRelation());
               existingEmployeeFamilyDetail.setOccupationRelative(familyDetail.getOccupationRelative());
-              existingEmployeeFamilyDetail.setDependent(familyDetail.isDependent());
+              existingEmployeeFamilyDetail.setIsDependent(familyDetail.getIsDependent());
               employeeFamilyDetailRepository.save(existingEmployeeFamilyDetail);
        }
        else {

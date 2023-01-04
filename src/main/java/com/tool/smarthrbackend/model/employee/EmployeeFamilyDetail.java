@@ -33,13 +33,13 @@ public class EmployeeFamilyDetail {
     @Column(name = "dob")
     LocalDate dobOfRelative;
 
-    @Column(name = "id_dependent")
-    boolean isDependent;
+    @Column(name = "is_dependent")
+    Integer isDependent;
 
     public EmployeeFamilyDetail() {
     }
 
-    public EmployeeFamilyDetail(Long id, Integer empId, String relation, String nameRelative, String occupationRelative, LocalDate dobOfRelative, boolean isDependent) {
+    public EmployeeFamilyDetail(Long id, Integer empId, String relation, String nameRelative, String occupationRelative, LocalDate dobOfRelative, Integer isDependent) {
         this.id = id;
         this.empId = empId;
         this.relation = relation;
@@ -97,11 +97,11 @@ public class EmployeeFamilyDetail {
         this.dobOfRelative = dobOfRelative;
     }
 
-    public boolean isDependent() {
+    public Integer getIsDependent() {
         return isDependent;
     }
 
-    public void setDependent(boolean dependent) {
-        isDependent = dependent;
+    public void setIsDependent(Integer isDependent) {
+        this.isDependent = isDependent;
     }
 }
