@@ -6,6 +6,7 @@ import com.tool.smarthrbackend.model.employee.*;
 import com.tool.smarthrbackend.pojo.employee.AddEmployeeRequest;
 import com.tool.smarthrbackend.pojo.employee.AddEmployeeResponse;
 import com.tool.smarthrbackend.pojo.employee.EmployeeManager;
+import com.tool.smarthrbackend.pojo.employee.EmployeeManagerList;
 import com.tool.smarthrbackend.pojo.employee.checkincheckout.EmployeeCheckInCheckOutRequest;
 import com.tool.smarthrbackend.pojo.login.EmployeeLoginRequest;
 import com.tool.smarthrbackend.pojo.login.EmployeeLoginResponse;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -398,4 +400,12 @@ public class EmployeeController {
         return ResponseEntity.ok().headers(responseHeaders).body("");
     }
  }
+
+ @GetMapping(path = "/managerList")
+    public List<EmployeeManagerList> getEmployeeManagerList()throws  JsonProcessingException{
+        List<EmployeeManagerList> employeeManagerList=  new ArrayList<>();
+       employeeManagerList= employeeService.getEmployeeManagerList();
+        return  employeeManagerList;
+    }
+
 }

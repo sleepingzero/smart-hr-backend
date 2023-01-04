@@ -9,6 +9,7 @@ import com.tool.smarthrbackend.model.metadata.Department;
 import com.tool.smarthrbackend.pojo.employee.AddEmployeeRequest;
 import com.tool.smarthrbackend.pojo.employee.AddEmployeeResponse;
 import com.tool.smarthrbackend.pojo.employee.EmployeeManager;
+import com.tool.smarthrbackend.pojo.employee.EmployeeManagerList;
 import com.tool.smarthrbackend.pojo.employee.checkincheckout.EmployeeCheckInCheckOutRequest;
 import com.tool.smarthrbackend.pojo.login.EmployeeLoginRequest;
 import com.tool.smarthrbackend.pojo.login.EmployeeLoginResponse;
@@ -521,5 +522,21 @@ public class EmployeeService {
 
     public void deleteAsset(Long assetId) {
         assetRepository.deleteById(assetId);
+    }
+
+    public List<EmployeeManagerList> getEmployeeManagerList() {
+        List<Employee> employeeList= employeeRepository.findAll();
+        List<EmployeeManagerList> employeeManagerLists= new ArrayList<>();
+
+        employeeList.forEach(employee->{
+            EmployeeManagerList emp= new EmployeeManagerList();
+            emp.setId(employee.getId());
+            emp.setFirstName(employee.getFirstName());
+            emp.setMiddelName(employee.getMiddleName());
+            emp.setLastName(employee.getLastName());
+            employeeManagerLists.add(emp);
+        });
+
+        return employeeManagerLists;
     }
 }
