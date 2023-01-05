@@ -340,13 +340,13 @@ public class EmployeeController {
     @GetMapping(path = "/team")
     public ResponseEntity<?> getTeamList(@RequestParam("manager_id") Long managerId) throws JsonProcessingException {
 
-        List<Employee> employeeList = null;
+        List<EmployeeManagerList> managerTeamList = null;
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.add("content-type", "application/json");
         String errorMessage = "";
 
         try {
-            employeeList = employeeService.getTeamList(managerId);
+            managerTeamList = employeeService.getTeamList(managerId);
         }
         catch (Exception e){
             errorMessage=e.toString();
@@ -355,7 +355,7 @@ public class EmployeeController {
            return  ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMessage);
        }
        else {
-           return ResponseEntity.ok().headers(responseHeaders).body(employeeList);
+           return ResponseEntity.ok().headers(responseHeaders).body(managerTeamList);
        }
 
     }

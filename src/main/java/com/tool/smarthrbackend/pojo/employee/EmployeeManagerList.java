@@ -2,10 +2,20 @@ package com.tool.smarthrbackend.pojo.employee;
 
 public class EmployeeManagerList {
     Long id;
+    Long ManagerId;
     String firstName;
    String middelName;
 
    String lastName;
+
+
+    public Long getManagerId() {
+        return ManagerId;
+    }
+
+    public void setManagerId(Long managerId) {
+        ManagerId = managerId;
+    }
 
     public Long getId() {
         return id;

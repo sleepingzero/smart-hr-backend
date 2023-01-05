@@ -514,9 +514,21 @@ public class EmployeeService {
     }
 
 
-    public List<Employee> getTeamList(Long managerId) {
-        
-   return employeeRepository.findAllByManagerId(managerId);
+    public List<EmployeeManagerList> getTeamList(Long managerId) {
+        List<EmployeeManagerList> employeeManagerLists= new ArrayList<>();
+        List<Employee> employeeList=new ArrayList<>();
+        employeeList =employeeRepository.findAllByManagerId(managerId);
+        employeeList.forEach(employee->{
+            EmployeeManagerList emp= new EmployeeManagerList();
+            emp.setId(employee.getId());
+            emp.setFirstName(employee.getFirstName());
+            emp.setMiddelName(employee.getMiddleName());
+            emp.setLastName(employee.getLastName());
+            emp.setManagerId(employee.getManagerId());
+            employeeManagerLists.add(emp);
+
+        });
+        return employeeManagerLists;
     }
 
 
@@ -534,6 +546,7 @@ public class EmployeeService {
             emp.setFirstName(employee.getFirstName());
             emp.setMiddelName(employee.getMiddleName());
             emp.setLastName(employee.getLastName());
+            emp.setManagerId(employee.getManagerId());
             employeeManagerLists.add(emp);
         });
 
