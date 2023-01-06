@@ -36,8 +36,27 @@ public class AddEmployeeRequest {
     EmployeePersonalDetail employeePersonalDetail;
 
     List<EmployeeFamilyDetail> employeeFamilyDetailList;
+
+    EmployeePfAccount employeePfAccount;
+    EmployeeBankAccount employeeBankAccount;
     List<Asset> assets;
 
+
+    public EmployeePfAccount getEmployeePfAccount() {
+        return employeePfAccount;
+    }
+
+    public void setEmployeePfAccount(EmployeePfAccount employeePfAccount) {
+        this.employeePfAccount = employeePfAccount;
+    }
+
+    public EmployeeBankAccount getEmployeeBankAccount() {
+        return employeeBankAccount;
+    }
+
+    public void setEmployeeBankAccount(EmployeeBankAccount employeeBankAccount) {
+        this.employeeBankAccount = employeeBankAccount;
+    }
 
     public List<EmployeeFamilyDetail> getEmployeeFamilyDetailList() {
         return employeeFamilyDetailList;

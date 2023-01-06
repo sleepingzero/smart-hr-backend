@@ -9,6 +9,7 @@ import lombok.Data;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -41,7 +42,7 @@ public class Employee {
     String professionalEmailId;
 
     @Column(name = "date_of_joining")
-    String dateOfJoining;
+    LocalDate dateOfJoining;
 
 
     @Column(name = "last_name")
@@ -98,10 +99,6 @@ public class Employee {
     @JoinColumn(name = "emp_id", referencedColumnName = "id")
     private List<Asset> assets;
 
-
-//    @OneToOne(cascade = CascadeType.ALL)
-//    @JoinColumn(name = "personal_detail_id")
-
     @Column(name = "personal_detail_id")
     Long personalDetailId;
 
@@ -110,13 +107,21 @@ public class Employee {
     public EmployeePersonalDetail employeePersonalDetail;
 
 
+  @OneToOne(cascade = CascadeType.ALL)
+  @JoinColumn(name = "bank_details_id")
+ public EmployeeBankAccount employeeBankAccount;
+
+    @OneToOne(cascade = CascadeType.ALL)
+  @JoinColumn(name = "PF_account_id")
+  public  EmployeePfAccount employeePfAccount;
 
 
 
     public Employee() {
     }
 
-    public Employee(Long id, Long managerId, String firstName, String middleName, String personalEmailId, String professionalEmailId, String dateOfJoining, String lastName, Long phoneNumber, String empPassword, Department department, AttendanceShifts attendanceShifts, Role role, Long projectId, Domain designation, Long tmpPasswordOtp, List<EmployeeAddress> employeeAddresses, List<EmployeeEducation> employeeEducations, List<EmployeeProfessionalDetail> employeeProfessionalDetails, List<EmployeeFamilyDetail> employeeFamilyDetail, List<Asset> assets, Long personalDetailId, EmployeePersonalDetail employeePersonalDetail) {
+
+    public Employee(Long id, Long managerId, String firstName, String middleName, String personalEmailId, String professionalEmailId, LocalDate dateOfJoining, String lastName, Long phoneNumber, String empPassword, Department department, AttendanceShifts attendanceShifts, Role role, Long projectId, Domain designation, Long tmpPasswordOtp, List<EmployeeAddress> employeeAddresses, List<EmployeeEducation> employeeEducations, List<EmployeeProfessionalDetail> employeeProfessionalDetails, List<EmployeeFamilyDetail> employeeFamilyDetail, List<Asset> assets, Long personalDetailId, EmployeePersonalDetail employeePersonalDetail, EmployeeBankAccount employeeBankAccount, EmployeePfAccount employeePfAccount) {
         this.id = id;
         this.managerId = managerId;
         this.firstName = firstName;
@@ -140,6 +145,24 @@ public class Employee {
         this.assets = assets;
         this.personalDetailId = personalDetailId;
         this.employeePersonalDetail = employeePersonalDetail;
+        this.employeeBankAccount = employeeBankAccount;
+        this.employeePfAccount = employeePfAccount;
+    }
+
+    public EmployeeBankAccount getEmployeeBankAccount() {
+        return employeeBankAccount;
+    }
+
+    public void setEmployeeBankAccount(EmployeeBankAccount employeeBankAccount) {
+        this.employeeBankAccount = employeeBankAccount;
+    }
+
+    public EmployeePfAccount getEmployeePfAccount() {
+        return employeePfAccount;
+    }
+
+    public void setEmployeePfAccount(EmployeePfAccount employeePfAccount) {
+        this.employeePfAccount = employeePfAccount;
     }
 
     public List<Asset> getAssets() {
@@ -198,11 +221,11 @@ public class Employee {
         this.professionalEmailId = professionalEmailId;
     }
 
-    public String getDateOfJoining() {
+    public LocalDate getDateOfJoining() {
         return dateOfJoining;
     }
 
-    public void setDateOfJoining(String dateOfJoining) {
+    public void setDateOfJoining(LocalDate dateOfJoining) {
         this.dateOfJoining = dateOfJoining;
     }
 

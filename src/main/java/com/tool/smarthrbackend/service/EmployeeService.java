@@ -72,7 +72,11 @@ public class EmployeeService {
     @Autowired
     AttendanceShiftsRepository attendanceShiftsRepository;
 
+    @Autowired
+    EmployeeBankAccountRepository employeeBankAccountRepository;
 
+    @Autowired
+    EmployeePfAccountRepository employeePfAccountRepository;
     @Autowired
     AttendanceRepository attendanceRepository;
 
@@ -167,6 +171,8 @@ public class EmployeeService {
         emp.setEmployeeProfessionalDetails(addEmployeeRequest.getEmployeeProfessionalDetails());
         emp.setAssets(addEmployeeRequest.getAssets());
        emp.setEmployeeFamilyDetail(addEmployeeRequest.getEmployeeFamilyDetailList());
+       emp.setEmployeePfAccount(addEmployeeRequest.getEmployeePfAccount());
+       emp.setEmployeeBankAccount(addEmployeeRequest.getEmployeeBankAccount());
 
 
 
@@ -227,10 +233,11 @@ public class EmployeeService {
             updateAddress(addEmployeeRequest.getEmployeeAddresses());
             updateEducation(addEmployeeRequest.getEmployeeEducations());
             updateProfessionalDetail(addEmployeeRequest.getEmployeeProfessionalDetails());
-            updatePersonalDetail(addEmployeeRequest.getEmployeePersonalDetail());
+            updatePersonalDetail(addEmployeeRequest.getEmployeePersonalDetail(),employeeId);
             updateFamilyDetail(addEmployeeRequest.getEmployeeFamilyDetailList());
             updateAsset(addEmployeeRequest.getAssets());
-
+            updateBankDetail(addEmployeeRequest.getEmployeeBankAccount(),employeeId);
+            updatePfAccountDetail(addEmployeeRequest.getEmployeePfAccount(),employeeId);
             employeeRepository.save(emp);
             addEmployeeResponse.setReturnMsg("successfully update");
 
@@ -242,7 +249,19 @@ public class EmployeeService {
 
     }
 
+    public void updatePfAccountDetail(EmployeePfAccount employeePfAccount, Long employeeId) {
+          Employee emp= employeeRepository.findById(employeeId).get();
 
+             EmployeePfAccount empPFAccount= employeePfAccountRepository.save(employeePfAccount);
+             emp.setEmployeePfAccount(employeePfAccount);
+
+    }
+
+    public void updateBankDetail(EmployeeBankAccount employeeBankAccount, Long employeeId) {
+        Employee emp= employeeRepository.findById(employeeId).get();
+       EmployeeBankAccount employeeBankAccount1= employeeBankAccountRepository.save(employeeBankAccount);
+       emp.setEmployeeBankAccount(employeeBankAccount1);
+    }
 
 
     public EmployeeCheckInCheckOutRequest addCheckin(EmployeeCheckInCheckOutRequest employeeCheckInCheckOutRequest) {
@@ -351,20 +370,10 @@ public class EmployeeService {
     }
 
 
-    public void updatePersonalDetail(EmployeePersonalDetail employeePersonalDetail) {
-        EmployeePersonalDetail existEmployeePersonalDetail1 = null;
-        if (employeePersonalDetail.getId() != null) {
-            existEmployeePersonalDetail1 = employeePersonalDetailRepository.findById(employeePersonalDetail.getId()).get();
-            existEmployeePersonalDetail1.setMaritalStatus(employeePersonalDetail.getMaritalStatus());
-            existEmployeePersonalDetail1.setGender(employeePersonalDetail.getGender());
-            existEmployeePersonalDetail1.setNationality(employeePersonalDetail.getNationality());
-            existEmployeePersonalDetail1.setBloodGroup(employeePersonalDetail.getBloodGroup());
-            existEmployeePersonalDetail1.setDateOfBirth(employeePersonalDetail.getDateOfBirth());
-            existEmployeePersonalDetail1.setPersonalNumber(employeePersonalDetail.getPersonalNumber());
-            employeePersonalDetailRepository.save(existEmployeePersonalDetail1);
-        } else {
-            employeePersonalDetailRepository.save(employeePersonalDetail);
-        }
+    public void updatePersonalDetail(EmployeePersonalDetail employeePersonalDetail, Long employeeId) {
+       Employee emp= employeeRepository.findById(employeeId).get();
+        EmployeePersonalDetail existEmployeePersonalDetail1 =employeePersonalDetailRepository.save(employeePersonalDetail);
+       emp.setPersonalDetailId(existEmployeePersonalDetail1.getId());
 
     }
 

@@ -39,13 +39,13 @@ public class EmployeeProfessionalDetail {
 
 
     @Column(name = "city")
-    Integer city;
+    String city;
 
     @Column(name = "state")
-    Integer state;
+    String state;
 
     @Column(name = "country")
-    Integer country;
+    String country;
 
     @Column(name = "pincode")
     String pincode;
@@ -53,7 +53,7 @@ public class EmployeeProfessionalDetail {
     public EmployeeProfessionalDetail() {
     }
 
-    public EmployeeProfessionalDetail(Long id, Integer empId, String company, String designation, String roleAndResponsibility, String skill, Date startDate, Date endDate, Integer city, Integer state, Integer country, String pincode) {
+    public EmployeeProfessionalDetail(Long id, Integer empId, String company, String designation, String roleAndResponsibility, String skill, Date startDate, Date endDate, String city, String state, String country, String pincode) {
         this.id = id;
         this.empId = empId;
         this.company = company;
@@ -132,27 +132,27 @@ public class EmployeeProfessionalDetail {
         this.endDate = endDate;
     }
 
-    public Integer getCity() {
+    public String getCity() {
         return city;
     }
 
-    public void setCity(Integer city) {
+    public void setCity(String city) {
         this.city = city;
     }
 
-    public Integer getState() {
+    public String getState() {
         return state;
     }
 
-    public void setState(Integer state) {
+    public void setState(String state) {
         this.state = state;
     }
 
-    public Integer getCountry() {
+    public String getCountry() {
         return country;
     }
 
-    public void setCountry(Integer country) {
+    public void setCountry(String country) {
         this.country = country;
     }
 

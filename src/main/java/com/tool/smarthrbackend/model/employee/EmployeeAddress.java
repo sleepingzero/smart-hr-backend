@@ -34,13 +34,13 @@ import javax.persistence.*;
 
 
         @Column(name = "city")
-        Integer city;
+        String city;
 
         @Column(name = "state")
-        Integer state;
+        String state;
 
         @Column(name = "country")
-        Integer country;
+        String country;
 
         @Column(name = "pincode")
         String pincode;
@@ -51,7 +51,7 @@ import javax.persistence.*;
         public EmployeeAddress() {
         }
 
-        public EmployeeAddress(Long id, Integer addressType, Integer empId, String addressLine, Integer city, Integer state, Integer country, String pincode) {
+        public EmployeeAddress(Long id, Integer addressType, Integer empId, String addressLine, String city, String state, String country, String pincode) {
             this.id = id;
             this.addressType = addressType;
             this.empId = empId;
@@ -94,27 +94,27 @@ import javax.persistence.*;
             this.addressLine = addressLine;
         }
 
-        public Integer getCity() {
+        public String getCity() {
             return city;
         }
 
-        public void setCity(Integer city) {
+        public void setCity(String city) {
             this.city = city;
         }
 
-        public Integer getState() {
+        public String getState() {
             return state;
         }
 
-        public void setState(Integer state) {
+        public void setState(String state) {
             this.state = state;
         }
 
-        public Integer getCountry() {
+        public String getCountry() {
             return country;
         }
 
-        public void setCountry(Integer country) {
+        public void setCountry(String country) {
             this.country = country;
         }
 
