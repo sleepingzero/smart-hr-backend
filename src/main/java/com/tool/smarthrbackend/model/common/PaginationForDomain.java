@@ -8,6 +8,15 @@ public class PaginationForDomain {
     String sortBy= "id";
     String sortDirection="asc";
     String domainName;
+    String searchTerm;
+
+    public String getSearchTerm() {
+        return searchTerm;
+    }
+
+    public void setSearchTerm(String searchTerm) {
+        this.searchTerm = searchTerm;
+    }
 
     public Integer getPageNo() {
         return pageNo;

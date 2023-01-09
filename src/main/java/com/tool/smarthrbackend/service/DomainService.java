@@ -66,29 +66,41 @@ public class DomainService {
         return employeeProjectTaskRepository.save(employeeProjectTask);
     }
 
-    public Page<EmployeeProject> getAllProjectPagination(PaginationModel paginationModel) {
-        String sortBy = paginationModel.getSortBy();
+    public Page<EmployeeProject> getAllProjectPagination(PaginationForDomain paginationForDomain) {
+        String sortBy = paginationForDomain.getSortBy();
 
-        Sort sort = paginationModel.getSortDirection().equalsIgnoreCase(Sort.Direction.ASC.name()) ?
+        Sort sort = paginationForDomain.getSortDirection().equalsIgnoreCase(Sort.Direction.ASC.name()) ?
                 Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
 
-        Pageable pageable = PageRequest.of(paginationModel.getPageNo(), paginationModel.getPageSize(), sort);
+        Pageable pageable = PageRequest.of(paginationForDomain.getPageNo(), paginationForDomain.getPageSize(), sort);
 
         Page<EmployeeProject> employeeProjectPage=null;
-        employeeProjectPage=employeeProjectRepository.findAll(pageable);
+        if(paginationForDomain.getSearchTerm()!= null){
+            employeeProjectPage= employeeProjectRepository.findByProjectNameContaining(paginationForDomain.getSearchTerm(),pageable);
+        }
+        else {
+            employeeProjectPage=employeeProjectRepository.findAll(pageable);
+        }
+
         return  employeeProjectPage;
 
     }
 
-    public Page<EmployeeProjectTask> getAllTaskPagination(PaginationModel paginationModel) {
-        String sortBy = paginationModel.getSortBy();
+    public Page<EmployeeProjectTask> getAllTaskPagination(PaginationForDomain paginationForDomain) {
+        String sortBy = paginationForDomain.getSortBy();
 
-        Sort sort = paginationModel.getSortDirection().equalsIgnoreCase(Sort.Direction.ASC.name()) ?
+        Sort sort = paginationForDomain.getSortDirection().equalsIgnoreCase(Sort.Direction.ASC.name()) ?
                 Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
 
-        Pageable pageable = PageRequest.of(paginationModel.getPageNo(), paginationModel.getPageSize(), sort);
+        Pageable pageable = PageRequest.of(paginationForDomain.getPageNo(), paginationForDomain.getPageSize(), sort);
         Page<EmployeeProjectTask> employeeProjectTaskPage=null;
-        employeeProjectTaskPage=employeeProjectTaskRepository.findAll(pageable);
+        if(paginationForDomain.getSearchTerm() !=null){
+            employeeProjectTaskPage=employeeProjectTaskRepository.findByTaskNameContaining(paginationForDomain.getSearchTerm(),pageable);
+        }
+        else {
+            employeeProjectTaskPage=employeeProjectTaskRepository.findAll(pageable);
+        }
+
         return employeeProjectTaskPage;
     }
 
@@ -113,12 +125,22 @@ public class DomainService {
     }
 
     public Page<Domain> findChildDomainsByDomainNameWithPagination(PaginationForDomain paginationForDomain) {
+       Page<Domain> domainPage ;
         String sortBy = paginationForDomain.getSortBy();
 
         Sort sort = paginationForDomain.getSortDirection().equalsIgnoreCase(Sort.Direction.ASC.name()) ?
                 Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
 
         Pageable pageable = PageRequest.of(paginationForDomain.getPageNo(), paginationForDomain.getPageSize(), sort);
-        return  domainRepository.findChildDomainsByDomainName(paginationForDomain.getDomainName(),pageable);
+       Domain domain= new Domain();
+       domain= domainRepository.findByDomainName(paginationForDomain.getDomainName());
+    if(paginationForDomain.getSearchTerm() != null){
+            domainPage=domainRepository.findByParentIdAndDomainDisplayNameContaining(domain.getId(),paginationForDomain.getSearchTerm(),pageable);
+        }
+        else{
+            domainPage= domainRepository.findChildDomainsByDomainName(paginationForDomain.getDomainName(),pageable);
+        }
+
+        return  domainPage;
     }
 }

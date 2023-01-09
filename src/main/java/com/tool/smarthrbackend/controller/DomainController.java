@@ -232,7 +232,7 @@ public class DomainController {
 	}
 
 	@PostMapping(path = "/getAllProjectsWithPagination")
-	public ResponseEntity<?> getAllProjectPagination(@RequestBody PaginationModel paginationModel)
+	public ResponseEntity<?> getAllProjectPagination(@RequestBody PaginationForDomain paginationForDomain)
 			throws  JsonProcessingException{
 
 		HttpHeaders responseHeaders= new HttpHeaders();
@@ -241,7 +241,7 @@ public class DomainController {
 		String errorMessage="";
 
 		try {
-			employeeProjectPage= domainService.getAllProjectPagination(paginationModel);
+			employeeProjectPage= domainService.getAllProjectPagination(paginationForDomain);
 		}
 		catch (Exception e){
 			errorMessage=e.toString();
@@ -256,7 +256,7 @@ public class DomainController {
 	}
 
 	@PostMapping(path = "/getAllTaskWithPagination")
-	public ResponseEntity<?> getAllTaskPagination(@RequestBody PaginationModel paginationModel)
+	public ResponseEntity<?> getAllTaskPagination(@RequestBody PaginationForDomain paginationForDomain)
 			throws  JsonProcessingException{
 
 		HttpHeaders responseHeaders= new HttpHeaders();
@@ -265,7 +265,7 @@ public class DomainController {
 		String errorMessage="";
 
 		try {
-			employeeProjectTasks= domainService.getAllTaskPagination(paginationModel);
+			employeeProjectTasks= domainService.getAllTaskPagination(paginationForDomain);
 		}
 		catch (Exception e){
 			errorMessage=e.toString();
