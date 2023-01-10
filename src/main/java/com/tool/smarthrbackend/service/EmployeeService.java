@@ -249,18 +249,21 @@ public class EmployeeService {
 
     }
 
-    public void updatePfAccountDetail(EmployeePfAccount employeePfAccount, Long employeeId) {
+    public EmployeePfAccount updatePfAccountDetail(EmployeePfAccount employeePfAccount, Long employeeId) {
           Employee emp= employeeRepository.findById(employeeId).get();
 
              EmployeePfAccount empPFAccount= employeePfAccountRepository.save(employeePfAccount);
              emp.setEmployeePfAccount(employeePfAccount);
-
+             employeeRepository.save(emp);
+             return empPFAccount;
     }
 
-    public void updateBankDetail(EmployeeBankAccount employeeBankAccount, Long employeeId) {
+    public  EmployeeBankAccount updateBankDetail(EmployeeBankAccount employeeBankAccount, Long employeeId) {
         Employee emp= employeeRepository.findById(employeeId).get();
        EmployeeBankAccount employeeBankAccount1= employeeBankAccountRepository.save(employeeBankAccount);
        emp.setEmployeeBankAccount(employeeBankAccount1);
+       employeeRepository.save(emp);
+       return employeeBankAccount1;
 
     }
 
@@ -562,4 +565,6 @@ public class EmployeeService {
 
         return employeeManagerLists;
     }
+
+
 }

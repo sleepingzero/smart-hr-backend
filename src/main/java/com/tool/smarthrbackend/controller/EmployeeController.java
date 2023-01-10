@@ -428,4 +428,49 @@ public class EmployeeController {
         return  employeeManagerList;
     }
 
+    @PutMapping(path = "/updateBankDetail")
+    public  ResponseEntity<?> updadetBank1(@RequestBody EmployeeBankAccount employeeBankAccount,
+                                            @RequestParam (value = "empId") Long empId) {
+        EmployeeBankAccount employeeBankAccount1 = new EmployeeBankAccount();
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.add("content-type", "application/json");
+
+        String errorMessage = "";
+        try {
+            employeeBankAccount1 = employeeService.updateBankDetail(employeeBankAccount, empId);
+
+        } catch (Exception e) {
+
+            errorMessage = e.toString();
+        }
+
+        if (!errorMessage.equalsIgnoreCase("")) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMessage);
+        } else {
+            return ResponseEntity.ok().headers(responseHeaders).body(employeeBankAccount1);
+        }
+    }
+
+    @PutMapping(path = "/updatePfAccountDetail")
+    public  ResponseEntity<?> updadetBank1(@RequestBody EmployeePfAccount employeePfAccount,
+                                           @RequestParam (value = "empId") Long empId) {
+        EmployeePfAccount employeePfAccount1 = new EmployeePfAccount();
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.add("content-type", "application/json");
+
+        String errorMessage = "";
+        try {
+            employeePfAccount1 = employeeService.updatePfAccountDetail(employeePfAccount, empId);
+
+        } catch (Exception e) {
+
+            errorMessage = e.toString();
+        }
+
+        if (!errorMessage.equalsIgnoreCase("")) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMessage);
+        } else {
+            return ResponseEntity.ok().headers(responseHeaders).body(employeePfAccount1);
+        }
+    }
 }
