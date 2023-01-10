@@ -261,6 +261,7 @@ public class EmployeeService {
         Employee emp= employeeRepository.findById(employeeId).get();
        EmployeeBankAccount employeeBankAccount1= employeeBankAccountRepository.save(employeeBankAccount);
        emp.setEmployeeBankAccount(employeeBankAccount1);
+
     }
 
 

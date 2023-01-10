@@ -315,6 +315,26 @@ public class EmployeeController {
     }
 
 
+    @PutMapping(path = "/updateEmployeeFamilyDetail")
+    public ResponseEntity<?> updateEmployeeFamilyDetail(@RequestBody List<EmployeeFamilyDetail> familyDetailList)
+            throws JsonProcessingException {
+        HttpHeaders responseHeaders = new HttpHeaders();
+
+        responseHeaders.add("content-type", "application/json");
+        String errorMessage = "";
+        try {
+            employeeService.updateFamilyDetail(familyDetailList);
+        } catch (Exception e) {
+            errorMessage = e.toString();
+        }
+        if (errorMessage != "") {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMessage);
+        } else {
+            return ResponseEntity.ok().headers(responseHeaders).body("");
+        }
+
+    }
+
     //  get ALL upcoming Birthday or limited if paramater is 3 given list is give top 3 or else all list
     @PostMapping(path = "/upcominBirthday")
     public ResponseEntity<?> getPersonalDetail(@RequestParam(value = "limit", required = false) Integer limit,
