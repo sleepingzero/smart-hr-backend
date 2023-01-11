@@ -29,50 +29,22 @@ public class AddEmployeeRequest {
     Long managerId;
     //    List<Long> managerIds;
 //    List<Long> roles;
-    List<EmployeeAddress> employeeAddresses;
-    List<EmployeeEducation> employeeEducations;
+    List<EmployeeAddress> employeeAddresseList;
+    List<EmployeeEducation> employeeEducationList;
 
-    List<EmployeeProfessionalDetail> employeeProfessionalDetails;
+    List<EmployeeProfessionalDetail> employeeProfessionalDetailList;
     EmployeePersonalDetail employeePersonalDetail;
 
     List<EmployeeFamilyDetail> employeeFamilyDetailList;
 
     EmployeePfAccount employeePfAccount;
     EmployeeBankAccount employeeBankAccount;
-    List<Asset> assets;
+    List<Asset> assetsList;
 
+    List<EmployeeSkill> employeeSkillList;
 
-    public EmployeePfAccount getEmployeePfAccount() {
-        return employeePfAccount;
-    }
+    List<EmployeeDocument> employeeDocumentList;
 
-    public void setEmployeePfAccount(EmployeePfAccount employeePfAccount) {
-        this.employeePfAccount = employeePfAccount;
-    }
-
-    public EmployeeBankAccount getEmployeeBankAccount() {
-        return employeeBankAccount;
-    }
-
-    public void setEmployeeBankAccount(EmployeeBankAccount employeeBankAccount) {
-        this.employeeBankAccount = employeeBankAccount;
-    }
-
-    public List<EmployeeFamilyDetail> getEmployeeFamilyDetailList() {
-        return employeeFamilyDetailList;
-    }
-
-    public void setEmployeeFamilyDetailList(List<EmployeeFamilyDetail> employeeFamilyDetailList) {
-        this.employeeFamilyDetailList = employeeFamilyDetailList;
-    }
-
-    public List<Asset> getAssets() {
-        return assets;
-    }
-
-    public void setAssets(List<Asset> assets) {
-        this.assets = assets;
-    }
 
     public String getFirstName() {
         return firstName;
@@ -90,20 +62,20 @@ public class AddEmployeeRequest {
         this.middleName = middleName;
     }
 
-    public String getProfessionalEmailId() {
-        return professionalEmailId;
-    }
-
-    public void setProfessionalEmailId(String professionalEmailId) {
-        this.professionalEmailId = professionalEmailId;
-    }
-
     public String getPersonalEmailId() {
         return personalEmailId;
     }
 
     public void setPersonalEmailId(String personalEmailId) {
         this.personalEmailId = personalEmailId;
+    }
+
+    public String getProfessionalEmailId() {
+        return professionalEmailId;
+    }
+
+    public void setProfessionalEmailId(String professionalEmailId) {
+        this.professionalEmailId = professionalEmailId;
     }
 
     public String getLastName() {
@@ -178,28 +150,28 @@ public class AddEmployeeRequest {
         this.managerId = managerId;
     }
 
-    public List<EmployeeAddress> getEmployeeAddresses() {
-        return employeeAddresses;
+    public List<EmployeeAddress> getEmployeeAddresseList() {
+        return employeeAddresseList;
     }
 
-    public void setEmployeeAddresses(List<EmployeeAddress> employeeAddresses) {
-        this.employeeAddresses = employeeAddresses;
+    public void setEmployeeAddresseList(List<EmployeeAddress> employeeAddresseList) {
+        this.employeeAddresseList = employeeAddresseList;
     }
 
-    public List<EmployeeEducation> getEmployeeEducations() {
-        return employeeEducations;
+    public List<EmployeeEducation> getEmployeeEducationList() {
+        return employeeEducationList;
     }
 
-    public void setEmployeeEducations(List<EmployeeEducation> employeeEducations) {
-        this.employeeEducations = employeeEducations;
+    public void setEmployeeEducationList(List<EmployeeEducation> employeeEducationList) {
+        this.employeeEducationList = employeeEducationList;
     }
 
-    public List<EmployeeProfessionalDetail> getEmployeeProfessionalDetails() {
-        return employeeProfessionalDetails;
+    public List<EmployeeProfessionalDetail> getEmployeeProfessionalDetailList() {
+        return employeeProfessionalDetailList;
     }
 
-    public void setEmployeeProfessionalDetails(List<EmployeeProfessionalDetail> employeeProfessionalDetails) {
-        this.employeeProfessionalDetails = employeeProfessionalDetails;
+    public void setEmployeeProfessionalDetailList(List<EmployeeProfessionalDetail> employeeProfessionalDetailList) {
+        this.employeeProfessionalDetailList = employeeProfessionalDetailList;
     }
 
     public EmployeePersonalDetail getEmployeePersonalDetail() {
@@ -210,5 +182,51 @@ public class AddEmployeeRequest {
         this.employeePersonalDetail = employeePersonalDetail;
     }
 
+    public List<EmployeeFamilyDetail> getEmployeeFamilyDetailList() {
+        return employeeFamilyDetailList;
+    }
 
+    public void setEmployeeFamilyDetailList(List<EmployeeFamilyDetail> employeeFamilyDetailList) {
+        this.employeeFamilyDetailList = employeeFamilyDetailList;
+    }
+
+    public EmployeePfAccount getEmployeePfAccount() {
+        return employeePfAccount;
+    }
+
+    public void setEmployeePfAccount(EmployeePfAccount employeePfAccount) {
+        this.employeePfAccount = employeePfAccount;
+    }
+
+    public EmployeeBankAccount getEmployeeBankAccount() {
+        return employeeBankAccount;
+    }
+
+    public void setEmployeeBankAccount(EmployeeBankAccount employeeBankAccount) {
+        this.employeeBankAccount = employeeBankAccount;
+    }
+
+    public List<Asset> getAssetsList() {
+        return assetsList;
+    }
+
+    public void setAssetsList(List<Asset> assetsList) {
+        this.assetsList = assetsList;
+    }
+
+    public List<EmployeeSkill> getEmployeeSkillList() {
+        return employeeSkillList;
+    }
+
+    public void setEmployeeSkillList(List<EmployeeSkill> employeeSkillList) {
+        this.employeeSkillList = employeeSkillList;
+    }
+
+    public List<EmployeeDocument> getEmployeeDocumentList() {
+        return employeeDocumentList;
+    }
+
+    public void setEmployeeDocumentList(List<EmployeeDocument> employeeDocumentList) {
+        this.employeeDocumentList = employeeDocumentList;
+    }
 }

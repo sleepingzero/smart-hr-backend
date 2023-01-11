@@ -10,10 +10,7 @@ import lombok.ToString;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 
 @Data
@@ -99,6 +96,14 @@ public class Employee {
     @JoinColumn(name = "emp_id", referencedColumnName = "id")
     private List<Asset> assets;
 
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "emp_id", referencedColumnName = "id")
+    private List<EmployeeSkill> employeeSkills;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "emp_id", referencedColumnName = "id")
+    private List<EmployeeDocument> employeeDocuments;
+
     @Column(name = "personal_detail_id")
     Long personalDetailId;
 
@@ -121,7 +126,7 @@ public class Employee {
     }
 
 
-    public Employee(Long id, Long managerId, String firstName, String middleName, String personalEmailId, String professionalEmailId, LocalDate dateOfJoining, String lastName, Long phoneNumber, String empPassword, Department department, AttendanceShifts attendanceShifts, Role role, Long projectId, Domain designation, Long tmpPasswordOtp, List<EmployeeAddress> employeeAddresses, List<EmployeeEducation> employeeEducations, List<EmployeeProfessionalDetail> employeeProfessionalDetails, List<EmployeeFamilyDetail> employeeFamilyDetail, List<Asset> assets, Long personalDetailId, EmployeePersonalDetail employeePersonalDetail, EmployeeBankAccount employeeBankAccount, EmployeePfAccount employeePfAccount) {
+    public Employee(Long id, Long managerId, String firstName, String middleName, String personalEmailId, String professionalEmailId, LocalDate dateOfJoining, String lastName, Long phoneNumber, String empPassword, Department department, AttendanceShifts attendanceShifts, Role role, Long projectId, Domain designation, Long tmpPasswordOtp, List<EmployeeAddress> employeeAddresses, List<EmployeeEducation> employeeEducations, List<EmployeeProfessionalDetail> employeeProfessionalDetails, List<EmployeeFamilyDetail> employeeFamilyDetail, List<Asset> assets, List<EmployeeSkill> employeeSkills, List<EmployeeDocument> employeeDocuments, Long personalDetailId, EmployeePersonalDetail employeePersonalDetail, EmployeeBankAccount employeeBankAccount, EmployeePfAccount employeePfAccount) {
         this.id = id;
         this.managerId = managerId;
         this.firstName = firstName;
@@ -143,10 +148,21 @@ public class Employee {
         this.employeeProfessionalDetails = employeeProfessionalDetails;
         this.employeeFamilyDetail = employeeFamilyDetail;
         this.assets = assets;
+        this.employeeSkills = employeeSkills;
+        this.employeeDocuments = employeeDocuments;
         this.personalDetailId = personalDetailId;
         this.employeePersonalDetail = employeePersonalDetail;
         this.employeeBankAccount = employeeBankAccount;
         this.employeePfAccount = employeePfAccount;
+    }
+
+
+    public List<EmployeeDocument> getEmployeeDocuments() {
+        return employeeDocuments;
+    }
+
+    public void setEmployeeDocuments(List<EmployeeDocument> employeeDocuments) {
+        this.employeeDocuments = employeeDocuments;
     }
 
     public EmployeeBankAccount getEmployeeBankAccount() {
@@ -157,12 +173,23 @@ public class Employee {
         this.employeeBankAccount = employeeBankAccount;
     }
 
+
+
     public EmployeePfAccount getEmployeePfAccount() {
         return employeePfAccount;
     }
 
     public void setEmployeePfAccount(EmployeePfAccount employeePfAccount) {
         this.employeePfAccount = employeePfAccount;
+    }
+
+
+    public List<EmployeeSkill> getEmployeeSkills() {
+        return employeeSkills;
+    }
+
+    public void setEmployeeSkills(List<EmployeeSkill> employeeSkills) {
+        this.employeeSkills = employeeSkills;
     }
 
     public List<Asset> getAssets() {

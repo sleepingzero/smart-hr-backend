@@ -473,4 +473,49 @@ public class EmployeeController {
             return ResponseEntity.ok().headers(responseHeaders).body(employeePfAccount1);
         }
     }
+
+
+    @PutMapping(path = "/updateEmployeeSkill")
+    public ResponseEntity<?> updateEmployeeSkill(@RequestBody List<EmployeeSkill> employeeSkills)
+            throws JsonProcessingException {
+        HttpHeaders responseHeaders = new HttpHeaders();
+
+        responseHeaders.add("content-type", "application/json");
+        String errorMessage = "";
+        try {
+            employeeService.updateEmployeeSkill(employeeSkills);
+        } catch (Exception e) {
+            errorMessage = e.toString();
+        }
+        if (errorMessage != "") {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMessage);
+        } else {
+            return ResponseEntity.ok().headers(responseHeaders).body("");
+        }
+
+    }
+
+
+
+    @PutMapping(path = "/updateEmployeeDocument")
+    public ResponseEntity<?> updateEmployeeDocument(@RequestBody List<EmployeeDocument> employeeDocumentList)
+            throws JsonProcessingException {
+        HttpHeaders responseHeaders = new HttpHeaders();
+
+        responseHeaders.add("content-type", "application/json");
+        String errorMessage = "";
+        try {
+            employeeService.updateEmployeeDocument(employeeDocumentList);
+        } catch (Exception e) {
+            errorMessage = e.toString();
+        }
+        if (errorMessage != "") {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMessage);
+        } else {
+            return ResponseEntity.ok().headers(responseHeaders).body("");
+        }
+
+    }
+
+
 }

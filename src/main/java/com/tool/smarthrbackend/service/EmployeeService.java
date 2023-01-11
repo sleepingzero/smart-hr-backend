@@ -77,6 +77,13 @@ public class EmployeeService {
 
     @Autowired
     EmployeePfAccountRepository employeePfAccountRepository;
+
+    @Autowired
+    EmployeeSkillRepository employeeSkillRepository;
+
+    @Autowired
+    EmployeeDocumentsRepository employeeDocumentsRepository;
+
     @Autowired
     AttendanceRepository attendanceRepository;
 
@@ -166,11 +173,13 @@ public class EmployeeService {
             emp.setAttendanceShifts(shifts);
         }
         employeePersonalDetail = addEmployeeRequest.getEmployeePersonalDetail();
-        emp.setEmployeeAddresses(addEmployeeRequest.getEmployeeAddresses());
-        emp.setEmployeeEducations(addEmployeeRequest.getEmployeeEducations());
-        emp.setEmployeeProfessionalDetails(addEmployeeRequest.getEmployeeProfessionalDetails());
-        emp.setAssets(addEmployeeRequest.getAssets());
+        emp.setEmployeeAddresses(addEmployeeRequest.getEmployeeAddresseList());
+        emp.setEmployeeEducations(addEmployeeRequest.getEmployeeEducationList());
+        emp.setEmployeeProfessionalDetails(addEmployeeRequest.getEmployeeProfessionalDetailList());
+        emp.setAssets(addEmployeeRequest.getAssetsList());
        emp.setEmployeeFamilyDetail(addEmployeeRequest.getEmployeeFamilyDetailList());
+       emp.setEmployeeSkills(addEmployeeRequest.getEmployeeSkillList());
+       emp.setEmployeeDocuments(addEmployeeRequest.getEmployeeDocumentList());
        emp.setEmployeePfAccount(addEmployeeRequest.getEmployeePfAccount());
        emp.setEmployeeBankAccount(addEmployeeRequest.getEmployeeBankAccount());
 
@@ -230,14 +239,16 @@ public class EmployeeService {
             emp.setPersonalEmailId(addEmployeeRequest.getPersonalEmailId());
             emp.setProfessionalEmailId(addEmployeeRequest.getProfessionalEmailId());
 
-            updateAddress(addEmployeeRequest.getEmployeeAddresses());
-            updateEducation(addEmployeeRequest.getEmployeeEducations());
-            updateProfessionalDetail(addEmployeeRequest.getEmployeeProfessionalDetails());
+            updateAddress(addEmployeeRequest.getEmployeeAddresseList());
+            updateEducation(addEmployeeRequest.getEmployeeEducationList());
+            updateProfessionalDetail(addEmployeeRequest.getEmployeeProfessionalDetailList());
             updatePersonalDetail(addEmployeeRequest.getEmployeePersonalDetail(),employeeId);
             updateFamilyDetail(addEmployeeRequest.getEmployeeFamilyDetailList());
-            updateAsset(addEmployeeRequest.getAssets());
+            updateAsset(addEmployeeRequest.getAssetsList());
             updateBankDetail(addEmployeeRequest.getEmployeeBankAccount(),employeeId);
             updatePfAccountDetail(addEmployeeRequest.getEmployeePfAccount(),employeeId);
+            updateEmployeeSkill(addEmployeeRequest.getEmployeeSkillList());
+            updateEmployeeDocument(addEmployeeRequest.getEmployeeDocumentList());
             employeeRepository.save(emp);
             addEmployeeResponse.setReturnMsg("successfully update");
 
@@ -247,6 +258,39 @@ public class EmployeeService {
             return addEmployeeResponse;
         }
 
+    }
+
+    public void updateEmployeeDocument(List<EmployeeDocument> employeeDocumentList) {
+        employeeDocumentList.forEach(doc->{
+            EmployeeDocument employeeDocument= new EmployeeDocument();
+            if (doc.getId() != null){
+                employeeDocument=employeeDocumentsRepository.findById(doc.getId()).get();
+                employeeDocument.setDocumentName(doc.getDocumentName());
+                employeeDocument.setDocumentNo(doc.getDocumentNo());
+
+                employeeDocumentsRepository.save(employeeDocument);
+            }
+            else{
+                employeeDocumentsRepository.save(doc);
+            }
+        });
+    }
+
+    public void updateEmployeeSkill(List<EmployeeSkill> employeeSkills) {
+
+        employeeSkills.forEach(skill ->{
+            EmployeeSkill eee=new EmployeeSkill();
+            EmployeeSkill employeeSkill=new EmployeeSkill();
+            if(skill.getId() != null){
+              employeeSkill= employeeSkillRepository.findById(skill.getId()).get();
+              employeeSkill.setSkillName(skill.getSkillName());
+                eee=  employeeSkillRepository.save(employeeSkill);
+            }
+            else{
+            eee=   employeeSkillRepository.save(skill);
+            }
+            System.out.println(eee);
+        } );
     }
 
     public EmployeePfAccount updatePfAccountDetail(EmployeePfAccount employeePfAccount, Long employeeId) {
